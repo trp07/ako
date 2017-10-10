@@ -1,0 +1,31 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+   <session-factory>
+   
+      <property name = "hibernate.dialect">
+         org.hibernate.dialect.MariaDB53Dialect
+      </property>
+      
+      <property name = "hibernate.connection.driver_class">
+         com.mariadb.jdbc.Driver
+      </property>
+      
+      <property name = "hibernate.connection.url">
+         jdbc:mariadb://ako.cwrnmurbtzdj.us-east-2.rds.amazonaws.com:3306/ako
+      </property>
+      
+      <property name = "hibernate.connection.username">
+         ako
+      </property>
+      
+      <property name = "hibernate.connection.password">
+         Enpm61320!7
+      </property>
+      
+      <!-- List of XML mapping files -->
+      <!-- Thinking of using annotations instead of  XML mapping files for the objects --> 
+      
+   </session-factory>
+</hibernate-configuration>
