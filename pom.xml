@@ -40,23 +40,17 @@
 			<artifactId>mariadb-java-client</artifactId>
 			<version>2.1.0</version><!--$NO-MVN-MAN-VER$ -->
 		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+         
+		<!-- joda-time for datetime -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
 			<artifactId>usertype.core</artifactId>
 			<version>5.0.0.GA</version>
 		</dependency>
-
 
 		<!-- Jackson json data bind -->
 		<dependency>
@@ -66,6 +60,12 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-joda</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
