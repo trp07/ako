@@ -33,16 +33,16 @@ CREATE TABLE IF NOT EXISTS ako.User (
 ALTER TABLE ako.User AUTO_INCREMENT = 1000000001;
 
 /* Populating our User table since we do not have the Admin feature as a requirement. Passwords to be defined later */
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId) 
-		VALUES ('Noel','Buruca','A','2017-09-01','nburuca@terpmail.umd.edu','tempPassword','01');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId) 
-		VALUES ('Renuka','Dalal','A','2017-09-01','rdalal@terpmail.umd.edu','tempPassword','02');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId)  
-		VALUES ('Tim','Phillips','A','2017-09-01','tphillips@terpmail.umd.edu','tempPassword','01');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId) 
-		VALUES ('Vishakha','Sadhwani','A','2017-09-01','vsadhwani@terpmail.umd.edu','tempPassword','01');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId) 
-		VALUES ('Prashant','Rathod','A','2017-09-01','prathod@terpmail.umd.edu','tempPassword','02');
+INSERT INTO ako.User (createDate,firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive) 
+		VALUES ('2017-10-01','Noel','Buruca','A','2017-09-01','nburuca@terpmail.umd.edu','tempPassword','01','1');
+INSERT INTO ako.User (createDate,firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive) 
+		VALUES ('2017-10-01','Renuka','Dalal','A','2017-09-01','rdalal@terpmail.umd.edu','tempPassword','02','1');
+INSERT INTO ako.User (createDate,firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive)  
+		VALUES ('2017-10-01','Tim','Phillips','A','2017-09-01','tphillips@terpmail.umd.edu','tempPassword','01','0');
+INSERT INTO ako.User (createDate,firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive) 
+		VALUES ('2017-10-01','Vishakha','Sadhwani','A','2017-09-01','vsadhwani@terpmail.umd.edu','tempPassword','01','0');
+INSERT INTO ako.User (createDate,firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive) 
+		VALUES ('2017-10-01','Prashant','Rathod','A','2017-09-01','prathod@terpmail.umd.edu','tempPassword','02','1');
 
 /* Semester Identifier. 2 Digit Identifier */
 CREATE TABLE IF NOT EXISTS ako.Semester (
@@ -73,14 +73,14 @@ CREATE TABLE IF NOT EXISTS ako.Course (
 ALTER TABLE ako.Course ADD UNIQUE KEY (shortName,year,semester,section);
 
 /* Populating our Course table since we do not have the Admin feature as a requirement*/
-INSERT INTO ako.Course (shortName,year,semester,section,description) 
-		VALUES ('ENPM611','2017','01','0101','Software Engineering');
-INSERT INTO ako.Course (shortName,year,semester,section,description) 
-		VALUES ('ENPM612','2017','01','0101','Software Requirements');
-INSERT INTO ako.Course (shortName,year,semester,section,description) 
-		VALUES ('ENPM613','2017','01','0101','Software Design');
-INSERT INTO ako.Course (shortName,year,semester,section,description) 
-		VALUES ('ENPM614','2017','01','0101','Software Testing');
+INSERT INTO ako.Course (createDate,shortName,year,semester,section,description) 
+		VALUES ('2017-10-01','ENPM611','2017','01','0101','Software Engineering');
+INSERT INTO ako.Course (createDate,shortName,year,semester,section,description) 
+		VALUES ('2017-10-01','ENPM612','2017','01','0101','Software Requirements');
+INSERT INTO ako.Course (createDate,shortName,year,semester,section,description) 
+		VALUES ('2017-10-01','ENPM613','2017','01','0101','Software Design');
+INSERT INTO ako.Course (createDate,shortName,year,semester,section,description) 
+		VALUES ('2017-10-01','ENPM614','2017','01','0101','Software Testing');
 
 /* Modules Relation */
 CREATE TABLE IF NOT EXISTS ako.Modules (
