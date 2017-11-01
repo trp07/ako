@@ -1,0 +1,1 @@
+var akoApp = angular.module("akoApp", ['ngMaterial', 'ui.router']);
