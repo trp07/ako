@@ -18,6 +18,7 @@ INSERT INTO ako.UserType VALUES ('05','Grader');
 /* User Relation */
 CREATE TABLE IF NOT EXISTS ako.User (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	createDate DATE NOT NULL,
 	firstName VARCHAR(30) NOT NULL,
 	lastName VARCHAR(30) NOT NULL,
 	middleName VARCHAR(30) NOT NULL,
@@ -25,22 +26,23 @@ CREATE TABLE IF NOT EXISTS ako.User (
 	email VARCHAR(70) NOT NULL,
 	password VARCHAR(70) NOT NULL,
 	userTypeId INT(2) NOT NULL,
+	hasMfaActive TINYINT(1) NOT NULL,
 	CONSTRAINT FOREIGN KEY (userTypeId) REFERENCES ako.UserType(id)
 );
 /* Starting value for the User ID */
 ALTER TABLE ako.User AUTO_INCREMENT = 1000000001;
 
 /* Populating our User table since we do not have the Admin feature as a requirement. Passwords to be defined later */
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId) 
-		VALUES ('Noel','Buruca','A','2017-09-01','nburuca@terpmail.umd.edu','tempPassword','01');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId) 
-		VALUES ('Renuka','Dalal','A','2017-09-01','rdalal@terpmail.umd.edu','tempPassword','02');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId)  
-		VALUES ('Tim','Phillips','A','2017-09-01','tphillips@terpmail.umd.edu','tempPassword','01');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId) 
-		VALUES ('Vishakha','Sadhwani','A','2017-09-01','vsadhwani@terpmail.umd.edu','tempPassword','01');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId) 
-		VALUES ('Prashant','Rathod','A','2017-09-01','prathod@terpmail.umd.edu','tempPassword','02');
+INSERT INTO ako.User (createDate,firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive) 
+		VALUES ('2017-10-01','Noel','Buruca','A','2017-09-01','nburuca@terpmail.umd.edu','tempPassword','01','1');
+INSERT INTO ako.User (createDate,firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive) 
+		VALUES ('2017-10-01','Renuka','Dalal','A','2017-09-01','rdalal@terpmail.umd.edu','tempPassword','02','1');
+INSERT INTO ako.User (createDate,firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive)  
+		VALUES ('2017-10-01','Tim','Phillips','A','2017-09-01','tphillips@terpmail.umd.edu','tempPassword','01','0');
+INSERT INTO ako.User (createDate,firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive) 
+		VALUES ('2017-10-01','Vishakha','Sadhwani','A','2017-09-01','vsadhwani@terpmail.umd.edu','tempPassword','01','0');
+INSERT INTO ako.User (createDate,firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive) 
+		VALUES ('2017-10-01','Prashant','Rathod','A','2017-09-01','prathod@terpmail.umd.edu','tempPassword','02','1');
 
 /* Semester Identifier. 2 Digit Identifier */
 CREATE TABLE IF NOT EXISTS ako.Semester (
@@ -58,6 +60,7 @@ INSERT INTO ako.Semester VALUES ('06','Summer 2'); /* Summer 1 */
 /* Course Relation */
 CREATE TABLE IF NOT EXISTS ako.Course (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	createDate DATE NOT NULL,
 	shortName VARCHAR(7) NOT NULL, /* I.E. ENPM613 */
 	year VARCHAR(4) NOT NULL,
 	semester SMALLINT(2) NOT NULL,
@@ -70,18 +73,19 @@ CREATE TABLE IF NOT EXISTS ako.Course (
 ALTER TABLE ako.Course ADD UNIQUE KEY (shortName,year,semester,section);
 
 /* Populating our Course table since we do not have the Admin feature as a requirement*/
-INSERT INTO ako.Course (shortName,year,semester,section,description) 
-		VALUES ('ENPM611','2017','01','0101','Software Engineering');
-INSERT INTO ako.Course (shortName,year,semester,section,description) 
-		VALUES ('ENPM612','2017','01','0101','Software Requirements');
-INSERT INTO ako.Course (shortName,year,semester,section,description) 
-		VALUES ('ENPM613','2017','01','0101','Software Design');
-INSERT INTO ako.Course (shortName,year,semester,section,description) 
-		VALUES ('ENPM614','2017','01','0101','Software Testing');
+INSERT INTO ako.Course (createDate,shortName,year,semester,section,description) 
+		VALUES ('2017-10-01','ENPM611','2017','01','0101','Software Engineering');
+INSERT INTO ako.Course (createDate,shortName,year,semester,section,description) 
+		VALUES ('2017-10-01','ENPM612','2017','01','0101','Software Requirements');
+INSERT INTO ako.Course (createDate,shortName,year,semester,section,description) 
+		VALUES ('2017-10-01','ENPM613','2017','01','0101','Software Design');
+INSERT INTO ako.Course (createDate,shortName,year,semester,section,description) 
+		VALUES ('2017-10-01','ENPM614','2017','01','0101','Software Testing');
 
 /* Modules Relation */
 CREATE TABLE IF NOT EXISTS ako.Modules (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	createDate DATE NOT NULL,
 	courseId INT NOT NULL,
 	name VARCHAR(50) NOT NULL,
 	description TEXT,
@@ -92,14 +96,16 @@ CREATE TABLE IF NOT EXISTS ako.Modules (
 /* May Not Be Needed and replaced by the AWS S3  */
 CREATE TABLE IF NOT EXISTS ako.File (
 	id MEDIUMINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	createDate DATE NOT NULL,
 	name VARCHAR(50) NOT NULL,
 	description TEXT NOT NULL,
-	fileBinary LONGBLOB NOT NULL /* May be replaced by the AWS S3 ID*/
+	fileS3Url VARCHAR(100) NOT NULL 
 );
 
 /* Syllabus Relation */
 CREATE TABLE IF NOT EXISTS ako.Syllabus (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	createDate DATE NOT NULL,
 	courseId INT NOT NULL,
 	fileId MEDIUMINT, /* Could be NULL */
 	name VARCHAR(50) NOT NULL,
@@ -112,16 +118,11 @@ CREATE TABLE IF NOT EXISTS ako.Syllabus (
 /* Message Relation */
 CREATE TABLE IF NOT EXISTS ako.Message (
 	id MEDIUMINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	createDate DATE NOT NULL,
 	courseId INT NOT NULL,
 	subject VARCHAR(100) NOT NULL,
 	body TEXT NOT NULL,
 	previousMessageId MEDIUMINT, /* Could be Null */
-	/* Possible attributes to add rather than using a separate relation. Values can be a comma separated string of the email addresses */
-	/**
-	toRecipients VARCHAR NOT NULL,
-	ccRecipients VARCHAR NOT NULL,
-	bccRecipients VARCHAR NOT NULL
-	**/
 	CONSTRAINT FOREIGN KEY (courseId) REFERENCES ako.Course(id) ON DELETE CASCADE,
 	CONSTRAINT FOREIGN KEY (previousMessageId) REFERENCES ako.Message(id)
 );
@@ -129,6 +130,7 @@ CREATE TABLE IF NOT EXISTS ako.Message (
 /* Group Relation */ 
 CREATE TABLE IF NOT EXISTS ako.Group (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	createDate DATE NOT NULL,
 	courseId INT NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NOT NULL,
@@ -189,10 +191,12 @@ INSERT INTO ako.MessageUserType VALUES ('04','Bcc');
 
 CREATE TABLE IF NOT EXISTS ako.MessageUser (
 	messageId MEDIUMINT NOT NULL,
-	userId INT NOT NULL,
+	userId INT NOT NULL, /* Could be an individual user */
+	groupId INT, /* Could be an individual group. For each member of the group, insert a record into this relation. */
 	messageUserTypeId SMALLINT NOT NULL,
 	CONSTRAINT FOREIGN KEY (messageId) REFERENCES ako.Message(id) ON DELETE CASCADE,
-	CONSTRAINT FOREIGN KEY (userId) REFERENCES ako.User(id) ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (userId) REFERENCES ako.User(id),
+	CONSTRAINT FOREIGN KEY (groupId) REFERENCES ako.Group(id),
 	CONSTRAINT FOREIGN KEY (messageUserTypeId) REFERENCES ako.MessageUserType(id),
 	PRIMARY KEY (messageId, userId, messageUserTypeId)
 );
