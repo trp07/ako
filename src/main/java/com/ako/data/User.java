@@ -18,11 +18,16 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	private DateTime createDate;
+	private DateTime lastModifiedDate;
 	private String firstName;
 	private String middleName;
 	private String lastName;
 	private LocalDate  birthDate;
-	private DateTime lastModified;
+	private String email;
+	private String password;
+	private String userTypeId; /* Create the user type object */
+	private boolean hasMfaActive;
 
 	public int getId() {
 		return id;
@@ -30,6 +35,14 @@ public class User {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public DateTime getCreateDate() {
+		return createDate;
+	}
+
+	public DateTime getLastModifiedDate() {
+		return lastModifiedDate;
 	}
 
 	public String getFirstName() {
@@ -63,8 +76,36 @@ public class User {
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
+	
+	public String getEmail() {
+		return email;
+	}
 
-	public DateTime getLastModified() {
-		return lastModified;
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public String getUserTypeId() {
+		return userTypeId;
+	}
+
+	public void setUserTypeId(String userTypeId) {
+		this.userTypeId = userTypeId;
+	}
+	
+	public boolean getHasMfaActive() {
+		return hasMfaActive;
+	}
+
+	public void setHasMfaActive(boolean hasMfaActive) {
+		this.hasMfaActive = hasMfaActive;
 	}
 }
