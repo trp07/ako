@@ -1,0 +1,22 @@
+<div layout="column" layout-align="center center" layout-fill="layout-fill">
+    <div class="loginBox md-whiteframe-z1" layout="column">
+        <md-toolbar>
+            <h2 class="md-toolbar-tools"><span>Login</span></h2>
+        </md-toolbar>
+        <form name="loginForm" class="md-padding" layout="column" ng-submit="$ctrl.login()">
+            <md-input-container>
+                <label>EmailAddress</label>
+                <input type="email" ng-model="$ctrl.userId" required/>
+            </md-input-container>
+            <md-input-container>
+                <label>Password</label>
+                <input type="password" ng-model="$ctrl.password" required/>
+            </md-input-container>
+            <div layout="row" layout-align="center center" style="padding-top:20px">
+                <md-button type="submit" class="md-raised md-primary" ng-disabled="loginForm.$invalid">Login</md-button>
+                <div flex="flex"></div>
+                <md-button href="" md-no-ink="md-no-ink">Forgot Password</md-button>
+            </div>
+        </form>
+    </div>
+</div>

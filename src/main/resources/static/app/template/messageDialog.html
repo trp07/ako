@@ -1,0 +1,13 @@
+<md-dialog class="message-dialog-content-main">
+    <md-dialog-content ng-class="'message-dialog-content '+ (type | lowercase)+'-dialog'"  >
+        <md-toolbar layout="row" layout-align="center stretch">
+            <h3>Ako - {{type}}</h3>
+        </md-toolbar>
+        <md-content layout-padding>
+            <span>{{message}}</span>
+        </md-content>
+        <div class="close-btn">
+            <md-button class="md-raised md-subhead" ng-click="closeDialog()">Close</md-button>
+        </div>
+    </md-dialog-content>
+</md-dialog>

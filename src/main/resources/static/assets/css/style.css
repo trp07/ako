@@ -1,0 +1,40 @@
+.loginBox {
+  max-width:  90%;
+  width: 500px
+}
+
+.stretch input  {
+  width: 100%
+}
+
+
+.message-dialog-content md-content{
+    text-align: center;   
+}
+
+.message-dialog-content md-content span{
+    display: inline-block;
+    text-align: left;
+}
+
+.message-dialog-content .close-btn{
+   text-align: center;
+   line-height: 0px;
+   text-transform: none;
+   padding: 0 15px;
+   min-width: 10px;
+}
+
+.message-dialog-content .close-btn .md-button{
+   text-transform: none;
+}
+
+.message-dialog-content{
+   max-width: 425px;
+   overflow: hidden;
+}
+
+.message-dialog-content md-toolbar{
+   min-height: 20px;
+   padding: 0 24px 0 25px;
+}
