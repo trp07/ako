@@ -1,0 +1,8 @@
+app:
+  name: ako-lms-api
+
+jwt:
+  header: Authorization
+  expires_in: 300 # 5 minutes
+  mobile_expires_in: 600 # 10 minutes
+  secret: r;b'isQMdewoRWO:%3$ # some strong secret

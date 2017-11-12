@@ -4,14 +4,18 @@ akoApp.component('login', {
         userId: '<',
         password: '<'
     },
-    controller: function (loginService, msgDialogService) {
+    controller: function ($http, $state, authService, msgDialogService) {
 
         this.name = "AKO Login";
+
         this.login = function () {
-            var response = loginService.login(this.userId, this.password);
-            if(response){
-                msgDialogService.showInfo("Login service called");
-            }
+            authService.login(this.userId, this.password).then(function (response) {
+                this.password = null;
+                msgDialogService.showInfo("Hello, " + response.data.firstName);
+            }).catch(function (error) {
+                // if authentication was not successful. Setting the error message.
+                msgDialogService.showError("Authetication Failed !");
+            });
         }
     }
 });
