@@ -32,15 +32,17 @@ public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	private DateTime createDate;
+	private DateTime lastModifiedDate;
 	private String firstName;
 	private String middleName;
 	private String lastName;
 	private String email;
 	private LocalDate  birthDate;
+	private boolean hasMfaActive;
 	
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
-	
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -61,6 +63,14 @@ public class User implements UserDetails {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public DateTime getCreateDate() {
+		return createDate;
+	}
+
+	public DateTime getLastModifiedDate() {
+		return lastModifiedDate;
 	}
 
 	public String getFirstName() {
@@ -149,5 +159,13 @@ public class User implements UserDetails {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	public boolean isHasMfaActive() {
+		return hasMfaActive;
+	}
+
+	public void setHasMfaActive(boolean hasMfaActive) {
+		this.hasMfaActive = hasMfaActive;
 	}
 }
