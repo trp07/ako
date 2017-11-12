@@ -213,8 +213,32 @@ GRANT SELECT ON ako.* to ako_read;
 CREATE USER ako_admin IDENTIFIED BY 'Ak0Adm!N';
 GRANT ALL ON ako.* to ako_admin;
 
+/* Create a authority table to record user roles, in order to use role based authentication */
+CREATE TABLE IF NOT EXISTS ako.Authority (
+	id NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(30) NOT NULL
+);
+
+/* Intert default roles */
+INSERT INTO ako.Authority(name) VALUES ('ROLE_USER');
+INSERT INTO ako.Authority(name) VALUES ('ROLE_ADMIN');
 
 
+/* Create a User_authority table to record user - authority relation*/
+CREATE TABLE IF NOT EXISTS ako.User_authority (
+	user_id INT NOT NULL,
+	authority_id INT NOT NULL,
+	CONSTRAINT FOREIGN KEY (authority_id) REFERENCES ako.Authority (id),
+	CONSTRAINT FOREIGN KEY (user_id) REFERENCES ako.User (id)
+);
+
+
+/* Intert default values */
+INSERT INTO ako.User_authority(user_id,authority_id) VALUES ('1000000001','1');
+INSERT INTO ako.User_authority(user_id,authority_id) VALUES ('1000000002','1');
+INSERT INTO ako.User_authority(user_id,authority_id) VALUES ('1000000003','2');
+INSERT INTO ako.User_authority(user_id,authority_id) VALUES ('1000000004','1');
+INSERT INTO ako.User_authority(user_id,authority_id) VALUES ('1000000005','2');
 
 
 

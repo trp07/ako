@@ -3,12 +3,15 @@ package com.ako.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.ako.data.IUserRepository;
 import com.ako.data.User;
-
 /**
  * 	A user business service
  * @author Prashant
@@ -58,5 +61,9 @@ public class UserService {
 	 */
 	public User updateUser(User user) {
 		return this.repository.save(user);
+	}
+
+	public User findByEmail(String email) {
+		return this.repository.findByEmail(email);
 	}
 }

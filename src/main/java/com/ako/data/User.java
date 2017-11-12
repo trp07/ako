@@ -1,12 +1,26 @@
 package com.ako.data;
 
+import java.util.Collection;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
+import org.jboss.aerogear.security.otp.api.Base32;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 /**
  * User model representing User table
@@ -14,7 +28,7 @@ import org.joda.time.LocalDate;
  *
  */
 @Entity
-public class User {
+public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -23,11 +37,25 @@ public class User {
 	private String firstName;
 	private String middleName;
 	private String lastName;
-	private LocalDate  birthDate;
 	private String email;
-	private String password;
-	private String userTypeId; /* Create the user type object */
+	private LocalDate  birthDate;
 	private boolean hasMfaActive;
+	
+	@JsonProperty(access = Access.WRITE_ONLY)
+	private String password;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_authority",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+    private List<Authority> authorities;
+	
+	//private boolean isUsing2FA;
+	//private String secret;
+
+	public User() {
+		super();
+		//this.secret = Base32.random();
+	}
 
 	public int getId() {
 		return id;
@@ -76,15 +104,11 @@ public class User {
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
-	
-	public String getEmail() {
-		return email;
-	}
+/*
+	public DateTime getLastModified() {
+		return lastModified;
+	}*/
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
 	public String getPassword() {
 		return password;
 	}
@@ -92,16 +116,52 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	public String getUserTypeId() {
-		return userTypeId;
+
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUserTypeId(String userTypeId) {
-		this.userTypeId = userTypeId;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	
-	public boolean getHasMfaActive() {
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return this.authorities;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return this.email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	public boolean isHasMfaActive() {
 		return hasMfaActive;
 	}
 

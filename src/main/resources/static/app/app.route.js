@@ -5,4 +5,8 @@ akoApp.config(function($stateProvider, $urlServiceProvider, $urlRouterProvider) 
     url: '/login',
     component: 'login',
   });
+  $stateProvider.state('home', {
+    url: '/home',
+    component: 'home',
+  });
 });
