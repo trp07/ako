@@ -10,10 +10,14 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
+/**
+ * Retrieves default credentials on AWS EC2 instance set using the aws-cli
+ * @author Tim
+ */
+
+
 @Configuration
 public class S3Config {
-    /* credentials are stored via aws-cli and are set as the default set of
-       credentials for the application.  */
 
     @Bean
     public AmazonS3 s3client() {
