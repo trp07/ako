@@ -32,7 +32,9 @@ public class SyllabusController {
 	}
 
 
-    /* File UPLOAD    */
+    /* File UPLOAD */
+    /* TODO: may need to do user-type checking to make sure only the 
+       instructor is uploading */
     @RequestMapping(method=RequestMethod.POST, value="/")
     public @ResponseBody void uploadSyllabus(@RequestParam("File") 
                                                 String file) {
