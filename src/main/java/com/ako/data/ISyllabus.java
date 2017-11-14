@@ -1,6 +1,6 @@
 package com.ako.data;
 
-public interface IS3Services {
+public interface ISyllabus {
     /*
     Credits: http://javasampleapproach.com/spring-framework/spring-cloud/amazon-s3-uploaddownload-files-springboot-amazon-s3-application
     */
