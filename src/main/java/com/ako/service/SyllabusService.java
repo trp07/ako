@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -36,13 +38,18 @@ public class SyllabusService implements ISyllabus {
 
     @Value("enpm613-ako")
     private String bucketName;
+  
+    /**
+     * The Logger
+     */
+    private final Logger logger = LogManager.getLogger(SyllabusService.class);
 
     @Override
     public void downloadFile(String keyName) {
 
         try {
-
-            System.err.println("Downloading an object");
+        	
+        	logger.info("Downloading an object");
             S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, keyName));
             S3ObjectInputStream s3is = s3object.getObjectContent();
             System.err.println("Content-Type: "  + s3object.getObjectMetadata().getContentType());
@@ -54,24 +61,23 @@ public class SyllabusService implements ISyllabus {
             }
             s3is.close();
             fos.close();
-            System.err.println("===================== Download File - Done! =====================");
+            logger.info("===================== Download File - Done! =====================");
 
         } catch (AmazonServiceException ase) {
             /* implement logging here */
-            System.err.println("Caught an AmazonServiceException from GET requests, rejected reasons:");
-            System.err.println("Error Message:    " + ase.getMessage());
-            System.err.println("HTTP Status Code: " + ase.getStatusCode());
-            System.err.println("AWS Error Code:   " + ase.getErrorCode());
-            System.err.println("Error Type:       " + ase.getErrorType());
-            System.err.println("Request ID:       " + ase.getRequestId());
+            logger.error("Caught an AmazonServiceException from GET requests, rejected reasons:");
+            logger.error("Error Message:    " + ase.getMessage());
+            logger.error("HTTP Status Code: " + ase.getStatusCode());
+            logger.error("AWS Error Code:   " + ase.getErrorCode());
+            logger.error("Error Type:       " + ase.getErrorType());
+            logger.error("Request ID:       " + ase.getRequestId());
         } catch (AmazonClientException ace) {
-            System.err.println("Caught an AmazonClientException: ");
-            System.err.println("Error Message: " + ace.getMessage());
-        } catch (FileNotFoundException e) {
-            System.err.println(e.getMessage());
+        	logger.error("Caught an AmazonClientException: ", ace);
+        } catch (FileNotFoundException fnfe) {
+        	logger.error("Caught a FileNotFoundException: ",fnfe);
             System.exit(1);
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+        } catch (IOException ioe) {
+            logger.error("Caught an IOException: ", ioe);
             System.exit(1);
         }
     }
