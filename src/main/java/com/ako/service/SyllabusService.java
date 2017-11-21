@@ -51,7 +51,7 @@ public class SyllabusService implements ISyllabus {
         	logger.info("Downloading an object");
             S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, keyName));
             S3ObjectInputStream s3is = s3object.getObjectContent();
-            System.err.println("Content-Type: "  + s3object.getObjectMetadata().getContentType());
+            logger.debug("Content-Type: "  + s3object.getObjectMetadata().getContentType());
             FileOutputStream fos = new FileOutputStream(new File(keyName));
             byte[] read_buf = new byte[1024];
             int read_len = 0;
@@ -88,7 +88,7 @@ public class SyllabusService implements ISyllabus {
 
             File file = new File(uploadFilePath);
             s3client.putObject(new PutObjectRequest(bucketName, keyName, file));
-            System.err.println("===================== Upload File - Done! =====================");
+            logger.info("===================== Upload File - Done! =====================");
 
         } catch (AmazonServiceException ase) {
         	logger.error("Caught an AmazonServiceException from PUT requests, rejected reasons:");
