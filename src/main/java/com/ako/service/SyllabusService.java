@@ -48,7 +48,6 @@ public class SyllabusService implements ISyllabus {
     public void downloadFile(String keyName) {
 
         try {
-        	
         	logger.info("Downloading an object");
             S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, keyName));
             S3ObjectInputStream s3is = s3object.getObjectContent();
@@ -92,15 +91,15 @@ public class SyllabusService implements ISyllabus {
             System.err.println("===================== Upload File - Done! =====================");
 
         } catch (AmazonServiceException ase) {
-            System.err.println("Caught an AmazonServiceException from PUT requests, rejected reasons:");
-            System.err.println("Error Message:    " + ase.getMessage());
-            System.err.println("HTTP Status Code: " + ase.getStatusCode());
-            System.err.println("AWS Error Code:   " + ase.getErrorCode());
-            System.err.println("Error Type:       " + ase.getErrorType());
-            System.err.println("Request ID:       " + ase.getRequestId());
+        	logger.error("Caught an AmazonServiceException from PUT requests, rejected reasons:");
+        	logger.error("Error Message:    " + ase.getMessage());
+        	logger.error("HTTP Status Code: " + ase.getStatusCode());
+        	logger.error("AWS Error Code:   " + ase.getErrorCode());
+        	logger.error("Error Type:       " + ase.getErrorType());
+        	logger.error("Request ID:       " + ase.getRequestId());
         } catch (AmazonClientException ace) {
-            System.err.println("Caught an AmazonClientException: ");
-            System.err.println("Error Message: " + ace.getMessage());
+        	logger.error("Caught an AmazonClientException: ");
+        	logger.error("Error Message: ", ace);
         }
     }
 
