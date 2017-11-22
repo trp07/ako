@@ -1,20 +1,23 @@
 package com.ako.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Arrays;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mobile.device.Device;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.ako.config.AppConfig;
 import com.ako.core.TimeProvider;
 import com.ako.data.User;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 
 /**
@@ -24,21 +27,6 @@ import java.util.Date;
 
 @Component
 public class TokenHelper {
-
-    @Value("${app.name}")
-    private String APP_NAME;
-
-    @Value("${jwt.secret}")
-    public String SECRET;
-
-    @Value("${jwt.expires_in}")
-    private int EXPIRES_IN;
-
-    @Value("${jwt.mobile_expires_in}")
-    private int MOBILE_EXPIRES_IN;
-
-    @Value("${jwt.header}")
-    private String AUTH_HEADER;
 
     static final String AUDIENCE_UNKNOWN = "unknown";
     static final String AUDIENCE_WEB = "web";
@@ -92,7 +80,7 @@ public class TokenHelper {
             refreshedToken = Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(generateExpirationDate(device))
-                .signWith( SIGNATURE_ALGORITHM, SECRET )
+                .signWith( SIGNATURE_ALGORITHM, AppConfig.SECRET )
                 .compact();
         } catch (Exception e) {
             refreshedToken = null;
@@ -100,18 +88,38 @@ public class TokenHelper {
         return refreshedToken;
     }
 
-    public String generateToken(String username, Device device) {
+    public String generateToken(User user, Device device) {
         String audience = generateAudience(device);
+        
+        Claims claims = Jwts.claims().setSubject(user.getUsername());
+        claims.put("mfaAuth", false);
+        
         return Jwts.builder()
-                .setIssuer( APP_NAME )
-                .setSubject(username)
+        		.setClaims(claims)
+                .setIssuer( AppConfig.APP_NAME )
                 .setAudience(audience)
                 .setIssuedAt(timeProvider.now())
                 .setExpiration(generateExpirationDate(device))
-                .signWith( SIGNATURE_ALGORITHM, SECRET )
+                .signWith( SIGNATURE_ALGORITHM, AppConfig.SECRET )
                 .compact();
     }
-
+    
+    public String generateToken(User user, Device device, boolean mfaAuth) {
+        String audience = generateAudience(device);
+        
+        Claims claims = Jwts.claims().setSubject(user.getUsername());
+        claims.put("mfaAuth", mfaAuth);
+        
+        return Jwts.builder()
+        		.setClaims(claims)
+                .setIssuer( AppConfig.APP_NAME )
+                .setAudience(audience)
+                .setIssuedAt(timeProvider.now())
+                .setExpiration(generateExpirationDate(device))
+                .signWith( SIGNATURE_ALGORITHM, AppConfig.SECRET )
+                .compact();
+    }
+    
     private String generateAudience(Device device) {
         String audience = AUDIENCE_UNKNOWN;
         if (device.isNormal()) {
@@ -128,7 +136,7 @@ public class TokenHelper {
         Claims claims;
         try {
             claims = Jwts.parser()
-                    .setSigningKey(SECRET)
+                    .setSigningKey(AppConfig.SECRET)
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
@@ -138,23 +146,43 @@ public class TokenHelper {
     }
 
     private Date generateExpirationDate(Device device) {
-        long expiresIn = device.isTablet() || device.isMobile() ? MOBILE_EXPIRES_IN : EXPIRES_IN;
+        long expiresIn = device.isTablet() || device.isMobile() ? AppConfig.MOBILE_EXPIRES_IN : AppConfig.EXPIRES_IN;
         return new Date(timeProvider.now().getTime() + expiresIn * 1000);
     }
 
     public int getExpiredIn(Device device) {
-        return device.isMobile() || device.isTablet() ? MOBILE_EXPIRES_IN : EXPIRES_IN;
+        return device.isMobile() || device.isTablet() ? AppConfig.MOBILE_EXPIRES_IN : AppConfig.EXPIRES_IN;
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        User user = (User) userDetails;
-        final String username = getUsernameFromToken(token);
-        final Date created = getIssuedAtDateFromToken(token);
-        return (
-                username != null &&
-                username.equals(userDetails.getUsername())
-        );
+    public Boolean validateToken(String token, User user) {
+    	
+    	String username;
+        try {
+            final Claims claims = this.getAllClaimsFromToken(token);
+            username = claims.getSubject();
+        } catch (Exception e) {
+            username = null;
+        }
+        
+        boolean isValidUsername = username != null && username.equals(user.getUsername());
+        
+        return isValidUsername;
     }
+    public void checkAuthority(String token, User user) {
+    	boolean mfaAuth;
+        try {
+            final Claims claims = this.getAllClaimsFromToken(token);
+            mfaAuth = claims.get("mfaAuth", Boolean.class);
+        } catch (Exception e) {
+            mfaAuth = false;
+        }
+        
+        boolean isValidMfaAuth = user.hasMfaActive() && mfaAuth;
+        if(!isValidMfaAuth) {
+        	user.setAuthorities(Arrays.asList(new SimpleGrantedAuthority("ROLE_PRE_AUTH_USER")));
+        }
+    }
+    
 
     private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
         return (lastPasswordReset != null && created.before(lastPasswordReset));
@@ -174,7 +202,7 @@ public class TokenHelper {
     }
 
     public String getAuthHeaderFromHeader( HttpServletRequest request ) {
-        return request.getHeader(AUTH_HEADER);
+        return request.getHeader(AppConfig.AUTH_HEADER);
     }
 
 }

@@ -1,8 +1,38 @@
-app:
-  name: ako-lms-api
+logging:
+  level:
+    .: error
+    org.springframework: ERROR
 
+app:
+  name: "Ako LMS"
+  qr_prefix: "https://chart.googleapis.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl="
 jwt:
   header: Authorization
   expires_in: 300 # 5 minutes
   mobile_expires_in: 600 # 10 minutes
-  secret: r;b'isQMdewoRWO:%3$ # some strong secret
+  secret: "r;b'isQMdewoRWO:%3$" # some strong secret
+
+# set active profile here
+spring:
+  profiles:
+    active: "dev"
+
+---
+
+# define properties for development
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mariadb://localhost:3306/ako
+    username: root
+    password: root
+
+---
+
+# define properties for production
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:mariadb://ako.cwrnmurbtzdj.us-east-2.rds.amazonaws.com/ako-dev-temp
+    username: ako
+    password: "Enpm61320!7"

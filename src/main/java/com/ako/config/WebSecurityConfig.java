@@ -1,4 +1,4 @@
-package com.ako.security;
+package com.ako.config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,13 +23,15 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import com.ako.service.CustomUserDetailsService;
+import com.ako.security.RestAuthenticationEntryPoint;
+import com.ako.security.TokenAuthenticationFilter;
+import com.ako.security.TokenHelper;
+import com.ako.service.UserService;
 
 /**
  * @author Prashant
  *
  */
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -36,11 +39,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder(10);
 	}
 
 	@Autowired
-	private CustomUserDetailsService jwtUserDetailsService;
+	private UserService userService;
 
 	@Autowired
 	private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
@@ -53,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+		auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
 	}
 
 	@Autowired
@@ -68,9 +71,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and().authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css",
 						"/**/*.js")
-				.permitAll().antMatchers("/auth/**").permitAll().anyRequest().authenticated().and()
-				.addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService),
-						BasicAuthenticationFilter.class);
+				.permitAll().antMatchers("/auth/**").permitAll().antMatchers("/auth/verify-code")
+				.hasRole("PRE_AUTH_USER").anyRequest().authenticated().and().addFilterBefore(
+						new TokenAuthenticationFilter(tokenHelper, userService), BasicAuthenticationFilter.class);
 		http.csrf().disable();
 	}
 
