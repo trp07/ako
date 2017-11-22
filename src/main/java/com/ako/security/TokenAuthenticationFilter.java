@@ -49,8 +49,12 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 				User userDetails = userService.findByUserName(username);
 				
 				if (tokenHelper.validateToken(authToken, userDetails)) {
-					//create authority
-					tokenHelper.checkAuthority(authToken, userDetails);
+					//create authority for a second step if needed
+					//TODO: move this to TOTP filter
+					 
+			        if(userDetails.hasMfaActive()) {
+			        	tokenHelper.checkAuthority(authToken, userDetails);
+			        }
 					// create authentication
 					TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
 					authentication.setToken(authToken);

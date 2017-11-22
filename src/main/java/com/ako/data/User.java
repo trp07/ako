@@ -29,6 +29,8 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
  */
 @Entity
 public class User implements UserDetails {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	private String firstName;
 	private String middleName;
@@ -50,10 +52,6 @@ public class User implements UserDetails {
 
 	public int getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getFirstName() {
