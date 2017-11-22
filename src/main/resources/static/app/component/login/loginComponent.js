@@ -12,9 +12,14 @@ akoApp.component('login', {
             authService.login(this.userId, this.password).then(function (response) {
                 this.password = null;
                 var url = "";
-                showPrompt();
 
-                //msgDialogService.showInfo("Hello, " + response.data.firstName);
+                msgDialogService.showInfo("Username password verified");
+
+                if (response.data.hasMfaActive) {
+                    showPrompt();
+                } else {
+                    testAuth();
+                }
             }).catch(function (error) {
                 // if authentication was not successful. Setting the error message.
                 msgDialogService.showError("Authetication Failed !");
@@ -33,12 +38,8 @@ akoApp.component('login', {
 
             $mdDialog.show(confirm).then(function (code) {
                 authService.verifyCode(code).then(function (res) {
-                    //authService.getQRCodeURL().then(function (res) {
-                    //    console.log(res);
-                    //}).catch(function (err) {
-                    //    console.log(err);
-                    //});
                     msgDialogService.showInfo("code verified= " + res.data.mfaAuth);
+                    testAuth();
                 }).catch(function (err) {
                     console.log(err);
                 });
@@ -46,5 +47,13 @@ akoApp.component('login', {
 
             });
         };
+
+        var testAuth = function () {
+            authService.getQRCodeURL().then(function (res) {
+                msgDialogService.showInfo("Authorization successful");
+            }).catch(function (err) {
+                msgDialogService.showInfo("Authorization error");
+            });
+        }
     }
 });
