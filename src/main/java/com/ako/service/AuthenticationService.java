@@ -30,7 +30,7 @@ public class AuthenticationService {
 	@Autowired
 	private DeviceProvider deviceProvider;
 	@Autowired
-	private CustomUserDetailsService userDetailsService;
+	private UserService userDetailsService;
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -52,7 +52,7 @@ public class AuthenticationService {
 
 		// token creation
 		User user = (User) authentication.getPrincipal();
-		String jws = tokenHelper.generateToken(user.getUsername(), device);
+		String jws = tokenHelper.generateToken(user, device);
 		int expiresIn = tokenHelper.getExpiredIn(device);
 		// Return the token
 

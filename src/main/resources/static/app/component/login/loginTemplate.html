@@ -6,11 +6,11 @@
         <form name="loginForm" class="md-padding" layout="column" ng-submit="$ctrl.login()">
             <md-input-container>
                 <label>EmailAddress</label>
-                <input type="email" ng-model="$ctrl.userId" required/>
+                <input type="email" ng-model="$ctrl.userId" placeholder="prathod@terpmail.umd.edu" required/>
             </md-input-container>
             <md-input-container>
                 <label>Password</label>
-                <input type="password" ng-model="$ctrl.password" required/>
+                <input type="password" placeholder="password" ng-model="$ctrl.password" required/>
             </md-input-container>
             <div layout="row" layout-align="center center" style="padding-top:20px">
                 <md-button type="submit" class="md-raised md-primary" ng-disabled="loginForm.$invalid">Login</md-button>
