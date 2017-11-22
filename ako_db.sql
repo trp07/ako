@@ -19,7 +19,7 @@ INSERT INTO ako.UserType VALUES ('05','Grader');
 CREATE TABLE IF NOT EXISTS ako.User (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	createDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-	lastModifyDate TIMESTAMP NOT NULL DEFAULT ON UPDATE CURRENT_TIMESTAMP,
+	lastModifyDate TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
 	firstName VARCHAR(30) NOT NULL,
 	middleName VARCHAR(30) NOT NULL,
 	lastName VARCHAR(30) NOT NULL,
@@ -28,6 +28,8 @@ CREATE TABLE IF NOT EXISTS ako.User (
 	password VARCHAR(70) NOT NULL,
 	userTypeId INT(2) NOT NULL,
 	hasMfaActive TINYINT(1) NOT NULL,
+	secret VARCHAR(70) NOT NULL,
+	userName VARCHAR(70) NOT NULL,
 	CONSTRAINT FOREIGN KEY (userTypeId) REFERENCES ako.UserType(id)
 );
 /* Starting value for the User ID */
@@ -37,16 +39,16 @@ ALTER TABLE ako.User AUTO_INCREMENT = 1000000001;
 ALTER TABLE ako.User ADD UNIQUE KEY (firstName,middleName,lastName,birthDate,email,userTypeId);
 
 /* Populating our User table since we do not have the Admin feature as a requirement. Passwords to be defined later */
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive) 
-		VALUES ('Noel','Buruca','A','2017-09-01','nburuca@terpmail.umd.edu','tempPassword','01','1');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive) 
-		VALUES ('Renuka','Dalal','A','2017-09-01','rdalal@terpmail.umd.edu','tempPassword','02','1');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive)  
-		VALUES ('Tim','Phillips','A','2017-09-01','tphillips@terpmail.umd.edu','tempPassword','01','0');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive) 
-		VALUES ('Vishakha','Sadhwani','A','2017-09-01','vsadhwani@terpmail.umd.edu','tempPassword','01','0');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive) 
-		VALUES ('Prashant','Rathod','A','2017-09-01','prathod@terpmail.umd.edu','tempPassword','02','1');
+INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive,secret,userName) 
+		VALUES ('Noel','Buruca','A','2017-09-01','nburuca@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','01','1','3E6ENQIGPIDDPFAI','nburuca@terpmail.umd.edu');
+INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive,secret,userName) 
+		VALUES ('Renuka','Dalal','A','2017-09-01','rdalal@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','02','1','LGYN4HASTVHDC5YQ','rdalal@terpmail.umd.edu');
+INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive,secret,userName)  
+		VALUES ('Tim','Phillips','A','2017-09-01','tphillips@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','01','0','JC5XKGIUQVHX7SIJ','tphillips@terpmail.umd.edu');
+INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive,secret,userName) 
+		VALUES ('Vishakha','Sadhwani','A','2017-09-01','vsadhwani@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','01','0','DSLWOBT56WMONKPT','vsadhwani@terpmail.umd.edu');
+INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive,secret,userName) 
+		VALUES ('Prashant','Rathod','A','2017-09-01','prathod@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','02','1','T37RBNPZMU3UCJSD','prathod@terpmail.umd.edu');
 
 /* Semester Identifier. 2 Digit Identifier */
 CREATE TABLE IF NOT EXISTS ako.Semester (
@@ -70,20 +72,20 @@ CREATE TABLE IF NOT EXISTS ako.Course (
 	semesterId SMALLINT(2) NOT NULL,
 	section VARCHAR(4) NOT NULL, 
 	description TEXT NOT NULL,
-	CONSTRAINT FOREIGN KEY (semester) REFERENCES ako.Semester(id)
+	CONSTRAINT FOREIGN KEY (semesterId) REFERENCES ako.Semester(id)
 );
 
 /* DB needs for the auto increment to be a primary key. Add a unique key for the course info */
-ALTER TABLE ako.Course ADD UNIQUE KEY (shortName,year,semester,section);
+ALTER TABLE ako.Course ADD UNIQUE KEY (shortName,year,semesterId,section);
 
 /* Populating our Course table since we do not have the Admin feature as a requirement*/
-INSERT INTO ako.Course (shortName,year,semester,section,description) 
+INSERT INTO ako.Course (shortName,year,semesterId,section,description) 
 		VALUES ('ENPM611','2017','01','0101','Software Engineering');
-INSERT INTO ako.Course (shortName,year,semester,section,description) 
+INSERT INTO ako.Course (shortName,year,semesterId,section,description) 
 		VALUES ('ENPM612','2017','01','0101','Software Requirements');
-INSERT INTO ako.Course (shortName,year,semester,section,description) 
+INSERT INTO ako.Course (shortName,year,semesterId,section,description) 
 		VALUES ('ENPM613','2017','01','0101','Software Design');
-INSERT INTO ako.Course (shortName,year,semester,section,description) 
+INSERT INTO ako.Course (shortName,year,semesterId,section,description) 
 		VALUES ('ENPM614','2017','01','0101','Software Testing');
 
 /* Modules Relation */
@@ -206,6 +208,11 @@ CREATE TABLE IF NOT EXISTS ako.MessageUser (
 	PRIMARY KEY (messageId, userId, messageUserTypeId)
 );
 
+/* drop users and flush privileges; owing to this bug : https://bugs.mysql.com/bug.php?id=28331 */
+drop user ako_read;
+drop user ako_admin;
+flush privileges;
+
 /* Create a read only user and an admin user */
 CREATE USER ako_read IDENTIFIED BY 'akoread';
 GRANT SELECT ON ako.* to ako_read;
@@ -215,7 +222,7 @@ GRANT ALL ON ako.* to ako_admin;
 
 /* Create a authority table to record user roles, in order to use role based authentication */
 CREATE TABLE IF NOT EXISTS ako.Authority (
-	id NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	name VARCHAR(30) NOT NULL
 );
 
@@ -233,12 +240,17 @@ CREATE TABLE IF NOT EXISTS ako.User_authority (
 );
 
 
-/* Intert default values */
+/* Insert default values */
 INSERT INTO ako.User_authority(user_id,authority_id) VALUES ('1000000001','1');
 INSERT INTO ako.User_authority(user_id,authority_id) VALUES ('1000000002','1');
-INSERT INTO ako.User_authority(user_id,authority_id) VALUES ('1000000003','2');
 INSERT INTO ako.User_authority(user_id,authority_id) VALUES ('1000000004','1');
+INSERT INTO ako.User_authority(user_id,authority_id) VALUES ('1000000005','1');
+INSERT INTO ako.User_authority(user_id,authority_id) VALUES ('1000000003','1');
+
+/* make some users admin values */
 INSERT INTO ako.User_authority(user_id,authority_id) VALUES ('1000000005','2');
+INSERT INTO ako.User_authority(user_id,authority_id) VALUES ('1000000003','2');
+
 
 
 

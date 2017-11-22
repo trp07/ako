@@ -13,12 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import org.jboss.aerogear.security.otp.api.Base32;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -29,33 +29,24 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
  */
 @Entity
 public class User implements UserDetails {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	private DateTime createDate;
-	private DateTime lastModifiedDate;
 	private String firstName;
 	private String middleName;
 	private String lastName;
 	private String email;
+	private String userName;
 	private LocalDate  birthDate;
-	private boolean hasMfaActive;
-	
+    private boolean hasMfaActive;
+	private String secret;
+
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
+	
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
-	
-	//private boolean isUsing2FA;
-	//private String secret;
-
-	public User() {
-		super();
-		//this.secret = Base32.random();
-	}
 
 	public int getId() {
 		return id;
@@ -63,14 +54,6 @@ public class User implements UserDetails {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-	
-	public DateTime getCreateDate() {
-		return createDate;
-	}
-
-	public DateTime getLastModifiedDate() {
-		return lastModifiedDate;
 	}
 
 	public String getFirstName() {
@@ -131,41 +114,69 @@ public class User implements UserDetails {
 		return this.authorities;
 	}
 
+	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+		// TODO Auto-generated method stub
+		this.authorities = (List<Authority>) authorities;
+	}
+
+	@JsonIgnore
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return this.email;
+		return this.userName;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
+	@JsonIgnore
+	public String getSecret() {
+		return secret;
+	}
 
-	public boolean isHasMfaActive() {
+	public void setSecret(String secret) {
+		this.secret = secret;
+	}
+	
+	@JsonGetter("hasMfaActive")
+	public boolean hasMfaActive() {
 		return hasMfaActive;
 	}
 
 	public void setHasMfaActive(boolean hasMfaActive) {
 		this.hasMfaActive = hasMfaActive;
+	}
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 }
