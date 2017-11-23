@@ -32,8 +32,6 @@ import com.ako.data.IS3;
  * S3 Service to Upload and Download files to AWS S3 Bucket.
  * @author Tim
  */
-
-
 @Service
 public class S3Service implements IS3 {
     /*
