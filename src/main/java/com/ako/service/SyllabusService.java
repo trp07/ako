@@ -10,14 +10,21 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.Upload;
 
 import com.ako.data.ISyllabus;
 
@@ -31,6 +38,7 @@ import com.ako.data.ISyllabus;
 public class SyllabusService implements ISyllabus {
     /*
     Credits: http://javasampleapproach.com/spring-framework/spring-cloud/amazon-s3-uploaddownload-files-springboot-amazon-s3-application
+             https://docs.aws.amazon.com/AmazonS3/latest/dev/llJavaUploadFile.html    
     */
 
     @Autowired
@@ -82,12 +90,15 @@ public class SyllabusService implements ISyllabus {
     }
 
     @Override
-    public void uploadFile(String keyName, String uploadFilePath) {
-
+    public void uploadFile(String keyName, MultipartFile file) throws Exception {
+                
         try {
-
-            File file = new File(uploadFilePath);
-            s3client.putObject(new PutObjectRequest(bucketName, keyName, file));
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentType(file.getContentType());
+            
+            s3client.putObject(new PutObjectRequest(bucketName, keyName,
+                file.getInputStream(), objectMetadata));
+             
             logger.info("===================== Upload File - Done! =====================");
 
         } catch (AmazonServiceException ase) {
@@ -100,6 +111,8 @@ public class SyllabusService implements ISyllabus {
         } catch (AmazonClientException ace) {
         	logger.error("Caught an AmazonClientException: ");
         	logger.error("Error Message: ", ace);
+        } catch (java.io.IOException e) {
+            logger.error("IOException");
         }
     }
 
