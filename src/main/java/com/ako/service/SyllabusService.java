@@ -38,7 +38,7 @@ import com.ako.data.ISyllabus;
 public class SyllabusService implements ISyllabus {
     /*
     Credits: http://javasampleapproach.com/spring-framework/spring-cloud/amazon-s3-uploaddownload-files-springboot-amazon-s3-application
-             https://docs.aws.amazon.com/AmazonS3/latest/dev/llJavaUploadFile.html    
+             https://docs.aws.amazon.com/AmazonS3/latest/dev/llJavaUploadFile.html
     */
 
     @Autowired
@@ -46,7 +46,7 @@ public class SyllabusService implements ISyllabus {
 
     @Value("enpm613-ako")
     private String bucketName;
-  
+
     /**
      * The Logger
      */
@@ -91,15 +91,18 @@ public class SyllabusService implements ISyllabus {
 
     @Override
     public void uploadFile(String keyName, MultipartFile file) throws Exception {
-                
+
         try {
+            logger.info("=====S3service===== Attempting File Upload: " +
+                file.getOriginalFilename());
+
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(file.getContentType());
-            
+
             s3client.putObject(new PutObjectRequest(bucketName, keyName,
                 file.getInputStream(), objectMetadata));
-             
-            logger.info("===================== Upload File - Done! =====================");
+
+            logger.info("=====S3service===== Upload File - Done! =====================");
 
         } catch (AmazonServiceException ase) {
         	logger.error("Caught an AmazonServiceException from PUT requests, rejected reasons:");
@@ -112,7 +115,8 @@ public class SyllabusService implements ISyllabus {
         	logger.error("Caught an AmazonClientException: ");
         	logger.error("Error Message: ", ace);
         } catch (java.io.IOException e) {
-            logger.error("IOException");
+            logger.error("Caught an IOException: ");
+            logger.error("Error Message: ", e);
         }
     }
 
