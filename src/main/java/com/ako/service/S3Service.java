@@ -26,16 +26,16 @@ import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
 
-import com.ako.data.ISyllabus;
+import com.ako.data.IS3;
 
 /**
- * Syllabus Service to Upload and Download files to AWS S3 Bucket.
+ * S3 Service to Upload and Download files to AWS S3 Bucket.
  * @author Tim
  */
 
 
 @Service
-public class SyllabusService implements ISyllabus {
+public class S3Service implements IS3 {
     /*
     Credits: http://javasampleapproach.com/spring-framework/spring-cloud/amazon-s3-uploaddownload-files-springboot-amazon-s3-application
              https://docs.aws.amazon.com/AmazonS3/latest/dev/llJavaUploadFile.html
@@ -50,7 +50,7 @@ public class SyllabusService implements ISyllabus {
     /**
      * The Logger
      */
-    private final Logger logger = LogManager.getLogger(SyllabusService.class);
+    private final Logger logger = LogManager.getLogger(S3Service.class);
 
     @Override
     public void downloadFile(String keyName) {
@@ -82,10 +82,8 @@ public class SyllabusService implements ISyllabus {
         	logger.error("Caught an AmazonClientException: ", ace);
         } catch (FileNotFoundException fnfe) {
         	logger.error("Caught a FileNotFoundException: ",fnfe);
-            System.exit(1);
         } catch (IOException ioe) {
             logger.error("Caught an IOException: ", ioe);
-            System.exit(1);
         }
     }
 

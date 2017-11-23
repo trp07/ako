@@ -14,10 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.AmazonClientException;
 
-import com.ako.service.SyllabusService;
+import com.ako.service.S3Service;
 
 /**
- * Syllabus File Upload and Download Controller
+ * Syllabus Controller
  * @author Tim
  */
 
@@ -26,30 +26,30 @@ import com.ako.service.SyllabusService;
 public class SyllabusController {
 
     @Autowired
-    SyllabusService syllabusService;
-	
+    S3Service s3Service;
+
 
     /* File DOWNLOAD */
     @RequestMapping(method=RequestMethod.GET, value="download")
-	public 
-    @ResponseBody 
+	public
+    @ResponseBody
     void downloadSyllabus() {
-        
-		syllabusService.downloadFile("syllabus.pdf");
+
+		s3Service.downloadFile("syllabus.pdf");
 
 	}
 
 
     /* File UPLOAD */
-    /* TODO: may need to do user-type checking to make sure only the 
+    /* TODO: may need to do user-type checking to make sure only the
        instructor is uploading */
     @RequestMapping(method=RequestMethod.POST, value="upload")
-    public 
-    @ResponseBody 
+    public
+    @ResponseBody
     void uploadSyllabus(@RequestParam("syllabus") MultipartFile file) {
 
         try {
-            syllabusService.uploadFile("syllabus.pdf", file);
+            s3Service.uploadFile("syllabus.pdf", file);
 
         } catch (Exception ace) {
             System.err.println("SyllabusController ==> UploadSyllabus Error");
