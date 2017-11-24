@@ -23,7 +23,7 @@ public class Syllabus {
     private int id;
     private String assignment;
     private LocalDate dueDate;
-    private boolean completed;
+    private boolean complete;
     
     
     /************************************
@@ -32,19 +32,19 @@ public class Syllabus {
     public Syllabus(String assignment, LocalDate dueDate) {
         this.assignment = assignment;
         this.dueDate = dueDate;
-        this.completed = false;
+        this.complete = false;
     }
     
     public Syllabus(String assignment) {
         this.assignment = assignment;
         this.dueDate = new LocalDate();
-        this.completed = false;
+        this.complete = false;
     }
 
     public Syllabus() {
         this.assignment = "Not Specified.";
         this.dueDate = new LocalDate();
-        this.completed = false;
+        this.complete = false;
     }
     
     /************************************
@@ -71,11 +71,11 @@ public class Syllabus {
     }
 
     public boolean isComplete() {
-        return this.completed;
+        return this.complete;
     }
 
     public void setComplete(boolean completed) {
-        this.completed = completed;
+        this.complete = completed;
     }
 
 }
