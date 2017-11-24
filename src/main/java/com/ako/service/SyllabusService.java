@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.ako.data.ISyllabusRepository;
+import com.ako.data.ISyllabus;
 import com.ako.data.Syllabus;
 
 /**
@@ -19,7 +20,7 @@ import com.ako.data.Syllabus;
  * @author Tim
  */
 @Service
-public class SyllabusService {
+public class SyllabusService implements ISyllabus {
 
     @Autowired
     private ISyllabusRepository repository;
@@ -32,6 +33,7 @@ public class SyllabusService {
      *
      * @return list of all assignments
      */
+    @Override
     public List<Syllabus> getAllAssignments() {
         logger.info("getAllAssignmets() called");
         List<Syllabus> assignments = new ArrayList<>();
@@ -45,6 +47,7 @@ public class SyllabusService {
      * @param int id
      * @return assignment identified by given id
      */
+    @Override
     public Syllabus getAssignment(int id) {
         logger.info("getAssignment() called");
         return this.repository.findOne(id);
@@ -56,6 +59,7 @@ public class SyllabusService {
      * @param Syllabus assignment
      * @return the added assignment
      */
+    @Override
     public Syllabus addAssignment(Syllabus assignment) {
         logger.info("addAssignmet() called");
         if (this.repository.exists(assignment.getId())) {
@@ -70,6 +74,7 @@ public class SyllabusService {
      * @param Syllabus assignment
      * @return the updated assignment
      */
+    @Override
     public Syllabus updateSyllabus(Syllabus assignment) {
         logger.info("updateSyllabus() called");
         return this.repository.save(assignment);
@@ -81,6 +86,7 @@ public class SyllabusService {
      * @param String assignment name
      * @return the assignment
      */
+    @Override
     public Syllabus findByAssignment(String assignment) {
         logger.info("findByAssignment() called");
         return this.repository.findByAssignment(assignment);
@@ -92,6 +98,7 @@ public class SyllabusService {
      * @param LocalDate dueDate
      * @return the assignment
      */
+    @Override
     public Syllabus findByDueDate(LocalDate dueDate) {
         logger.info("findByDueDate() called");
         return this.repository.findByDueDate(dueDate);
@@ -103,6 +110,7 @@ public class SyllabusService {
      * @param boolean completed
      * @return the list of assignments
      */
+    @Override
     public List<Syllabus> findByCompleted(boolean completed) {
         logger.info("findByCompleted() called");
         List<Syllabus> assignments = new ArrayList<>();
@@ -124,6 +132,7 @@ public class SyllabusService {
      * @param None
      * @return 0 if successful
      */
+    @Override
     public int deleteAll() {
         logger.info("deleteAll() called");
         this.repository.deleteAll();
@@ -136,7 +145,8 @@ public class SyllabusService {
      * @param Syllabus assignment
      * @return the deleted assignment
      */
-    public Syllabus delete(Syllabus assignment) {
+    @Override
+    public Syllabus deleteOne(Syllabus assignment) {
         logger.info("delete() called");
         this.repository.delete(assignment.getId());
         return assignment;

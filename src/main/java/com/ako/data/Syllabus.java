@@ -24,7 +24,29 @@ public class Syllabus {
     private String assignment;
     private LocalDate dueDate;
     private boolean completed;
+    
+    
+    /************************************
+    *   CONSTRUCTORS
+    ************************************/    
+    public Syllabus(String assignment, LocalDate dueDate) {
+        this.assignment = assignment;
+        this.dueDate = dueDate;
+        this.completed = false;
+    }
+    
+    public Syllabus(String assignment) {
+        this.assignment = assignment;
+        this.dueDate = new LocalDate();
+        this.completed = false;
+    }
 
+    public Syllabus() {
+        this.assignment = "Not Specified.";
+        this.dueDate = new LocalDate();
+        this.completed = false;
+    }
+    
     /************************************
     *   GETTERS & SETTERS
     ************************************/
