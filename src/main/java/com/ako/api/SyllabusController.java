@@ -2,6 +2,7 @@ package com.ako.api;
 
 import java.io.File;
 import java.lang.Exception;
+import java.net.URL;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -18,10 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.AmazonClientException;
 
-import com.ako.data.Syllabus;
 import com.ako.service.S3Service;
-import com.ako.service.SyllabusService;
-
 
 
 /**
@@ -34,12 +32,20 @@ public class SyllabusController {
 
     @Autowired
     S3Service s3Service;
-   
-    /* Logger */
+
+    /* private attributes */
     private final Logger logger = LogManager.getLogger(SyllabusController.class);
+    private String downloadLink;
+
+    public String getDownloadLink() {
+        return this.downloadLink;
+    }
+
+    public void setDownloadLink(String url) {
+        this.downloadLink = url; 
+    }    
     
-    
-    @RequestMapping(method=RequestMethod.GET, value="download")
+    @RequestMapping(method=RequestMethod.GET, value="/download")
     public @ResponseBody void downloadSyllabus() {
         
         logger.info("SyllabusController.downloadSyllabus called");
@@ -49,12 +55,16 @@ public class SyllabusController {
 
     /* TODO: may need to do user-type checking to make sure only the
        instructor is uploading */
-    @RequestMapping(method=RequestMethod.POST, value="upload")
+    @RequestMapping(method=RequestMethod.POST, value="/upload")
     public @ResponseBody void uploadSyllabus(@RequestParam("syllabus") MultipartFile file) {
+        String fname = file.getOriginalFilename();
+        String dlink;
 
-        logger.info("SyllabusController.uploadSyllabus called with: " + file.getOriginalFilename());
+        logger.info("SyllabusController.uploadSyllabus called with: " + fname);
         try {
-            s3Service.uploadFile("syllabus.pdf", file);
+            s3Service.uploadFile(fname, file);
+            dlink = s3Service.generateDownloadLink(fname);
+            this.setDownloadLink(dlink);
             logger.info("SyllabusController.uploadFile successful!");
 
         } catch (Exception ace) {

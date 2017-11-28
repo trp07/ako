@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,28 +18,25 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.amazonaws.services.s3.transfer.TransferManager;
-import com.amazonaws.services.s3.transfer.Upload;
 
 import com.ako.data.IS3;
 
 /**
  * S3 Service to Upload and Download files to AWS S3 Bucket.
  * @author Tim
+ * 
+ * @Refs:
+ * https://docs.aws.amazon.com/AmazonS3/latest/dev/llJavaUploadFile.html
+ * https://docs.aws.amazon.com/AmazonS3/latest/dev/ShareObjectPreSignedURLJavaSDK.html
  */
 @Service
 public class S3Service implements IS3 {
-    /*
-    Credits: http://javasampleapproach.com/spring-framework/spring-cloud/amazon-s3-uploaddownload-files-springboot-amazon-s3-application
-             https://docs.aws.amazon.com/AmazonS3/latest/dev/llJavaUploadFile.html
-    */
 
     @Autowired
     private AmazonS3 s3client;
@@ -45,17 +44,15 @@ public class S3Service implements IS3 {
     @Value("enpm613-ako")
     private String bucketName;
 
-    /**
-     * The Logger
-     */
+    /* private attributes */
     private final Logger logger = LogManager.getLogger(S3Service.class);
 
     @Override
     public void downloadFile(String keyName) {
 
         try {
-        	logger.info("Downloading an object");
-            S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, keyName));
+            logger.info("Downloading an object");
+            S3Object s3object = new S3Object();
             S3ObjectInputStream s3is = s3object.getObjectContent();
             logger.debug("Content-Type: "  + s3object.getObjectMetadata().getContentType());
             FileOutputStream fos = new FileOutputStream(new File(keyName));
@@ -69,19 +66,18 @@ public class S3Service implements IS3 {
             logger.info("===================== Download File - Done! =====================");
 
         } catch (AmazonServiceException ase) {
-            /* implement logging here */
-            logger.error("Caught an AmazonServiceException from GET requests, rejected reasons:");
-            logger.error("Error Message:    " + ase.getMessage());
-            logger.error("HTTP Status Code: " + ase.getStatusCode());
-            logger.error("AWS Error Code:   " + ase.getErrorCode());
-            logger.error("Error Type:       " + ase.getErrorType());
-            logger.error("Request ID:       " + ase.getRequestId());
+                logger.error("Caught an AmazonServiceException from GET requests, rejected reasons:");
+                logger.error("Error Message:    " + ase.getMessage());
+                logger.error("HTTP Status Code: " + ase.getStatusCode());
+                logger.error("AWS Error Code:   " + ase.getErrorCode());
+                logger.error("Error Type:       " + ase.getErrorType());
+                logger.error("Request ID:       " + ase.getRequestId());
         } catch (AmazonClientException ace) {
         	logger.error("Caught an AmazonClientException: ", ace);
         } catch (FileNotFoundException fnfe) {
         	logger.error("Caught a FileNotFoundException: ",fnfe);
         } catch (IOException ioe) {
-            logger.error("Caught an IOException: ", ioe);
+                logger.error("Caught an IOException: ", ioe);
         }
     }
 
@@ -111,9 +107,45 @@ public class S3Service implements IS3 {
         	logger.error("Caught an AmazonClientException: ");
         	logger.error("Error Message: ", ace);
         } catch (java.io.IOException e) {
-            logger.error("Caught an IOException: ");
-            logger.error("Error Message: ", e);
+                logger.error("Caught an IOException: ");
+                logger.error("Error Message: ", e);
         }
+    }
+
+    public String generateDownloadLink(String keyName) throws Exception {
+        
+        try {
+            logger.info("=====S3service===== Generating pre-signed URL for: " + keyName);
+
+            /* set expiration time of URL */
+            java.util.Date expiration = new java.util.Date();
+            long milliSeconds = expiration.getTime();
+            milliSeconds += (1000 * 60 * 60 * 2); // Add 2 hours
+            expiration.setTime(milliSeconds);
+
+            /* generate url */
+            GeneratePresignedUrlRequest generatePresignedUrlRequest = 
+                    new GeneratePresignedUrlRequest(bucketName, keyName);
+            generatePresignedUrlRequest.setMethod(HttpMethod.GET); 
+                    generatePresignedUrlRequest.setExpiration(expiration);
+            
+            URL url = s3client.generatePresignedUrl(generatePresignedUrlRequest);
+            logger.info("=====S3service===== URL generated: " + url.toString());
+            
+            return url.toString();
+            
+        } catch (AmazonServiceException ase) {		
+                logger.error("Caught an AmazonServiceException from GET requests, rejected reasons:");
+        	logger.error("Error Message:    " + ase.getMessage());
+        	logger.error("HTTP Status Code: " + ase.getStatusCode());
+        	logger.error("AWS Error Code:   " + ase.getErrorCode());
+        	logger.error("Error Type:       " + ase.getErrorType());
+        	logger.error("Request ID:       " + ase.getRequestId());
+        } catch (AmazonClientException ace) {
+                logger.error("Caught an AmazonClientException: ");
+                logger.error("Error Message: " + ace.getMessage());
+        }
+        return "";
     }
 
 }
