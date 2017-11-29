@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import org.joda.time.LocalDate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -59,18 +58,19 @@ public class SyllabusService implements ISyllabus {
     public Syllabus addAssignment(Syllabus assignment) {
         logger.info("addAssignmet() called");
         if (this.repository.exists(assignment.getId())) {
-            return this.updateSyllabus(assignment);
+            return this.updateSyllabus(assignment.getId(), assignment);
         }
         return this.repository.save(assignment);
     }
 
     /**
      * Update an assignment
+     * @param int id
      * @param Syllabus assignment
      * @return the updated assignment
      */
     @Override
-    public Syllabus updateSyllabus(Syllabus assignment) {
+    public Syllabus updateSyllabus(int id, Syllabus assignment) {
         logger.info("updateSyllabus() called");
         return this.repository.save(assignment);
     }
@@ -136,9 +136,21 @@ public class SyllabusService implements ISyllabus {
      * @return the deleted assignment
      */
     @Override
-    public Syllabus deleteOne(Syllabus assignment) {
+    public Syllabus deleteOneByName(Syllabus assignment) {
         logger.info("deleteOne() called");
         this.repository.delete(assignment.getId());
         return assignment;
+    }
+    
+    /**
+     * Delete an assignments
+     * @param int id
+     * @return the id of the deleted assignment
+     */
+    @Override
+    public int deleteOneById(int id) {
+        logger.info("deleteOne() called");
+        this.repository.delete(id);
+        return id;
     }
 }
