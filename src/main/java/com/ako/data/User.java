@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,8 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.joda.time.LocalDate;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -28,21 +35,54 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
  *
  */
 @Entity
+@Table(name = "User")
 public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	
+	@Column(name = "createDate", nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
+	private LocalDate createDate;
+	
+	@Column(name = "lastModifyDate", nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+	@LastModifiedDate
+	private LocalDate lastModifyDate;
+	
+	@Column(name = "firstName", nullable = false)
 	private String firstName;
+	
+	@Column(name = "middleName", nullable = false)
 	private String middleName;
+	
+	@Column(name = "lastName", nullable = false)
 	private String lastName;
-	private String email;
-	private String userName;
+	
+	@Column(name = "birthDate", nullable = false)
 	private LocalDate  birthDate;
-    private boolean hasMfaActive;
-	private String secret;
-
+	
+	@Column(name = "email", nullable = false)
+	private String email;
+	
+	@Column(name = "password", nullable = false)
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
+	
+	@Column(name = "userTypeId")
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="USER_TYPE_ID", nullable=true) // To Verfy
+	private UserType userType;
+	
+	@Column(name = "hasMfaActive", nullable = false)
+    private boolean hasMfaActive;
+    
+    @Column(name = "secret", nullable = false)
+	private String secret;
+	
+	@Column(name = "userName", nullable = false)
+	private String userName;
 	
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
@@ -52,6 +92,14 @@ public class User implements UserDetails {
 
 	public int getId() {
 		return id;
+	}
+	
+	public LocalDate getCreateDate() {
+		return createDate;
+	}
+	
+	public LocalDate getLastModifyDate() {
+		return lastModifyDate;
 	}
 
 	public String getFirstName() {
@@ -85,10 +133,14 @@ public class User implements UserDetails {
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
-/*
-	public DateTime getLastModified() {
-		return lastModified;
-	}*/
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	public String getPassword() {
 		return password;
@@ -97,13 +149,39 @@ public class User implements UserDetails {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public String getEmail() {
-		return email;
+	
+	public UserType getUserType () {
+		return userType;
+	}
+	
+	public void setUserType(UserType userType){
+		this.userType = userType;
+	}
+	
+	@JsonGetter("hasMfaActive")
+	public boolean hasMfaActive() {
+		return hasMfaActive;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setHasMfaActive(boolean hasMfaActive) {
+		this.hasMfaActive = hasMfaActive;
+	}
+	
+	@JsonIgnore
+	public String getSecret() {
+		return secret;
+	}
+
+	public void setSecret(String secret) {
+		this.secret = secret;
+	}
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	@Override
@@ -150,31 +228,5 @@ public class User implements UserDetails {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
-	}
-	
-	@JsonIgnore
-	public String getSecret() {
-		return secret;
-	}
-
-	public void setSecret(String secret) {
-		this.secret = secret;
-	}
-	
-	@JsonGetter("hasMfaActive")
-	public boolean hasMfaActive() {
-		return hasMfaActive;
-	}
-
-	public void setHasMfaActive(boolean hasMfaActive) {
-		this.hasMfaActive = hasMfaActive;
-	}
-	
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 }
