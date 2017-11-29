@@ -145,7 +145,7 @@ public class S3Service implements IS3 {
                 logger.error("Caught an AmazonClientException: ");
                 logger.error("Error Message: " + ace.getMessage());
         }
-        return "";
+        return "NO_URL";
     }
 
 }

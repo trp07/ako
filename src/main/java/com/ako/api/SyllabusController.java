@@ -35,7 +35,7 @@ public class SyllabusController {
 
     /* private attributes */
     private final Logger logger = LogManager.getLogger(SyllabusController.class);
-    private String downloadLink;
+    private String downloadLink = "https://s3-us-west-2.amazonaws.com/enpm613-ako/Syllabus_Default.pdf";
 
     public String getDownloadLink() {
         return this.downloadLink;
@@ -64,7 +64,9 @@ public class SyllabusController {
         try {
             s3Service.uploadFile(fname, file);
             dlink = s3Service.generateDownloadLink(fname);
-            this.setDownloadLink(dlink);
+            if (!dlink.equals("NO_URL")) {
+                this.setDownloadLink(dlink);
+            }
             logger.info("SyllabusController.uploadFile successful!");
 
         } catch (Exception ace) {
