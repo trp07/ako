@@ -9,4 +9,12 @@ akoApp.config(function($stateProvider, $urlServiceProvider, $urlRouterProvider) 
     url: '/home',
     component: 'home',
   });
+  $stateProvider.state('userList', {
+	    url: '/userList',
+	    component: 'userList'
+  });
+  $stateProvider.state('userProfile', {
+      url: '/userProfile',
+      component: 'userProfile'
+  });
 });
