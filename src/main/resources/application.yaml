@@ -25,7 +25,12 @@ spring:
   datasource:
     url: jdbc:mariadb://localhost:3306/ako
     username: root
-    password: root
+    password: 
+  mail:
+    host: localhost 
+    port: 2525
+    properties:
+      mail:
 
 ---
 
@@ -36,3 +41,16 @@ spring:
     url: jdbc:mariadb://ako.cwrnmurbtzdj.us-east-2.rds.amazonaws.com/ako-dev-temp
     username: ako
     password: "Enpm61320!7"
+  mail:
+    username: 
+    password: 
+    host: smtp.gmail.com 
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+    test-connection: false
