@@ -16,7 +16,6 @@ import com.ako.data.Syllabus;
 
 /**
  * Syllabus Service
- *
  * @author Tim
  */
 @Service
@@ -25,12 +24,11 @@ public class SyllabusService implements ISyllabus {
     @Autowired
     private ISyllabusRepository repository;
     
-    /* Logger */
+    /* private attributes */
     private final Logger logger = LogManager.getLogger(SyllabusService.class);
 
     /**
      * Fetch all assignments
-     *
      * @return list of all assignments
      */
     @Override
@@ -43,7 +41,6 @@ public class SyllabusService implements ISyllabus {
 
     /**
      * Fetch assignment by id
-     *
      * @param int id
      * @return assignment identified by given id
      */
@@ -55,7 +52,6 @@ public class SyllabusService implements ISyllabus {
 
     /**
      * Add an assignment
-     *
      * @param Syllabus assignment
      * @return the added assignment
      */
@@ -70,7 +66,6 @@ public class SyllabusService implements ISyllabus {
 
     /**
      * Update an assignment
-     *
      * @param Syllabus assignment
      * @return the updated assignment
      */
@@ -82,7 +77,6 @@ public class SyllabusService implements ISyllabus {
 
     /**
      * Find assignment by assignment name
-     *
      * @param String assignment name
      * @return the assignment
      */
@@ -94,7 +88,6 @@ public class SyllabusService implements ISyllabus {
 
     /**
      * Find assignment by Due Date
-     *
      * @param LocalDate dueDate
      * @return the assignment
      */
@@ -106,7 +99,6 @@ public class SyllabusService implements ISyllabus {
 
     /**
      * Find assignments by completed status
-     *
      * @param boolean completed
      * @return the list of assignments
      */
@@ -128,7 +120,6 @@ public class SyllabusService implements ISyllabus {
 
     /**
      * Delete all assignments
-     *
      * @param None
      * @return 0 if successful
      */
@@ -141,13 +132,12 @@ public class SyllabusService implements ISyllabus {
     
     /**
      * Delete an assignments
-     *
      * @param Syllabus assignment
      * @return the deleted assignment
      */
     @Override
     public Syllabus deleteOne(Syllabus assignment) {
-        logger.info("delete() called");
+        logger.info("deleteOne() called");
         this.repository.delete(assignment.getId());
         return assignment;
     }

@@ -1,7 +1,5 @@
 package com.ako.data;
 
-import java.util.Collection;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +11,6 @@ import org.joda.time.LocalDate;
 /**
  * Syllabus model representing Syllabus table
  * @author Tim
- *
  */
 @Entity
 public class Syllabus {
