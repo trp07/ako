@@ -28,8 +28,7 @@ import com.ako.security.JwtAuthenticationRequest;
 import com.ako.security.TokenHelper;
 import com.ako.service.AuthenticationService;
 import com.ako.service.MFAAuthenticationService;
-import com.ako.service.UserService;
-import com.warrenstrange.googleauth.GoogleAuthenticator;
+import com.ako.service.MessageService;
 
 /**
  * @author Prashant
@@ -42,6 +41,8 @@ public class AuthenticationController {
 	@Autowired
 	private TokenHelper tokenHelper;
 
+	@Autowired
+	MessageService messageService;
 	@Autowired
 	private AuthenticationService authenticationService;
 	@Autowired
