@@ -88,8 +88,8 @@ INSERT INTO ako.Course (shortName,year,semesterId,section,description)
 INSERT INTO ako.Course (shortName,year,semesterId,section,description) 
 		VALUES ('ENPM614','2017','01','0101','Software Testing');
 
-/* Modules Relation */
-CREATE TABLE IF NOT EXISTS ako.Modules (
+/* Module Relation */
+CREATE TABLE IF NOT EXISTS ako.Module (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	createDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
 	courseId INT NOT NULL,
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS ako.Modules (
 	CONSTRAINT FOREIGN KEY (courseId) REFERENCES ako.Course(id) ON DELETE CASCADE
 );
 
-/* Files Relation */ 
+/* File Relation */ 
 /* May Not Be Needed and replaced by the AWS S3  */
 CREATE TABLE IF NOT EXISTS ako.File (
 	id MEDIUMINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -209,9 +209,9 @@ CREATE TABLE IF NOT EXISTS ako.MessageUser (
 );
 
 /* drop users and flush privileges; owing to this bug : https://bugs.mysql.com/bug.php?id=28331 */
-drop user ako_read;
-drop user ako_admin;
-flush privileges;
+--drop user ako_read;
+--drop user ako_admin;
+--flush privileges;
 
 /* Create a read only user and an admin user */
 CREATE USER ako_read IDENTIFIED BY 'akoread';
