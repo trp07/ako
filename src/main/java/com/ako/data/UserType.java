@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -24,11 +25,11 @@ public class UserType {
 	private int id;
 	
 	private String type;
-	
+	@JsonGetter("id")
 	private int getId() {
 		return this.id;
 	}
-	
+	@JsonGetter("type")
 	private String getType() {
 		return this.type;
 	}
