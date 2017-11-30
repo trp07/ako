@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
  * User model representing User table
@@ -89,80 +90,81 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
-
+    
+    @JsonGetter("id")
 	public int getId() {
 		return id;
 	}
-	
+    @JsonGetter("createDate")
 	public LocalDate getCreateDate() {
 		return createDate;
 	}
-	
+    @JsonGetter("lastModifyDate")
 	public LocalDate getLastModifyDate() {
 		return lastModifyDate;
 	}
-
+    @JsonGetter("firstName")
 	public String getFirstName() {
 		return firstName;
 	}
-
+    @JsonSetter("firstName")
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-
+	@JsonGetter("middleName")
 	public String getMiddleName() {
 		return middleName;
 	}
-
+	@JsonSetter("middleName")
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
-
+	@JsonGetter("lastName")
 	public String getLastName() {
 		return lastName;
 	}
-
+	@JsonSetter("lastName")
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-
+	@JsonGetter("birthDate")
 	public LocalDate getBirthDate() {
 		return birthDate;
 	}
-
+	@JsonSetter("birthDate")
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
-	
+	@JsonGetter("email")
 	public String getEmail() {
 		return email;
 	}
-
+	@JsonSetter("email")
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
+	@JsonGetter("password")
 	public String getPassword() {
 		return password;
 	}
-
+	@JsonSetter("password")
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+	@JsonGetter("userType") //TODO Verify if we want to return the user_type entity or simply the user_type_id
 	public UserType getUserType () {
 		return userType;
 	}
-	
+	@JsonSetter("userType")
 	public void setUserType(UserType userType){
 		this.userType = userType;
 	}
 	
 	@JsonGetter("hasMfaActive")
-	public boolean hasMfaActive() {
+	public boolean getHasMfaActive() {
 		return hasMfaActive;
 	}
-
+	@JsonSetter("hasMfaActive")
 	public void setHasMfaActive(boolean hasMfaActive) {
 		this.hasMfaActive = hasMfaActive;
 	}
@@ -171,15 +173,15 @@ public class User implements UserDetails {
 	public String getSecret() {
 		return secret;
 	}
-
+	@JsonIgnore
 	public void setSecret(String secret) {
 		this.secret = secret;
 	}
-	
+	@JsonGetter("userName")
 	public String getUserName() {
 		return userName;
 	}
-
+	@JsonSetter("userName")
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
