@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -23,10 +24,12 @@ public class Semester {
 
 	private String name;
 	
+	@JsonGetter("id")
 	private int getId() {
 		return this.id;
 	}
 	
+	@JsonGetter("name")
 	private String getName() {
 		return this.name;
 	}
