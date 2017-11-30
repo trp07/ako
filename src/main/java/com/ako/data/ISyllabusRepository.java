@@ -12,6 +12,7 @@ import org.joda.time.LocalDate;
  * @author Tim
  */
 public interface ISyllabusRepository extends CrudRepository<Syllabus, Integer> {
+    Syllabus findById(int id);
     Syllabus findByAssignment(String assignment);
     Syllabus findByDueDate(LocalDate dueDate);
     List<Syllabus> findByCompleted(boolean completed);

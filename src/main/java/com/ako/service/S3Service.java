@@ -93,7 +93,7 @@ public class S3Service implements IS3 {
             s3client.putObject(new PutObjectRequest(bucketName, keyName,
                 file.getInputStream(), objectMetadata));
 
-            logger.info("=====S3service===== Upload File - Done! =====================");
+            logger.info("=====S3service===== Upload File - Done!");
 
         } catch (AmazonServiceException ase) {
         	logger.error("Caught an AmazonServiceException from PUT requests, rejected reasons:");

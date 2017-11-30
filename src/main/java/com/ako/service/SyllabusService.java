@@ -32,7 +32,7 @@ public class SyllabusService implements ISyllabus {
      */
     @Override
     public List<Syllabus> getAllAssignments() {
-        logger.info("getAllAssignmets() called");
+        logger.info("====SyllabusService==== getAllAssignmets() called");
         List<Syllabus> assignments = new ArrayList<>();
         this.repository.findAll().forEach(assignments::add);
         return assignments;
@@ -45,34 +45,37 @@ public class SyllabusService implements ISyllabus {
      */
     @Override
     public Syllabus getAssignment(int id) {
-        logger.info("getAssignment() called");
+        logger.info("====SyllabusService==== getAssignment() called");
         return this.repository.findOne(id);
     }
 
     /**
      * Add an assignment
-     * @param Syllabus assignment
+     * @param String assignment
      * @return the added assignment
      */
     @Override
-    public Syllabus addAssignment(Syllabus assignment) {
-        logger.info("addAssignmet() called");
-        if (this.repository.exists(assignment.getId())) {
-            return this.updateSyllabus(assignment.getId(), assignment);
+    public Syllabus addAssignment(String assignment) {
+        logger.info("====SyllabusService==== addAssignmet() called");
+        Syllabus a = new Syllabus(assignment);
+        if (this.repository.exists(a.getId())) {
+            return this.updateSyllabus(a.getId(), assignment);
         }
-        return this.repository.save(assignment);
+        return this.repository.save(a);
     }
 
     /**
      * Update an assignment
      * @param int id
-     * @param Syllabus assignment
+     * @param String assignment
      * @return the updated assignment
      */
     @Override
-    public Syllabus updateSyllabus(int id, Syllabus assignment) {
-        logger.info("updateSyllabus() called");
-        return this.repository.save(assignment);
+    public Syllabus updateSyllabus(int id, String assignment) {
+        logger.info("====SyllabusService==== updateSyllabus() called");
+        Syllabus a = this.repository.findById(id);
+        a.setAssignment(assignment);
+        return this.repository.save(a);
     }
 
     /**
@@ -82,7 +85,7 @@ public class SyllabusService implements ISyllabus {
      */
     @Override
     public Syllabus findByAssignment(String assignment) {
-        logger.info("findByAssignment() called");
+        logger.info("====SyllabusService==== findByAssignment() called");
         return this.repository.findByAssignment(assignment);
     }
 
@@ -93,7 +96,7 @@ public class SyllabusService implements ISyllabus {
      */
     @Override
     public Syllabus findByDueDate(LocalDate dueDate) {
-        logger.info("findByDueDate() called");
+        logger.info("====SyllabusService==== findByDueDate() called");
         return this.repository.findByDueDate(dueDate);
     }
 
@@ -104,7 +107,7 @@ public class SyllabusService implements ISyllabus {
      */
     @Override
     public List<Syllabus> findByCompleted(boolean completed) {
-        logger.info("findByCompleted() called");
+        logger.info("====SyllabusService==== findByCompleted() called");
         List<Syllabus> assignments = new ArrayList<>();
         List<Syllabus> comp = new ArrayList<>();
 
@@ -125,21 +128,22 @@ public class SyllabusService implements ISyllabus {
      */
     @Override
     public int deleteAll() {
-        logger.info("deleteAll() called");
+        logger.info("====SyllabusService==== deleteAll() called");
         this.repository.deleteAll();
         return 0;
     }
     
     /**
-     * Delete an assignments
-     * @param Syllabus assignment
+     * Delete an assignment
+     * @param String assignment
      * @return the deleted assignment
      */
     @Override
-    public Syllabus deleteOneByName(Syllabus assignment) {
-        logger.info("deleteOne() called");
-        this.repository.delete(assignment.getId());
-        return assignment;
+    public Syllabus deleteOneByName(String assignment) {
+        logger.info("====SyllabusService==== deleteOne() called");
+        Syllabus a = this.repository.findByAssignment(assignment);
+        this.repository.delete(a.getId());
+        return a;
     }
     
     /**
@@ -149,7 +153,7 @@ public class SyllabusService implements ISyllabus {
      */
     @Override
     public int deleteOneById(int id) {
-        logger.info("deleteOne() called");
+        logger.info("====SyllabusService==== deleteOne() called");
         this.repository.delete(id);
         return id;
     }

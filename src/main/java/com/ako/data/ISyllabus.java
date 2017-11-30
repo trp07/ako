@@ -12,12 +12,12 @@ import org.joda.time.LocalDate;
 public interface ISyllabus {
     public List<Syllabus> getAllAssignments();
     public Syllabus getAssignment(int id);
-    public Syllabus addAssignment(Syllabus assignment);
-    public Syllabus updateSyllabus(int id, Syllabus assignment);
+    public Syllabus addAssignment(String assignment);
+    public Syllabus updateSyllabus(int id, String assignment);
     public Syllabus findByAssignment(String assignment);
     public Syllabus findByDueDate(LocalDate dueDate);
     public List<Syllabus> findByCompleted(boolean completed);
     public int deleteAll();
-    public Syllabus deleteOneByName(Syllabus assignment);
+    public Syllabus deleteOneByName(String assignment);
     public int deleteOneById(int id);
 }

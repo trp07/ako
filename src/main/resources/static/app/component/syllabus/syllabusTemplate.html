@@ -1,0 +1,63 @@
+<div class="alert alert-error" ng-show="error">{{errorMessage}}</div>
+
+<div class="row">
+    <form ng-submit="uploadSyllabus(syllabus_file)">
+        <div class="col-lg-8">
+            <input type="file" ng-model="syllabus_file"><br />
+            <input type="submit" value="Upload Syllabus">
+        </div>
+        <a ng-href="{{syllabusLink}}" download><button>Download Syllabus</button></a>
+    </form>
+</div>
+<hr />
+
+<div class="row">
+    <form ng-submit="addAssignment(assignment)">
+        <div class="col-lg-8">
+            <input class="form-control" placeholder="Enter Assignment" type="text" ng-model="assignment" required min="1" />
+        </div>
+    </form>
+
+    <button class="btn btn-primary" ng-disabled="!assignment" ng-hide="editMode" ng-click="addAssignment(assignment)">Add Assignment</button>
+    <button type="btn btn-primary" class="btn btn-primary"
+            ng-disabled="!assignment" ng-show="editMode"
+            ng-click="updateSyllabus(assignment)">Save</button>
+    <button type="btn btn-primary" class="btn btn-primary" ng-click="resetAssignmentField()">Reset</button>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" id="search-query-3" ng-model="searchAssignment" typeahead="assignment for assignment in syllabus | filter:$viewValue | limitTo:8">
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn"><span class="fui-search"></span></button>
+                  </span>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+
+<table class="table table-bordered table-striped" ng-show="syllabus.length > 0">
+    <thead>
+    <tr>
+        <th style="text-align: center; width: 25px;">Delete</th>
+        <th style="text-align: center; width: 25px;">Update</th>
+        <th style="text-align: center; width: 25px;">Id</th>
+        <th style="text-align: center;">Assignment</th>
+        <th style="text-align: center;">Due Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="assignment in syllabus | filter:searchAssignment">
+        <td  style="width:70px;text-align:center;"><button class="btn btn-mini btn-danger" ng-click="deleteAssignment(id)">Delete</button></td>
+        <td  style="width:70px;text-align:center;"><button class="btn btn-mini btn-danger" ng-click="editAssignment(id, assignment)">Update</button></td>
+        <td>{{assignment.id}}</td>
+        <td>{{assignment.assignment}}</td>
+        <td>{{assignment.dueDate}}</td>
+    </tr>
+    </tbody>
+</table>
+<button class="btn btn-danger"  ng-show="syllabus.length >= 1" ng-click="deleteAll()">Delete All Assignments</button>
