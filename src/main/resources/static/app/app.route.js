@@ -17,4 +17,8 @@ akoApp.config(function($stateProvider, $urlServiceProvider, $urlRouterProvider) 
       url: '/userProfile',
       component: 'userProfile'
   });
+  $stateProvider.state('syllabus', {
+      url: '/syllabus',
+      component: 'syllabus'
+  });
 });
