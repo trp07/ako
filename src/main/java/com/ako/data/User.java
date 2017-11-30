@@ -96,6 +96,18 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"))
     private List<Course> userCourses;
     
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "Group_user",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
+    private List<Group> userGroups;
+    
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "Message_user",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"))
+    private List<Message> userMessages;
+    
     @JsonGetter("id")
 	public int getId() {
 		return id;
@@ -204,6 +216,22 @@ public class User implements UserDetails {
 	
 	public List<Course> getUserCourses() {
 		return userCourses;
+	}
+	
+	public List<Group> getUserGroups() {
+		return userGroups;
+	}
+	
+	public void setUserGroups(List<Group> userGroups) {
+		this.userGroups = userGroups;
+	}
+	
+	public List<Message> getUserMessages() {
+		return userMessages;
+	}
+	
+	public void setUserMessages(List<Message> userMessages) {
+		this.userMessages = userMessages;
 	}
 
 	@JsonIgnore
