@@ -1,4 +1,4 @@
-akoApp.component('home', {
+akoApp.component('syllabus', {
     templateUrl: "/app/component/syllabus/syllabusTemplate.html",
     bindings: {},
     controller: function () {
