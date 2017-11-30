@@ -35,7 +35,7 @@ public class File {
 	@Column
 	@OneToOne(optional = true) // Schema allows this to be null
 	@JoinColumn(name="id")
-	private int moduleId;
+	private Module module;
 	
 	@Column(nullable  = false)
 	private String name;
@@ -55,11 +55,11 @@ public class File {
 		return createDate;
 	}
     
-    public int getModuleId() {
-    	return moduleId;
+    public Module getModule() {
+    	return module;
     }
-    public void setModuleId(int moduleId) {
-    	this.moduleId = moduleId;
+    public void setModule(Module module) {
+    	this.module = module;
     }
     @JsonGetter("name")
     public String getName() {
