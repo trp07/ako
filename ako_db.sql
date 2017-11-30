@@ -3,51 +3,51 @@
 CREATE DATABASE IF NOT EXISTS ako;
 
 /* User Types */
-CREATE TABLE IF NOT EXISTS ako.UserType (
+CREATE TABLE IF NOT EXISTS ako.User_type (
 	id INT(2) NOT NULL PRIMARY KEY,
 	type VARCHAR(16) NOT NULL
 );
 
-/* Populate the UserType relation */
-INSERT INTO ako.UserType VALUES ('01','Student');
-INSERT INTO ako.UserType VALUES ('02','Teacher');
-INSERT INTO ako.UserType VALUES ('03','Admin');
-INSERT INTO ako.UserType VALUES ('04','TeacherAssistant');
-INSERT INTO ako.UserType VALUES ('05','Grader');
+/* Populate the User_type relation */
+INSERT INTO ako.User_type VALUES ('01','Student');
+INSERT INTO ako.User_type VALUES ('02','Teacher');
+INSERT INTO ako.User_type VALUES ('03','Admin');
+INSERT INTO ako.User_type VALUES ('04','TeacherAssistant');
+INSERT INTO ako.User_type VALUES ('05','Grader');
 
 /* User Relation */
 CREATE TABLE IF NOT EXISTS ako.User (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	createDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-	lastModifyDate TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
-	firstName VARCHAR(30) NOT NULL,
-	middleName VARCHAR(30) NOT NULL,
-	lastName VARCHAR(30) NOT NULL,
-	birthDate DATE NOT NULL,
+	create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+	last_modify_date TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+	first_name VARCHAR(30) NOT NULL,
+	middle_name VARCHAR(30) NOT NULL,
+	last_name VARCHAR(30) NOT NULL,
+	birth_date DATE NOT NULL,
 	email VARCHAR(70) NOT NULL,
 	password VARCHAR(70) NOT NULL,
-	userTypeId INT(2) NOT NULL,
-	hasMfaActive TINYINT(1) NOT NULL,
+	user_type_id INT(2) NOT NULL,
+	has_mfa_active TINYINT(1) NOT NULL,
 	secret VARCHAR(70) NOT NULL,
-	userName VARCHAR(70) NOT NULL,
-	CONSTRAINT FOREIGN KEY (userTypeId) REFERENCES ako.UserType(id)
+	user_name VARCHAR(70) NOT NULL,
+	CONSTRAINT FOREIGN KEY (user_type_id) REFERENCES ako.User_type(id)
 );
 /* Starting value for the User ID */
 ALTER TABLE ako.User AUTO_INCREMENT = 1000000001;
 
 /* DB needs for the auto increment to be a primary key. Add a unique key for a User */
-ALTER TABLE ako.User ADD UNIQUE KEY (firstName,middleName,lastName,birthDate,email,userTypeId);
+ALTER TABLE ako.User ADD UNIQUE KEY (first_name,middle_name,last_name,birth_date,email,user_type_id);
 
 /* Populating our User table since we do not have the Admin feature as a requirement. Passwords to be defined later */
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive,secret,userName) 
+INSERT INTO ako.User (first_name,last_name,middle_name,birth_date,email,password,user_type_id,has_mfa_active,secret,user_name) 
 		VALUES ('Noel','Buruca','A','2017-09-01','nburuca@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','01','1','3E6ENQIGPIDDPFAI','nburuca@terpmail.umd.edu');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive,secret,userName) 
+INSERT INTO ako.User (first_name,last_name,middle_name,birth_date,email,password,user_type_id,has_mfa_active,secret,user_name) 
 		VALUES ('Renuka','Dalal','A','2017-09-01','rdalal@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','02','1','LGYN4HASTVHDC5YQ','rdalal@terpmail.umd.edu');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive,secret,userName)  
+INSERT INTO ako.User (first_name,last_name,middle_name,birth_date,email,password,user_type_id,has_mfa_active,secret,user_name)  
 		VALUES ('Tim','Phillips','A','2017-09-01','tphillips@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','01','0','JC5XKGIUQVHX7SIJ','tphillips@terpmail.umd.edu');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive,secret,userName) 
+INSERT INTO ako.User (first_name,last_name,middle_name,birth_date,email,password,user_type_id,has_mfa_active,secret,user_name) 
 		VALUES ('Vishakha','Sadhwani','A','2017-09-01','vsadhwani@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','01','0','DSLWOBT56WMONKPT','vsadhwani@terpmail.umd.edu');
-INSERT INTO ako.User (firstName,lastName,middleName,birthDate,email,password,userTypeId,hasMfaActive,secret,userName) 
+INSERT INTO ako.User (first_name,last_name,middle_name,birth_date,email,password,user_type_id,has_mfa_active,secret,user_name) 
 		VALUES ('Prashant','Rathod','A','2017-09-01','prathod@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','02','1','T37RBNPZMU3UCJSD','prathod@terpmail.umd.edu');
 
 /* Semester Identifier. 2 Digit Identifier */
@@ -66,152 +66,151 @@ INSERT INTO ako.Semester VALUES ('06','Summer 2'); /* Summer 1 */
 /* Course Relation */
 CREATE TABLE IF NOT EXISTS ako.Course (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	createDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-	shortName VARCHAR(7) NOT NULL, /* I.E. ENPM613 */
+	create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+	short_name VARCHAR(7) NOT NULL, /* I.E. ENPM613 */
 	year VARCHAR(4) NOT NULL,
-	semesterId SMALLINT(2) NOT NULL,
+	semester_id SMALLINT(2) NOT NULL,
 	section VARCHAR(4) NOT NULL, 
 	description TEXT NOT NULL,
-	CONSTRAINT FOREIGN KEY (semesterId) REFERENCES ako.Semester(id)
+	CONSTRAINT FOREIGN KEY (semester_id) REFERENCES ako.Semester(id)
 );
 
 /* DB needs for the auto increment to be a primary key. Add a unique key for the course info */
-ALTER TABLE ako.Course ADD UNIQUE KEY (shortName,year,semesterId,section);
+ALTER TABLE ako.Course ADD UNIQUE KEY (short_name,year,semester_id,section);
 
 /* Populating our Course table since we do not have the Admin feature as a requirement*/
-INSERT INTO ako.Course (shortName,year,semesterId,section,description) 
+INSERT INTO ako.Course (short_name,year,semester_id,section,description) 
 		VALUES ('ENPM611','2017','01','0101','Software Engineering');
-INSERT INTO ako.Course (shortName,year,semesterId,section,description) 
+INSERT INTO ako.Course (short_name,year,semester_id,section,description) 
 		VALUES ('ENPM612','2017','01','0101','Software Requirements');
-INSERT INTO ako.Course (shortName,year,semesterId,section,description) 
+INSERT INTO ako.Course (short_name,year,semester_id,section,description) 
 		VALUES ('ENPM613','2017','01','0101','Software Design');
-INSERT INTO ako.Course (shortName,year,semesterId,section,description) 
+INSERT INTO ako.Course (short_name,year,semester_id,section,description) 
 		VALUES ('ENPM614','2017','01','0101','Software Testing');
 
 /* Module Relation */
 CREATE TABLE IF NOT EXISTS ako.Module (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	createDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-	courseId INT NOT NULL,
+	create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+	course_id INT NOT NULL,
 	name VARCHAR(50) NOT NULL,
 	description TEXT,
-	CONSTRAINT FOREIGN KEY (courseId) REFERENCES ako.Course(id) ON DELETE CASCADE
+	CONSTRAINT FOREIGN KEY (course_id) REFERENCES ako.Course(id) ON DELETE CASCADE
 );
 
 /* File Relation */ 
-/* May Not Be Needed and replaced by the AWS S3  */
 CREATE TABLE IF NOT EXISTS ako.File (
 	id MEDIUMINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	createDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-	moduleId INT, 
+	create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+	module_id INT, 
 	name VARCHAR(50) NOT NULL,
 	description TEXT NOT NULL,
-	fileS3Url VARCHAR(100) NOT NULL 
+	file_s3_url VARCHAR(100) NOT NULL 
 );
 
 /* Syllabus Relation */
 CREATE TABLE IF NOT EXISTS ako.Syllabus (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	createDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-	courseId INT NOT NULL,
-	fileId MEDIUMINT, /* Could be NULL */
+	create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+	course_id INT NOT NULL,
+	file_id MEDIUMINT, /* Could be NULL */
 	name VARCHAR(50) NOT NULL,
 	description TEXT NOT NULL,
-	syllabusText TEXT NOT NULL,
-	CONSTRAINT FOREIGN KEY (courseId) REFERENCES ako.Course(id) ON DELETE CASCADE,
-	CONSTRAINT FOREIGN KEY (fileId) REFERENCES ako.File(id) 
+	syllabus_text TEXT NOT NULL,
+	CONSTRAINT FOREIGN KEY (course_id) REFERENCES ako.Course(id) ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (file_id) REFERENCES ako.File(id) 
 );
 
 /* Message Relation */
 CREATE TABLE IF NOT EXISTS ako.Message (
 	id MEDIUMINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	createDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-	courseId INT NOT NULL,
+	create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+	course_id INT NOT NULL,
 	subject VARCHAR(100) NOT NULL,
 	body TEXT NOT NULL,
-	previousMessageId MEDIUMINT, /* Could be Null */
-	CONSTRAINT FOREIGN KEY (courseId) REFERENCES ako.Course(id) ON DELETE CASCADE,
-	CONSTRAINT FOREIGN KEY (previousMessageId) REFERENCES ako.Message(id)
+	previous_message_id MEDIUMINT, /* Could be Null */
+	CONSTRAINT FOREIGN KEY (course_id) REFERENCES ako.Course(id) ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (previous_message_id) REFERENCES ako.Message(id)
 );
 
 /* Group Relation */ 
 CREATE TABLE IF NOT EXISTS ako.Group (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	createDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-	courseId INT NOT NULL,
+	create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+	course_id INT NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NOT NULL,
-	CONSTRAINT FOREIGN KEY (courseId) REFERENCES ako.Course(id) ON DELETE CASCADE
+	CONSTRAINT FOREIGN KEY (course_id) REFERENCES ako.Course(id) ON DELETE CASCADE
 );
 
 /***************************** Relationships *****************************/
 
 /* Course User. Course has many Users, User has many Courses */
-CREATE TABLE IF NOT EXISTS ako.CourseUser (
-	courseId INT NOT NULL,
-	userId INT NOT NULL,
-	CONSTRAINT FOREIGN KEY (courseId) REFERENCES ako.Course(id) ON DELETE CASCADE,
-	CONSTRAINT FOREIGN KEY (userId) REFERENCES ako.User(id) ON DELETE CASCADE,
-	PRIMARY KEY (courseId, userId)
+CREATE TABLE IF NOT EXISTS ako.Course_user (
+	course_id INT NOT NULL,
+	user_id INT NOT NULL,
+	CONSTRAINT FOREIGN KEY (course_id) REFERENCES ako.Course(id) ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (user_id) REFERENCES ako.User(id) ON DELETE CASCADE,
+	PRIMARY KEY (course_id, user_id)
 );
 
-/* Populating our CourseUser table since we do not have the Admin feature as a requirement.*/
-INSERT INTO ako.CourseUser VALUES ((select id from ako.Course where shortName = 'ENPM611'),(select id from ako.User where firstName = 'Renuka'));
-INSERT INTO ako.CourseUser VALUES ((select id from ako.Course where shortName = 'ENPM611'),(select id from ako.User where firstName = 'Noel'));
-INSERT INTO ako.CourseUser VALUES ((select id from ako.Course where shortName = 'ENPM611'),(select id from ako.User where firstName = 'Tim'));
-INSERT INTO ako.CourseUser VALUES ((select id from ako.Course where shortName = 'ENPM611'),(select id from ako.User where firstName = 'Vishakha'));
-INSERT INTO ako.CourseUser VALUES ((select id from ako.Course where shortName = 'ENPM613'),(select id from ako.User where firstName = 'Prashant'));
-INSERT INTO ako.CourseUser VALUES ((select id from ako.Course where shortName = 'ENPM613'),(select id from ako.User where firstName = 'Noel'));
-INSERT INTO ako.CourseUser VALUES ((select id from ako.Course where shortName = 'ENPM613'),(select id from ako.User where firstName = 'Tim'));
-INSERT INTO ako.CourseUser VALUES ((select id from ako.Course where shortName = 'ENPM613'),(select id from ako.User where firstName = 'Vishakha'));
+/* Populating our Course_user table since we do not have the Admin feature as a requirement.*/
+INSERT INTO ako.Course_user VALUES ((select id from ako.Course where short_name = 'ENPM611'),(select id from ako.User where first_name = 'Renuka'));
+INSERT INTO ako.Course_user VALUES ((select id from ako.Course where short_name = 'ENPM611'),(select id from ako.User where first_name = 'Noel'));
+INSERT INTO ako.Course_user VALUES ((select id from ako.Course where short_name = 'ENPM611'),(select id from ako.User where first_name = 'Tim'));
+INSERT INTO ako.Course_user VALUES ((select id from ako.Course where short_name = 'ENPM611'),(select id from ako.User where first_name = 'Vishakha'));
+INSERT INTO ako.Course_user VALUES ((select id from ako.Course where short_name = 'ENPM613'),(select id from ako.User where first_name = 'Prashant'));
+INSERT INTO ako.Course_user VALUES ((select id from ako.Course where short_name = 'ENPM613'),(select id from ako.User where first_name = 'Noel'));
+INSERT INTO ako.Course_user VALUES ((select id from ako.Course where short_name = 'ENPM613'),(select id from ako.User where first_name = 'Tim'));
+INSERT INTO ako.Course_user VALUES ((select id from ako.Course where short_name = 'ENPM613'),(select id from ako.User where first_name = 'Vishakha'));
 
 /* Group User. Group has many Users, User has many Groups */
-CREATE TABLE IF NOT EXISTS ako.GroupUser (
-	groupId INT NOT NULL,
-	userId INT NOT NULL,
-	CONSTRAINT FOREIGN KEY (groupId) REFERENCES ako.Group(id) ON DELETE CASCADE,
-	CONSTRAINT FOREIGN KEY (userId) REFERENCES ako.User(id) ON DELETE CASCADE,
-	PRIMARY KEY (groupId, userId)
+CREATE TABLE IF NOT EXISTS ako.Group_user (
+	group_id INT NOT NULL,
+	user_id INT NOT NULL,
+	CONSTRAINT FOREIGN KEY (group_id) REFERENCES ako.Group(id) ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (user_id) REFERENCES ako.User(id) ON DELETE CASCADE,
+	PRIMARY KEY (group_id, user_id)
 );
 
 /* Message Files. Message has many Files, File Has Many Messages */ 
 /* May Not Be Needed and replaced by the AWS S3  */
-CREATE TABLE IF NOT EXISTS ako.MessageFile (	
-	messageId MEDIUMINT NOT NULL,
-	fileId MEDIUMINT NOT NULL,
-	CONSTRAINT FOREIGN KEY (messageId) REFERENCES ako.Message(id) ON DELETE CASCADE,
-	CONSTRAINT FOREIGN KEY (fileId) REFERENCES ako.File(id) ON DELETE CASCADE,
-	PRIMARY KEY (messageId, fileId)
+CREATE TABLE IF NOT EXISTS ako.Message_file (	
+	message_id MEDIUMINT NOT NULL,
+	file_id MEDIUMINT NOT NULL,
+	CONSTRAINT FOREIGN KEY (message_id) REFERENCES ako.Message(id) ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (file_id) REFERENCES ako.File(id) ON DELETE CASCADE,
+	PRIMARY KEY (message_id, file_id)
 );
 
 /* The folowing may not be needed if we use the toRecipients, ccRecipients, and bccRecipients attributes in the Message relation */
 /* Message User Type. Maybe be From, To, Cc, or Bcc */
-CREATE TABLE IF NOT EXISTS ako.MessageUserType (
+CREATE TABLE IF NOT EXISTS ako.Message_user_type (
 	id SMALLINT(2) NOT NULL PRIMARY KEY,
 	type VARCHAR(4) NOT NULL
 );
 
-INSERT INTO ako.MessageUserType VALUES ('01','From');
-INSERT INTO ako.MessageUserType VALUES ('02','To');
-INSERT INTO ako.MessageUserType VALUES ('03','Cc');
-INSERT INTO ako.MessageUserType VALUES ('04','Bcc');
+INSERT INTO ako.Message_user_type VALUES ('01','From');
+INSERT INTO ako.Message_user_type VALUES ('02','To');
+INSERT INTO ako.Message_user_type VALUES ('03','Cc');
+INSERT INTO ako.Message_user_type VALUES ('04','Bcc');
 
-CREATE TABLE IF NOT EXISTS ako.MessageUser (
-	messageId MEDIUMINT NOT NULL,
-	userId INT NOT NULL, /* Could be an individual user */
-	groupId INT, /* Could be an individual group. For each member of the group, insert a record into this relation. */
-	messageUserTypeId SMALLINT NOT NULL,
-	CONSTRAINT FOREIGN KEY (messageId) REFERENCES ako.Message(id) ON DELETE CASCADE,
-	CONSTRAINT FOREIGN KEY (userId) REFERENCES ako.User(id),
-	CONSTRAINT FOREIGN KEY (groupId) REFERENCES ako.Group(id),
-	CONSTRAINT FOREIGN KEY (messageUserTypeId) REFERENCES ako.MessageUserType(id),
-	PRIMARY KEY (messageId, userId, messageUserTypeId)
+CREATE TABLE IF NOT EXISTS ako.Message_user (
+	message_id MEDIUMINT NOT NULL,
+	user_id INT NOT NULL, /* Could be an individual user */
+	group_id INT, /* Could be an individual group. For each member of the group, insert a record into this relation. */
+	message_user_type_id SMALLINT NOT NULL,
+	CONSTRAINT FOREIGN KEY (message_id) REFERENCES ako.Message(id) ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (user_id) REFERENCES ako.User(id),
+	CONSTRAINT FOREIGN KEY (group_id) REFERENCES ako.Group(id),
+	CONSTRAINT FOREIGN KEY (message_user_type_id) REFERENCES ako.Message_user_type(id),
+	PRIMARY KEY (message_id, user_id, message_user_type_id)
 );
 
 /* drop users and flush privileges; owing to this bug : https://bugs.mysql.com/bug.php?id=28331 */
---drop user ako_read;
---drop user ako_admin;
---flush privileges;
+drop user ako_read;
+drop user ako_admin;
+flush privileges;
 
 /* Create a read only user and an admin user */
 CREATE USER ako_read IDENTIFIED BY 'akoread';
