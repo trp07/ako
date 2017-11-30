@@ -177,7 +177,7 @@ public class TokenHelper {
             mfaAuth = false;
         }
         
-        boolean isValidMfaAuth = user.hasMfaActive() && mfaAuth;
+        boolean isValidMfaAuth = user.getHasMfaActive() && mfaAuth;
         if(!isValidMfaAuth) {
         	user.setAuthorities(Arrays.asList(new SimpleGrantedAuthority("ROLE_PRE_AUTH_USER")));
         }
