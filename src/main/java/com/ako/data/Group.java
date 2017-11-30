@@ -1,6 +1,6 @@
 package com.ako.data;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -35,10 +35,9 @@ public class Group {
 	@Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-	private LocalDate createDate;
+	private Date createDate;
 	
-	@Column(nullable = false)
-	@OneToOne
+	@OneToOne(optional = false)
 	@JoinColumn(name="id")
 	private Course course;
 	
@@ -59,7 +58,7 @@ public class Group {
 		return id;
 	}
     @JsonGetter("createDate")
-	public LocalDate getCreateDate() {
+	public Date getCreateDate() {
 		return createDate;
 	}
     public Course getCourse(){
