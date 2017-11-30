@@ -25,6 +25,7 @@ public class UserType {
 	private int id;
 	
 	private String type;
+	
 	@JsonGetter("id")
 	private int getId() {
 		return this.id;
