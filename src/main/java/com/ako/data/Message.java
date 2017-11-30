@@ -1,5 +1,6 @@
 package com.ako.data;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,30 +13,62 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.mail.SimpleMailMessage;
 
 @Entity
-public class Email {
+public class Message {
 
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
-
+	
+	@Column(nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
+	private Date createDate;
+	
+	@OneToOne(optional = false)
+	@JoinColumn(name="id")
+	private Course course;
+	
+	@Column(nullable = false)
 	private String subject;
+	
+	@Column(nullable = false)
 	private String body;
-	private String previousMessageId;
-	private String courseId;
-	private String createDate;
+	
+	@Column(nullable = false)
+	private int previousMessageId;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "MessageUser", joinColumns = @JoinColumn(name = "messageId", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "userId", referencedColumnName = "id"))
+	@JoinTable(name = "Message_user", joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
 	private List<MessageUser> messageUsers;
 
 	// private boolean sent;
-
+	
+	public int getId() {
+		return id;
+	}
+	
+	public Date getCreateDate() {
+		return createDate;
+	}
+	
+	public Course getCourse(){
+		return course;
+	}
+	public void setCourse(Course course){
+		this.course = course;
+	}
+	
 	public String getSubject() {
 		return subject;
 	}
@@ -51,20 +84,24 @@ public class Email {
 	public void setBody(String body) {
 		this.body = body;
 	}
-
-	public int getId() {
+	
+	public int getPreviousMessageId() {
 		return id;
 	}
-
-	private boolean result;
-
-	public void setResult(boolean result) {
-		this.result = result;
+	
+	public void setPreviousMessageId(int previousMessageId) {
+		this.previousMessageId = previousMessageId;
 	}
 
-	public boolean isResult() {
-		return result;
-	}
+//	private boolean result;
+//
+//	public void setResult(boolean result) {
+//		this.result = result;
+//	}
+//
+//	public boolean isResult() {
+//		return result;
+//	}
 
 	/*public void setSent(boolean sent) {
 		this.sent = sent;
@@ -73,7 +110,8 @@ public class Email {
 	public boolean isSent() {
 		return sent;
 	}*/
-
+	
+	// I believe we need get these users from the MessageUser data
 	public MessageUser[] getToUsers() {
 		return this.messageUsers.stream().filter(u -> u.getMessageUserTypeId() == MessageUserType.TO)
 				.toArray(MessageUser[]::new);
