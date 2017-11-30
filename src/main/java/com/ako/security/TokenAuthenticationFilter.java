@@ -52,7 +52,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 					//create authority for a second step if needed
 					//TODO: move this to TOTP filter
 					 
-			        if(userDetails.hasMfaActive()) {
+			        if(userDetails.getHasMfaActive()) {
 			        	tokenHelper.checkAuthority(authToken, userDetails);
 			        }
 					// create authentication
