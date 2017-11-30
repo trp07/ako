@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.joda.time.LocalDate;
+import java.util.Date;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
@@ -46,12 +46,12 @@ public class User implements UserDetails {
 	@Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-	private LocalDate createDate;
+	private Date createDate;
 	
 	@Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
 	@LastModifiedDate
-	private LocalDate lastModifyDate;
+	private Date lastModifyDate;
 	
 	@Column(nullable = false)
 	private String firstName;
@@ -63,7 +63,7 @@ public class User implements UserDetails {
 	private String lastName;
 	
 	@Column(nullable = false)
-	private LocalDate  birthDate;
+	private Date  birthDate;
 	
 	@Column(nullable = false)
 	private String email;
@@ -95,11 +95,11 @@ public class User implements UserDetails {
 		return id;
 	}
     @JsonGetter("createDate")
-	public LocalDate getCreateDate() {
+	public Date getCreateDate() {
 		return createDate;
 	}
     @JsonGetter("lastModifyDate")
-	public LocalDate getLastModifyDate() {
+	public Date getLastModifyDate() {
 		return lastModifyDate;
 	}
     @JsonGetter("firstName")
@@ -127,11 +127,11 @@ public class User implements UserDetails {
 		this.lastName = lastName;
 	}
 	@JsonGetter("birthDate")
-	public LocalDate getBirthDate() {
+	public Date getBirthDate() {
 		return birthDate;
 	}
 	@JsonSetter("birthDate")
-	public void setBirthDate(LocalDate birthDate) {
+	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
 	@JsonGetter("email")
