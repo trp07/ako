@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -37,7 +38,9 @@ public class Group {
 	private LocalDate createDate;
 	
 	@Column(nullable = false)
-	private int courseId;
+	@OneToOne
+	@JoinColumn(name="id")
+	private Course course;
 	
 	@Column(nullable = false)
 	private String name;
@@ -59,13 +62,11 @@ public class Group {
 	public LocalDate getCreateDate() {
 		return createDate;
 	}
-    @JsonGetter("courseId")
-    public int getCourseId(){
-    	return courseId;
+    public Course getCourse(){
+    	return course;
     }
-    @JsonSetter("courseId")
-    public void setCourseId(int courseId) {
-    	this.courseId = courseId;
+    public void setCourseId(Course course) {
+    	this.course = course;
     }
     @JsonGetter("name")
     public String getName(){
