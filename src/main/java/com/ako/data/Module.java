@@ -43,12 +43,10 @@ public class Module {
 	@Column(nullable = false)
 	private String description;
 	
-    @JsonGetter("courseId")
-    public Course getCourseId(){
+    public Course getCourse(){
     	return course;
     }
-    @JsonSetter("courseId")
-    public void setCourseId(Course courseId) {
+    public void setCourse(Course courseId) {
     	this.course = courseId;
     }
     @JsonGetter("name")
