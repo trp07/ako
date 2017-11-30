@@ -45,12 +45,19 @@ public class Message {
 	@Column(nullable = false)
 	private String body;
 	
-	@Column(nullable = false)
-	private int previousMessageId;
+	@OneToOne(optional = true)
+	@JoinColumn(name="id")
+	private Message previousMessage;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "Message_user", joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
-	private List<MessageUser> messageUsers;
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "Message_user", joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"), 
+		inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+	private List<MessageUser> messageUsers; // TODO
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "Message_file", joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"), 
+		inverseJoinColumns = @JoinColumn(name = "file_id", referencedColumnName = "id"))
+	private List<File> messageFile;
 
 	// private boolean sent;
 	
@@ -89,8 +96,8 @@ public class Message {
 		return id;
 	}
 	
-	public void setPreviousMessageId(int previousMessageId) {
-		this.previousMessageId = previousMessageId;
+	public void setPreviousMessageId(Message previousMessage) {
+		this.previousMessage = previousMessage;
 	}
 
 //	private boolean result;

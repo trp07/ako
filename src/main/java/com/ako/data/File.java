@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,8 +32,8 @@ public class File {
     @CreatedDate
 	private Date createDate;
 	
-	@OneToOne(optional = true) // Schema allows this to be null
-	@JoinColumn(name="id")
+	@ManyToOne(optional = true) // Schema allows this to be null
+	@JoinColumn(name="module_id")
 	private Module module;
 	
 	@Column(nullable  = false)
