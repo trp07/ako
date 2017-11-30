@@ -90,6 +90,12 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
     
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "Course_user",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"))
+    private List<Course> userCourses;
+    
     @JsonGetter("id")
 	public int getId() {
 		return id;
@@ -194,6 +200,10 @@ public class User implements UserDetails {
 	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
 		// TODO Auto-generated method stub
 		this.authorities = (List<Authority>) authorities;
+	}
+	
+	public List<Course> getUserCourses() {
+		return userCourses;
 	}
 
 	@JsonIgnore
