@@ -41,47 +41,47 @@ public class User implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	@Column(name = "createDate", nullable = false, updatable = false)
+	@Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
 	private LocalDate createDate;
 	
-	@Column(name = "lastModifyDate", nullable = false, updatable = false)
+	@Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
 	@LastModifiedDate
 	private LocalDate lastModifyDate;
 	
-	@Column(name = "firstName", nullable = false)
+	@Column(nullable = false)
 	private String firstName;
 	
-	@Column(name = "middleName", nullable = false)
+	@Column(nullable = false)
 	private String middleName;
 	
-	@Column(name = "lastName", nullable = false)
+	@Column(nullable = false)
 	private String lastName;
 	
-	@Column(name = "birthDate", nullable = false)
+	@Column(nullable = false)
 	private LocalDate  birthDate;
 	
-	@Column(name = "email", nullable = false)
+	@Column(nullable = false)
 	private String email;
 	
-	@Column(name = "password", nullable = false)
+	@Column(nullable = false)
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	
-	@Column(name = "userTypeId")
+	@Column(nullable = false)
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="USER_TYPE_ID", nullable=true) // To Verfy
+	@JoinColumn(name="USER_TYPE_ID", nullable=true) // TODO need to verify that this syntax is correct
 	private UserType userType;
 	
-	@Column(name = "hasMfaActive", nullable = false)
+	@Column(nullable = false)
     private boolean hasMfaActive;
     
-    @Column(name = "secret", nullable = false)
+    @Column(nullable = false)
 	private String secret;
 	
-	@Column(name = "userName", nullable = false)
+	@Column(nullable = false)
 	private String userName;
 	
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
