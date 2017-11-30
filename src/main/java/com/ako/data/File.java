@@ -1,6 +1,6 @@
 package com.ako.data;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,9 +30,8 @@ public class File {
 	@Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-	private LocalDate createDate;
+	private Date createDate;
 	
-	@Column
 	@OneToOne(optional = true) // Schema allows this to be null
 	@JoinColumn(name="id")
 	private Module module;
@@ -51,7 +50,7 @@ public class File {
 		return id;
 	}
     @JsonGetter("createDate")
-	public LocalDate getCreateDate() {
+	public Date getCreateDate() {
 		return createDate;
 	}
     
