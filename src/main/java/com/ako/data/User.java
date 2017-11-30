@@ -72,9 +72,7 @@ public class User implements UserDetails {
 	private String password;
 	
 	@Column(nullable = false)
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="USER_TYPE_ID", nullable=true) // TODO need to verify that this syntax is correct
-	private UserType userType;
+	private int userTypeId;
 	
 	@Column(nullable = false)
     private boolean hasMfaActive;
@@ -86,7 +84,7 @@ public class User implements UserDetails {
 	private String userName;
 	
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_authority",
+    @JoinTable(name = "User_authority",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
@@ -151,13 +149,13 @@ public class User implements UserDetails {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@JsonGetter("userType") //TODO Verify if we want to return the user_type entity or simply the user_type_id
-	public UserType getUserType () {
-		return userType;
+	@JsonGetter("userTypeId") 
+	public int getUserTypeId () {
+		return userTypeId;
 	}
-	@JsonSetter("userType")
-	public void setUserType(UserType userType){
-		this.userType = userType;
+	@JsonSetter("userTypeId")
+	public void setUserType(int userTypeId){
+		this.userTypeId = userTypeId;
 	}
 	
 	@JsonGetter("hasMfaActive")
