@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,7 +32,9 @@ public class File {
     @CreatedDate
 	private LocalDate createDate;
 	
-	@Column(nullable = true) // Schema does not require for a file to have a module id. File could be used in a Message
+	@Column
+	@OneToOne(optional = true) // Schema allows this to be null
+	@JoinColumn(name="id")
 	private int moduleId;
 	
 	@Column(nullable  = false)
@@ -51,11 +55,9 @@ public class File {
 		return createDate;
 	}
     
-    @JsonGetter("moduleId")
     public int getModuleId() {
     	return moduleId;
     }
-    @JsonSetter("moduleId")
     public void setModuleId(int moduleId) {
     	this.moduleId = moduleId;
     }
