@@ -15,7 +15,7 @@ jwt:
 # set active profile here
 spring:
   profiles:
-    active: "dev"
+    active: "prod"
 
 ---
 
@@ -38,7 +38,7 @@ spring:
 spring:
   profiles: prod
   datasource:
-    url: jdbc:mariadb://ako.cwrnmurbtzdj.us-east-2.rds.amazonaws.com/ako-dev-temp
+    url: jdbc:mariadb://ako.cwrnmurbtzdj.us-east-2.rds.amazonaws.com/ako
     username: ako
     password: "Enpm61320!7"
   mail:

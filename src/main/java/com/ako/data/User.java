@@ -23,12 +23,10 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
  * User model representing User table
@@ -37,7 +35,6 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  */
 @Entity
 @Table(name = "User")
-@JsonIgnoreProperties(value = {"id", "createDate","lastModifyDate"}, allowGetters = true)
 public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,10 +45,10 @@ public class User implements UserDetails {
     @CreatedDate
 	private Date createDate;
 	
-	@Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-	@LastModifiedDate
-	private Date lastModifyDate;
+	//@Column(nullable = false, updatable = false)
+    //@Temporal(TemporalType.TIMESTAMP)
+	//@LastModifiedDate
+	//private Date lastModifyDate;
 	
 	@Column(nullable = false)
 	private String firstName;
@@ -108,80 +105,64 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"))
     private List<Message> userMessages;
     
-    @JsonGetter("id")
 	public int getId() {
 		return id;
 	}
-    @JsonGetter("createDate")
+	
+	@JsonIgnore
 	public Date getCreateDate() {
 		return createDate;
 	}
-    @JsonGetter("lastModifyDate")
+	/*
 	public Date getLastModifyDate() {
 		return lastModifyDate;
-	}
-    @JsonGetter("firstName")
+	}*/
 	public String getFirstName() {
 		return firstName;
 	}
-    @JsonSetter("firstName")
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	@JsonGetter("middleName")
 	public String getMiddleName() {
 		return middleName;
 	}
-	@JsonSetter("middleName")
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
-	@JsonGetter("lastName")
 	public String getLastName() {
 		return lastName;
 	}
-	@JsonSetter("lastName")
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	@JsonGetter("birthDate")
 	public Date getBirthDate() {
 		return birthDate;
 	}
-	@JsonSetter("birthDate")
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
-	@JsonGetter("email")
 	public String getEmail() {
 		return email;
 	}
-	@JsonSetter("email")
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	@JsonGetter("password")
 	public String getPassword() {
 		return password;
 	}
-	@JsonSetter("password")
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@JsonGetter("userTypeId") 
 	public int getUserTypeId () {
 		return userTypeId;
 	}
-	@JsonSetter("userTypeId")
 	public void setUserType(int userTypeId){
 		this.userTypeId = userTypeId;
 	}
 	
-	@JsonGetter("hasMfaActive")
 	public boolean getHasMfaActive() {
 		return hasMfaActive;
 	}
-	@JsonSetter("hasMfaActive")
 	public void setHasMfaActive(boolean hasMfaActive) {
 		this.hasMfaActive = hasMfaActive;
 	}
@@ -194,11 +175,9 @@ public class User implements UserDetails {
 	public void setSecret(String secret) {
 		this.secret = secret;
 	}
-	@JsonGetter("userName")
 	public String getUserName() {
 		return userName;
 	}
-	@JsonSetter("userName")
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
@@ -213,11 +192,13 @@ public class User implements UserDetails {
 		// TODO Auto-generated method stub
 		this.authorities = (List<Authority>) authorities;
 	}
-	
+
+	@JsonIgnore
 	public List<Course> getUserCourses() {
 		return userCourses;
 	}
-	
+
+	@JsonIgnore
 	public List<Group> getUserGroups() {
 		return userGroups;
 	}
