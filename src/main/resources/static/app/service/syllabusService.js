@@ -1,4 +1,4 @@
-akoApp.factory('syllabusService', function($scope, $http){
+akoApp.service('syllabusService', function($scope, $http){
 
     $scope.editMode = false;
     $scope.id = '';
