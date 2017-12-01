@@ -55,17 +55,13 @@ public class Course {
 	String description;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	/*	@JoinTable(name = "Course_user",
+	@JoinTable(name = "Course_user",
 	joinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"),
-			inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))*/
+			inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
 	private List<User> courseUsers;
 
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
 	private List<Module> courseModules;
-	
-	// Needed to complete the one to one mapping. Does not need to be stored in the database
-    @OneToOne(mappedBy = "course")
-    private Module module;
 
 	@JsonGetter("id")
 	public int getId() {
