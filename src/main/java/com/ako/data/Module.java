@@ -39,7 +39,7 @@ public class Module {
 	private Date createDate;
 	
 	@ManyToOne(optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(name="module_id")
+	@JoinColumn(name="course_id")
 	private Course course;
 	
 	@Column(nullable = false)
