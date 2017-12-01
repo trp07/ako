@@ -55,9 +55,9 @@ public class Course {
 	String description;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "Course_user",
+	/*	@JoinTable(name = "Course_user",
 	joinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"),
-			inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+			inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))*/
 	private List<User> courseUsers;
 
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)

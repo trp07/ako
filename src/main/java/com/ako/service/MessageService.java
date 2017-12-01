@@ -21,7 +21,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.ako.data.Email;
+import com.ako.data.Message;
 import com.ako.data.MessageRepository;
 import com.ako.data.MessageUser;
 import com.ako.data.User;
@@ -45,8 +45,8 @@ public class MessageService {
 	 * @return Return a list of all users
 	 */
 	
-	public List<Email> getAllMessages() {
-		List<Email> messages = new ArrayList<>();
+	public List<Message> getAllMessages() {
+		List<Message> messages = new ArrayList<>();
 		this.messageRepository.findAll().forEach(messages::add);
 		return messages;
 	}
@@ -57,24 +57,24 @@ public class MessageService {
 	 * @param id
 	 * @return The message identified by given id
 	 */
-	public Email getMessage(int id) {
+	public Message getMessage(int id) {
 		return this.messageRepository.findOne(id);
 	}
 	
 	/**
 	 * simple send text message
 	 * 
-	 * @param email
+	 * @param Message
 	 */
 	@Async
-	public void sendMessage(Email email) {
+	public void sendMessage(Message Message) {
 
 		try {
 			SimpleMailMessage mail = new SimpleMailMessage();
 			mail.setTo("vishakha@umd.edu");
 			mail.setFrom("prashant@gmail.com");
-			mail.setSubject(email.getSubject());
-			mail.setText(email.getBody());
+			mail.setSubject(Message.getSubject());
+			mail.setText(Message.getBody());
 
 			this.javaMailSender.send(mail);
 		} catch (MailException e) {
@@ -82,7 +82,7 @@ public class MessageService {
 			e.printStackTrace();
 		} finally {
 			// save to database
-			//this.messageRepository.save(email);
+			//this.messageRepository.save(Message);
 		}
 	}
 

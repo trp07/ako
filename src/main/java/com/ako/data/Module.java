@@ -38,7 +38,7 @@ public class Module {
 	private Date createDate;
 	
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(name="id")
+	//@JoinColumn(name="id")
 	private Course course;
 	
 	@Column(nullable = false)

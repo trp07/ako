@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.ako.data.Email;
+import com.ako.data.Message;
 import com.ako.service.MessageService;
 
 @Controller
@@ -20,17 +20,17 @@ public class MessageController {
 	MessageService messageService;
 
 	@RequestMapping("/")
-	public List<Email> getAllMessages() {
+	public List<Message> getAllMessages() {
 		return messageService.getAllMessages();
 	}
 
 	@RequestMapping(method = RequestMethod.POST, path = "/send")
-	public void send(Email email) {
+	public void send(Message email) {
 		this.messageService.sendMessage(email);
 	}
 
 	@RequestMapping("/{id}")
-	public Email getMessage(@PathVariable int id) {
+	public Message getMessage(@PathVariable int id) {
 		return this.messageService.getMessage(id);
 	}
 
