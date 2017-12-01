@@ -6,19 +6,19 @@ akoApp.component('login', {
     },
     controller: function ($http, $state, authService, msgDialogService, $mdDialog) {
 
-        this.name = "AKO Login";
-
+        this.user = null;
+        var self = this;
         this.login = function () {
             authService.login(this.userId, this.password).then(function (response) {
                 this.password = null;
                 var url = "";
-
-                msgDialogService.showInfo("Username password verified");
-
+                self.user = response.data;
                 if (response.data.hasMfaActive) {
                     showPrompt();
                 } else {
-                    testAuth();
+                    $state.go('home', {
+                        user: self.user
+                    });
                 }
             }).catch(function (error) {
                 // if authentication was not successful. Setting the error message.
@@ -38,8 +38,9 @@ akoApp.component('login', {
 
             $mdDialog.show(confirm).then(function (code) {
                 authService.verifyCode(code).then(function (res) {
-                    msgDialogService.showInfo("code verified= " + res.data.mfaAuth);
-                    testAuth();
+                    $state.go('home', {
+                        user: self.user
+                    });
                 }).catch(function (err) {
                     console.log(err);
                 });

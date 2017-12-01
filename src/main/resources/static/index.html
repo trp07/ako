@@ -2,37 +2,50 @@
 <html lang="en" ng-app="akoApp">  
 <head>
 
-   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.css">
-      <title> Ako LMS</title>
-  </head>
-  <body>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.css">
+
+    <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+    <link href="assets/css/angular-material-accordion.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <title> Ako LMS</title>
+</head>
+
+<body>
 
     <!-- AngularJS Material Dependencies -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-aria.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angular-ui-router/1.0.0-rc.1/angular-ui-router.min.js"></script>
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.js"></script>
-      
-      
-      <!-- Ako App scripts -->
-      <script src="app/app.js"></script>
-      <script src="app/app.route.js"></script>
-      <script src="app/service/loginService.js"></script>
-      <script src="app/service/msgDialogService.js"></script>
-      <script src="app/service/authService.js"></script>
-      <script src="app/service/syllabusService.js"></script>
-      <script src="app/service/userService.js"></script>
-      
-      
-      <script src="app/component/login/loginComponent.js"></script>
-      <script src="app/component/home/homeComponent.js"></script>
-      <script src="app/component/user/profile/userProfileComponent.js"></script>
-      <script src="app/component/syllabus/syllabusComponent.js"></script>
-      <script src="app/component/user/list/userListComponent.js"></script>
-      
-      
-      <ui-view></ui-view>
-  </body>
+
+    <!-- Ako App helper libs -->
+    <script src="assets/js/angular-material-accordion.js"></script>
+    <script src="assets/js/angular-storage.min.js"></script>
+    <script src="assets/js/angular-jwt.min.js"></script>
+
+    <!-- Ako App scripts -->
+    <script src="app/app.js"></script>
+    <script src="app/app.route.js"></script>
+    <script src="app/service/loginService.js"></script>
+    <script src="app/service/msgDialogService.js"></script>
+    <script src="app/service/authService.js"></script>
+    <script src="app/service/syllabusService.js"></script>
+    <script src="app/service/userService.js"></script>
+
+    <!-- Ako App layout -->
+    <script src="app/component/layout/layoutComponent.js"></script>
+    <script src="app/component/sidenav/sidenavComponent.js"></script>
+
+    <script src="app/component/login/loginComponent.js"></script>
+    <script src="app/component/home/homeComponent.js"></script>
+    <script src="app/component/user/profile/userProfileComponent.js"></script>
+    <script src="app/component/syllabus/syllabusComponent.js"></script>
+    <script src="app/component/user/list/userListComponent.js"></script>
+
+
+    <ui-view></ui-view>
+</body>
 </html>
