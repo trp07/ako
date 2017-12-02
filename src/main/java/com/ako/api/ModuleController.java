@@ -31,6 +31,7 @@ public class ModuleController {
 	
 	@Autowired
 	FileService fileService;
+	
 	/**
 	 * The logger
 	 */

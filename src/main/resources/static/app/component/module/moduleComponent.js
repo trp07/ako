@@ -5,7 +5,11 @@ akoApp.component('module', {
         password: '<',
         courseId: '<'
     },
-    controller: function($scope, $http){
-
+    require: {
+        parent: '^^layout'
+    },
+    controller: function($scope, $http, moduleService){
+    	console.log('Getting all of the modules');
+    	$scope.modules = moduleService.viewModules('3');
     }
 });

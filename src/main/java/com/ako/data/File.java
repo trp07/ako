@@ -44,7 +44,7 @@ public class File {
 	private String description;
 	
 	@Column(nullable  = false)
-	private String fileS3Url;
+	private String fileUrl;
 	
     @JsonGetter("id")
 	public int getId() {
@@ -77,13 +77,13 @@ public class File {
     public void setDescription(String description) {
     	this.description = description;
     }
-    @JsonGetter("fileS3Url")
+    @JsonGetter("fileUrl")
     public String getFileS3Url() {
     	return description;
     }
-    @JsonSetter("fileS3Url")
-    public void setFileS3Url(String fileS3Url) {
-    	this.fileS3Url = fileS3Url;
+    @JsonSetter("fileUrl")
+    public void setFileUrl(String fileUrl) {
+    	this.fileUrl = fileUrl;
     }
     
     @Override

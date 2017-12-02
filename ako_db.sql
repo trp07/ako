@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS ako.file (
 	module_id INT, 
 	name VARCHAR(50) NOT NULL,
 	description TEXT NOT NULL,
-	file_s3_url VARCHAR(100) NOT NULL 
+	file_url VARCHAR(100) NOT NULL 
 );
 
 INSERT INTO ako.file (id, name, description, file_s3_url) 

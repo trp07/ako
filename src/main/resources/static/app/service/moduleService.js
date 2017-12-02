@@ -3,6 +3,7 @@ akoApp.factory('moduleService', function ($http, $q, BASE_URL, store, $state) {
 	
 	// Get all modules for the course
 	var viewModules = function(courseId) {
+		console.log('Getting all of the modules in the service.');
 		var deferred = $q.defer();
         if (!courseModules) {
             $http.get(BASE_URL + '/module/' + courseId).then(function (moduleData) {
@@ -77,5 +78,13 @@ akoApp.factory('moduleService', function ($http, $q, BASE_URL, store, $state) {
         }).catch(deferred.reject);
         return deferred.promise;
 	}
+    return {
+    	viewModules: viewModules,
+    	createModule: createModule,
+    	editModule: editModule,
+    	deleteModule: deleteModule,
+    	addModuleFile: addModuleFile,
+    	deleteModuleFile: deleteModuleFile
+    };
 	
 });

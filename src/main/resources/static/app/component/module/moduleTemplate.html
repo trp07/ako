@@ -1,1 +1,7 @@
-<h1>Modules!</h1>
+<div class="alert alert-error" ng-show="error">{{errorMessage}}</div>
+<div ng-repeat="m in modules">
+    {{m.key}}: {{m.value}}
+</div>
+<div class="row">
+    <h2>If the user is an admin, add the '+' sign here </h2>
+</div>

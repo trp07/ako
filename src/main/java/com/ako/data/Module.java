@@ -38,7 +38,7 @@ public class Module {
     @CreatedDate
 	private Date createDate;
 	
-	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="course_id")
 	private Course course;
 	
@@ -49,7 +49,7 @@ public class Module {
 	private String description;
 	
 	
-	@OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "module")
 	private List<File> moduleFiles;
 	
 	@JsonGetter("id")
