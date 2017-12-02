@@ -34,8 +34,8 @@ public class Module {
 	private int id;
 	
 	@Column(nullable = false, updatable = false)
-        @Temporal(TemporalType.TIMESTAMP)
-        @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
 	private Date createDate;
 	
 	@ManyToOne(optional = false, cascade = CascadeType.ALL)
@@ -52,6 +52,14 @@ public class Module {
 	@OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
 	private List<File> moduleFiles;
 	
+	@JsonGetter("id")
+	public int getId(){
+    	return id;
+    }
+	@JsonGetter("createDate")
+	public Date getcCreateDate(){
+    	return createDate;
+    }
     public Course getCourse(){
     	return course;
     }
