@@ -1,11 +1,11 @@
 package com.ako.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.joda.time.LocalDate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -91,11 +91,11 @@ public class SyllabusService implements ISyllabus {
 
     /**
      * Find assignment by Due Date
-     * @param LocalDate dueDate
+     * @param Date dueDate
      * @return the assignment
      */
     @Override
-    public Syllabus findByDueDate(LocalDate dueDate) {
+    public Syllabus findByDueDate(Date dueDate) {
         logger.info("====SyllabusService==== findByDueDate() called");
         return this.repository.findByDueDate(dueDate);
     }

@@ -34,8 +34,8 @@ public class Module {
 	private int id;
 	
 	@Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
+        @Temporal(TemporalType.TIMESTAMP)
+        @CreatedDate
 	private Date createDate;
 	
 	@ManyToOne(optional = false, cascade = CascadeType.ALL)

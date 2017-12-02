@@ -45,8 +45,8 @@ public class User implements UserDetails {
 	private int id;
 	
 	@Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
+        @Temporal(TemporalType.TIMESTAMP)
+        @CreatedDate
 	private Date createDate;
 	
 	//@Column(nullable = false, updatable = false)
