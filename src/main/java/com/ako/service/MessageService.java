@@ -19,6 +19,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.ako.core.AkoUtility;
 import com.ako.data.Message;
 import com.ako.data.MessageRepository;
 import com.ako.data.MessageUser;
@@ -83,7 +84,16 @@ public class MessageService {
 			//this.messageRepository.save(Message);
 		}
 	}
-
+	
+	public Message updateUser(Message message) {
+		//spring JPA does not let us update partial object
+		//fetch the existing from db and update the existing object instead
+		Message existing = this.messageRepository.findOne(message.getId());
+		AkoUtility.copyNonNullProperties(message, existing);
+		
+		return this.messageRepository.save(existing);
+	}
+	
 	public void sendMessageWithAttachment(String to, String subject, String text, String pathToAttachment) {
 		try {
 			MimeMessage message = this.javaMailSender.createMimeMessage();

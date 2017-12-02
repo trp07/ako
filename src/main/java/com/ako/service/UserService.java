@@ -1,8 +1,13 @@
 package com.ako.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ako.core.AkoUtility;
 import com.ako.data.IUserRepository;
 import com.ako.data.User;
 
@@ -75,13 +81,18 @@ public class UserService implements UserDetailsService {
 	 * @return The updated user
 	 */
 	public User updateUser(User user) {
-		return this.repository.save(user);
+		//spring JPA does not let us update partial object
+		//fetch the existing from db and update the existing object instead
+		User existing = this.repository.findOne(user.getId());
+		AkoUtility.copyNonNullProperties(user, existing);
+		
+		return this.repository.save(existing);
 	}
 
 	public User findByEmail(String email) {
 		return this.repository.findByEmail(email);
 	}
-	
+
 	public User findByUserName(String userName) {
 		return this.repository.findByUserName(userName);
 	}

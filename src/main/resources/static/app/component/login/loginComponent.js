@@ -9,11 +9,11 @@ akoApp.component('login', {
         this.user = null;
         var self = this;
         this.login = function () {
-            authService.login(this.userId, this.password).then(function (response) {
+            authService.login(this.userId, this.password).then(function (user) {
                 this.password = null;
                 var url = "";
-                self.user = response.data;
-                if (response.data.hasMfaActive) {
+                self.user = user;
+                if (user.hasMfaActive) {
                     showPrompt();
                 } else {
                     $state.go('home', {
@@ -49,12 +49,5 @@ akoApp.component('login', {
             });
         };
 
-        var testAuth = function () {
-            authService.getQRCodeURL().then(function (res) {
-                msgDialogService.showInfo("Authorization successful");
-            }).catch(function (err) {
-                msgDialogService.showInfo("Authorization error");
-            });
-        }
     }
 });
