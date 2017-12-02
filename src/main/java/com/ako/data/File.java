@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
+
 @Entity
 @Table(name="File")
 @JsonIgnoreProperties(value = {"id", "createDate"}, allowGetters = true)
@@ -83,6 +84,18 @@ public class File {
     @JsonSetter("fileS3Url")
     public void setFileS3Url(String fileS3Url) {
     	this.fileS3Url = fileS3Url;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+    	if (object == this) {
+			// The objects are of the same reference
+			return true;
+		} else if (object instanceof File) {
+			//Two files are the same if they have the same id
+			return (((File) object).getId() == this.id);
+		}
+    	return false;
     }
     
 }
