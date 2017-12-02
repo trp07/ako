@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ako.data.File;
 import com.ako.data.Module;
+import com.ako.service.FileService;
 import com.ako.service.ModuleService;
 
 /**
@@ -28,6 +29,8 @@ public class ModuleController {
 	@Autowired
 	ModuleService moduleService;
 	
+	@Autowired
+	FileService fileService;
 	/**
 	 * The logger
 	 */
@@ -71,9 +74,14 @@ public class ModuleController {
 	 * @param module
 	 * @return
 	 */
-	@RequestMapping(method=RequestMethod.DELETE, path= "/")
-	public String deleteModule(@RequestBody Module module) {
-		logger.info("The module controller received a request to DELETE a module with id " + module.getId() + ".");
+	@RequestMapping(method=RequestMethod.DELETE, path= "/{moduleId}")
+	public List<Module> deleteModule(@PathVariable int moduleId) {
+		logger.info("The module controller received a request to DELETE a module with id " + moduleId + ".");
+		Module module = moduleService.getModule(moduleId);
+		if (module == null) {
+			String error = "The module does not exist.";
+			logger.error(error);
+		}
 		return moduleService.deleteModule(module);
 	}
 	
@@ -82,7 +90,7 @@ public class ModuleController {
 	 * @param file
 	 * @return
 	 */
-	@RequestMapping(method=RequestMethod.PUT, path= "/add/{moduleId}")
+	@RequestMapping(method=RequestMethod.PUT, path= "/file/{moduleId}")
 	public Module addModuleFile(@RequestBody File file, @PathVariable int moduleId) {
 		logger.info("The module controller received a request to SAVE a file in module " + moduleId + ".");
 		logger.info("The file name is " + file.getName() + ".");
@@ -104,19 +112,20 @@ public class ModuleController {
 	 * @param moduleId
 	 * @return
 	 */
-	@RequestMapping(method=RequestMethod.PUT, path= "/delete/{moduleId}")
-	public Module deleteModuleFile(@RequestBody File file, @PathVariable int moduleId) {
-		logger.info("The module controller received a request to DELETE a file from module " + moduleId + ".");
-		logger.info("The file id is " + file.getId() + ".");
-		Module module = moduleService.getModule(moduleId);
+	@RequestMapping(method=RequestMethod.DELETE, path= "/file/{fileId}")
+	public Module deleteModuleFile(@PathVariable int fileId) {
+		logger.info("The module controller received a request to DELETE a file with id " + fileId +".");
+		File file = fileService.getFile(fileId);
+		Module module = file.getModule();
+		logger.info("The file belongs to module " + module.getId() + ".");
 		List<File> moduleFiles = module.getModuleFiles();
 		if (moduleFiles.contains(file)) {
 			moduleFiles.remove(file);
 			module.setModuleFiles(moduleFiles);
 			moduleService.saveModule(module);
 		} else {
-			logger.info("The module did not contain the file");
+			logger.info("The module did not contain the file!");
 		}
-		return moduleService.getModule(moduleId);
+		return moduleService.getModule(module.getId());
 	}
 }

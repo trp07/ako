@@ -33,7 +33,7 @@ public class ModuleService {
 	 * @return
 	 */
 	public List<Module> getAllModules(int courseId) {
-		logger.debug("The module service received a request to get all modules for course " + courseId+ ".");
+		logger.debug("The module service received a request to get all modules for course " + courseId + ".");
 		return moduleRepository.findByCourseId(courseId);
 	}
 
@@ -68,12 +68,15 @@ public class ModuleService {
 		logger.debug("The module service received a request to SAVE the module with id " + module.getId() + ".");
 		return moduleRepository.save(module);
 	}
-	
-	public String deleteModule(Module module) {
+	/**
+	 * Deletes a module from the database
+	 * @param module
+	 * @return
+	 */
+	public List<Module> deleteModule(Module module) {
 		logger.debug("The module service received a request to DELETE the module with id " + module.getId() + ".");
 		moduleRepository.delete(module);
-		String message = "Successfully deleted the module with id " + module.getId() + ".";
-		return message;
+		return getAllModules(module.getCourse().getId());
 	}
 
 }
