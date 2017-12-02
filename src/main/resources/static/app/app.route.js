@@ -29,6 +29,9 @@ akoApp.config(function ($stateProvider, $urlServiceProvider, $urlRouterProvider)
     $stateProvider.state('home', {
         parent: 'index',
         url: '/home',
+        params: {
+            user: null
+        },
         views: {
             'detail@index': {
                 component: 'home',
@@ -36,15 +39,33 @@ akoApp.config(function ($stateProvider, $urlServiceProvider, $urlRouterProvider)
         },
     });
     $stateProvider.state('userList', {
+        parent: 'index',
         url: '/userList',
-        component: 'userList'
+        views: {
+            'detail@index': {
+                component: 'userList',
+            },
+        },
     });
     $stateProvider.state('userProfile', {
+        parent: 'index',
         url: '/userProfile',
-        component: 'userProfile'
+        views: {
+            'detail@index': {
+                component: 'userProfile',
+            },
+        },
     });
     $stateProvider.state('syllabus', {
+        parent: 'index',
         url: '/syllabus',
-        component: 'syllabus'
+        params: {
+            user: null
+        },
+        views: {
+            'detail@index': {
+                component: 'syllabus',
+            },
+        },
     });
 });

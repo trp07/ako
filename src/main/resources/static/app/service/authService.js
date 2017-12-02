@@ -29,7 +29,16 @@ akoApp.factory('authService', function ($http, $q, BASE_URL, store, $state) {
     }
 
     var getUser = function () {
-        return $http.get(BASE_URL + '/users/whoami');
+        var deferred = $q.defer();
+        if (!loggedInUser) {
+            $http.get(BASE_URL + '/users/whoami').then(function (userData) {
+                loggedInUser = userData.data;
+                deferred.resolve(loggedInUser);
+            }).catch(deferred.reject);
+        } else {
+            deferred.resolve(loggedInUser);
+        }
+        return deferred.promise;
     };
 
     var getQRCodeURL = function () {
@@ -61,16 +70,12 @@ akoApp.factory('authService', function ($http, $q, BASE_URL, store, $state) {
         store.set('access_token', token);
 
     };
-    var getLoggedInUser = function () {
-        return loggedInUser;
-    }
     return {
         getUser: getUser,
         login: login,
         refreshToken: refreshToken,
         getQRCodeURL: getQRCodeURL,
         verifyCode: verifyCode,
-        logout: logout,
-        getLoggedInUser: getLoggedInUser
+        logout: logout
     };
 });

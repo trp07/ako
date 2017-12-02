@@ -1,40 +1,43 @@
 <md-card>
-  <div layout="row" style="background-color: white; height:100%">
-    <div layout="column" layout-align="space-around center" flex="20" style="background-color:rgb(63,81,183)">
-      <div layout align="center center">
-        <img class="profile-pic" src="http://via.placeholder.com/200x200">
-      </div>
-      <div>
-        <img src="http://via.placeholder.com/75x75">
-      </div>
-    </div>
-    <div flex="80">
-      <div layout="column">
-        <md-input-container class="md-icon-float">
-          <!-- Use floating label instead of placeholder -->
-          <label style="margin-left:0px">First Name</label>
-          <input ng-model="user.fname" type="text" style="padding-top:0">
-        </md-input-container>
-        <md-input-container class="md-icon-float">
-          <!-- Use floating label instead of placeholder -->
-          <label style="margin-left:0px">Last Name</label>
-          <input ng-model="user.lname" type="text" style="padding-top:0">
-        </md-input-container>
-        <md-input-container class="md-icon-float">
-          <!-- Use floating label instead of placeholder -->
-          <label style="margin-left:0px">Email</label>
-          <input ng-model="user.email" type="text" style="padding-top:0">
-        </md-input-container>
-        <md-input-container class="md-icon-float">
-          <!-- Use floating label instead of placeholder -->
-          <br>
-          <md-datepicker ng-model="ctrl.myDate" md-placeholder="Enter date of birth"></md-datepicker>
-        </md-input-container>
-        <div flex class="button">
-          <md-button class="md-raised md-primary save">Save</md-button>
-          <md-button class="md-raised cancel">Cancel</md-button>
+    <div layout="row">
+        <div layout="column" layout-align="space-around top" flex="20" class="user-profile-images">
+            <div class="img">
+                <img class="profile-pic round-img" src="http://via.placeholder.com/200x200 ">
+            </div>
+            <div class="img">
+                <img ng-if="$ctrl.user.hasMfaActive " ng-src="{{$ctrl.qrCodeURL}} ">
+            </div>
         </div>
-      </div>
+        <div flex="80 ">
+            <div layout="column ">
+                <md-input-container class="md-icon-float ">
+                    <!-- Use floating label instead of placeholder -->
+                    <label style="margin-left:0px ">First Name</label>
+                    <input ng-model="$ctrl.user.firstName " type="text " style="padding-top:0 ">
+                </md-input-container>
+                <md-input-container class="md-icon-float ">
+                    <!-- Use floating label instead of placeholder -->
+                    <label style="margin-left:0px ">Last Name</label>
+                    <input ng-model="$ctrl.user.lastName " type="text " style="padding-top:0 ">
+                </md-input-container>
+                <md-input-container class="md-icon-float ">
+                    <!-- Use floating label instead of placeholder -->
+                    <label style="margin-left:0px ">Email</label>
+                    <input ng-model="$ctrl.user.email " type="text " style="padding-top:0 ">
+                </md-input-container>
+                <md-input-container class="md-icon-float ">
+                    <!-- Use floating label instead of placeholder -->
+                    <br>
+                    <md-datepicker ng-model="$ctrl.user.birthDate " md-placeholder="Enter date of birth "></md-datepicker>
+                </md-input-container>
+                <md-switch ng-model="$ctrl.user.hasMfaActive " aria-label="Finished? " ng-change="$ctrl.setMfaActive($ctrl.user.hasMfaActive) ">
+                    2-step verification
+                </md-switch>
+                <div flex class="button ">
+                    <md-button class="md-raised md-primary save" ng-click="$ctrl.saveChanges()">Save</md-button>
+                    <md-button class="md-raised cancel " ng-click="$ctrl.reset()">Reset</md-button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </md-card>

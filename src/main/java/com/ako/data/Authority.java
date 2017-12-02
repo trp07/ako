@@ -18,6 +18,12 @@ public class Authority implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    public Authority(String name) {
+    	this.name = name;
+    }
+    public Authority() {
+    }
+    
     @Column(name="name")
     String name;
 
