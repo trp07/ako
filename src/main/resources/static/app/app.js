@@ -1,13 +1,10 @@
-var akoApp = angular.module("akoApp", ['ngMaterial', 'ui.router', 'angular-jwt', 'ngMaterialAccordion', 'angular-storage']);
+var akoApp = angular.module("akoApp", ['ngMaterial', 'ui.router', 'angular-jwt', 'ngMaterialAccordion', 'angular-storage', 'ngResource']);
 
 akoApp.constant('BASE_URL', 'http://localhost:8080');
 
 
-akoApp.config(function ($httpProvider, $mdDateLocaleProvider, jwtOptionsProvider) {
-    $mdDateLocaleProvider.formatDate = function (date) {
-        var m = moment(date);
-        return m.isValid() ? m.format('MM/DD/YYYY') : '';
-    };
+akoApp.config(function ($httpProvider, $mdDateLocaleProvider, jwtOptionsProvider, $resourceProvider) {
+    $resourceProvider.defaults.stripTrailingSlashes = false;
 
     // Please note we're annotating the function so that the $injector works when the file is minified
     jwtOptionsProvider.config({

@@ -1,6 +1,7 @@
 package com.ako.data;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,16 +18,18 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import java.util.Date;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.ako.config.GrantedAuthorityDeserializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * User model representing User table
@@ -35,6 +38,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
  */
 @Entity
 @Table(name = "User")
+@DynamicUpdate
 public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -60,6 +64,7 @@ public class User implements UserDetails {
 	private String lastName;
 	
 	@Column(nullable = false)
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date  birthDate;
 	
 	@Column(nullable = false)
@@ -85,6 +90,8 @@ public class User implements UserDetails {
     @JoinTable(name = "User_authority",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+    @JsonDeserialize(using = GrantedAuthorityDeserializer.class)
+    
     private List<Authority> authorities;
     
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -156,7 +163,7 @@ public class User implements UserDetails {
 	public int getUserTypeId () {
 		return userTypeId;
 	}
-	public void setUserType(int userTypeId){
+	public void setUserTypeId(int userTypeId){
 		this.userTypeId = userTypeId;
 	}
 	
