@@ -57,7 +57,7 @@ public class Module {
     	return id;
     }
 	@JsonGetter("createDate")
-	public Date getcCreateDate(){
+	public Date getCreateDate(){
     	return createDate;
     }
     public Course getCourse(){
