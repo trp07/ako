@@ -11,7 +11,8 @@ akoApp.component('syllabus', {
 
         $scope.uploadSyllabus = function(syllabus_file){
              $scope.resetError();
-             $http.post('syllabus/upload/' + syllabus_file).success(function(response){
+             console.log("====syllabusComponent.js==== uploadSyllabus() called");
+             $http.post('/syllabus/upload/' + syllabus_file).success(function(response){
                 $scope.syllabusLink = response;
              }).error(function() {
                 $scope.setError('Unable to upload file');
@@ -20,7 +21,8 @@ akoApp.component('syllabus', {
 
         $scope.getSyllabusLink = function(){
             $scope.resetError();
-            $http.get('syllabus/download').success(function(response){
+            console.log("====syllabusComponent.js==== getSyllabusLink() called");
+            $http.get('/syllabus/download').success(function(response){
                 $scope.syllabusLink = response;
             }).error(function() {
                 $scope.setError('Could not determine download path');
@@ -29,7 +31,8 @@ akoApp.component('syllabus', {
 
         $scope.getAllAssignments = function(){
             $scope.resetError();
-            $http.get('syllabus/all.json').success(function(response){
+            console.log("====syllabusComponent.js==== getAllAssignments() called");
+            $http.get('/syllabus/all.json').success(function(response){
                 $scope.syllabus = response;
             }).error(function() {
                 $scope.setError('Could not display all assignments');
@@ -38,7 +41,8 @@ akoApp.component('syllabus', {
 
         $scope.addAssignment = function(assignment){
             $scope.resetError();
-            $http.post('syllabus/add/' + assignment).success(function(response){
+            console.log("====syllabusComponent.js==== addAssignment() called with: " + assignment);
+            $http.post('/syllabus/add/' + assignment).success(function(response){
                 $scope.getAllAssignments();
             }).error(function() {
                 $scope.setError('Could not add assignment');
@@ -48,7 +52,8 @@ akoApp.component('syllabus', {
 
         $scope.deleteAssignment = function(id){
             $scope.resetError();
-            $http.delete('syllabus/delete/'+id).success(function(response){
+            console.log("====syllabusComponent.js==== deleteAssignment() called");
+            $http.delete('/syllabus/delete/'+id).success(function(response){
                 $scope.getAllAssignments();
             }).error(function() {
                 $scope.setError('Could not delete assignment');
@@ -57,7 +62,8 @@ akoApp.component('syllabus', {
 
         $scope.deleteAll = function(){
             $scope.resetError();
-            $http.delete('syllabus/deleteAll').success(function(response){
+            console.log("====syllabusComponent.js==== deleteAll() called");
+            $http.delete('/syllabus/deleteAll').success(function(response){
                 $scope.getAllAssignments();
             }).error(function() {
                 $scope.setError('Could not delete all assignments');
@@ -65,6 +71,7 @@ akoApp.component('syllabus', {
         };
 
         $scope.editAssignment = function(id, assignment){
+            console.log("====syllabusComponent.js==== ediAssignment() called");
             $scope.resetError();
             $scope.assignment = assignment;
             $scope.id = id;
@@ -73,7 +80,8 @@ akoApp.component('syllabus', {
 
         $scope.updateAssignment = function(id, assignment){
             $scope.resetError();
-            $http.put('syllabus/update/'+ $scope.id + '/' + assignment).success(function(response){
+            console.log("====syllabusComponent.js==== updateAssignment() called");
+            $http.put('/syllabus/update/'+ $scope.id + '/' + assignment).success(function(response){
                 $scope.getAllAssignments();
                 $scope.position = '';
                 $scope.assignment = '';
@@ -85,16 +93,19 @@ akoApp.component('syllabus', {
 
         $scope.resetAssignmentField = function() {
             $scope.resetError();
+            console.log("====syllabusComponent.js==== resetAssignmentField() called");
             $scope.assignment = '';
             $scope.editMode = false;
         };
 
         $scope.resetError = function() {
             $scope.error = false;
+            console.log("====syllabusComponent.js==== resetError() called");
             $scope.errorMessage = '';
         };
 
         $scope.setError = function(message) {
+            console.log("====syllabusComponent.js==== setError() called");
             $scope.error = true;
             $scope.errorMessage = message;
         };

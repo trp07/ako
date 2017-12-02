@@ -58,9 +58,6 @@ public class SyllabusService implements ISyllabus {
     public Syllabus addAssignment(String assignment) {
         logger.info("====SyllabusService==== addAssignmet() called");
         Syllabus a = new Syllabus(assignment);
-        if (this.repository.exists(a.getId())) {
-            return this.updateSyllabus(a.getId(), assignment);
-        }
         return this.repository.save(a);
     }
 

@@ -3,7 +3,6 @@ package com.ako.data;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +13,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.joda.time.LocalDate;
 import org.springframework.data.annotation.CreatedDate;
 
 /**
@@ -22,7 +20,7 @@ import org.springframework.data.annotation.CreatedDate;
  * @author Tim
  */
 @Entity
-@Table(name="Syllabus")
+@Table(name="assignment")
 public class Syllabus {
 
     @Id
