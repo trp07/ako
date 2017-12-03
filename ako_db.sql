@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS ako.file (
 	file_url VARCHAR(100) NOT NULL 
 );
 
-INSERT INTO ako.file (id, name, description, file_s3_url) 
+INSERT INTO ako.file (id, name, description, file_url) 
     VALUES(1, 'ENPM613', 'Syllabus for ENPM613', 'https://s3-us-west-2.amazonaws.com/enpm613-ako/Syllabus_Default.pdf');
 
 
@@ -229,6 +229,7 @@ INSERT INTO ako.message_user_type VALUES ('03','Cc');
 INSERT INTO ako.message_user_type VALUES ('04','Bcc');
 
 CREATE TABLE IF NOT EXISTS ako.message_user (
+	id MEDIUMINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	message_id MEDIUMINT NOT NULL,
 	user_id INT NOT NULL, /* Could be an individual user */
 	group_id INT, /* Could be an individual group. For each member of the group, insert a record into this relation. */
