@@ -80,4 +80,16 @@ akoApp.config(function ($stateProvider, $urlServiceProvider, $urlRouterProvider)
             },
         },
     });
+    $stateProvider.state('messages', {
+        parent: 'index',
+        url: '/messages',
+        params: {
+            user: null
+        },
+        views: {
+            'detail@index': {
+                component: 'messages',
+            },
+        },
+    });
 });

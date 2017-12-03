@@ -4,36 +4,43 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ako.data.Message;
 import com.ako.service.MessageService;
 
-@Controller
-@RequestMapping(value = "/messages", produces = MediaType.ALL_VALUE)
+
+
+@RestController
+@RequestMapping(value = "/messages", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MessageController {
 
 	@Autowired
 	MessageService messageService;
 
-	@RequestMapping("/")
-	public List<Message> getAllMessages() {
-		return messageService.getAllMessages();
+	@RequestMapping("/all/{id}")
+	public List<Message> getAllMessages(@PathVariable int id) {
+		return messageService.getAllMessages(id);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, path = "/send")
-	public void send(Message email) {
-		this.messageService.sendMessage(email);
+	public void send(@RequestBody Message email) {
+		this.messageService.createMessage(email);
 	}
 
 	@RequestMapping("/{id}")
 	public Message getMessage(@PathVariable int id) {
 		return this.messageService.getMessage(id);
 	}
-
+	
+	@RequestMapping(method = RequestMethod.POST, value="/save")
+	public void saveMessage(@RequestBody Message message){
+		messageService.saveMessage(message);
+	}
 	/*
 	 * @RequestMapping("/send") public void getAll() {
 	 * this.messageService.sendMessage(email); }

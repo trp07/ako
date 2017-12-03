@@ -20,10 +20,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.ako.core.AkoUtility;
+import com.ako.data.IMessageUserRepository;
 import com.ako.data.Message;
-import com.ako.data.MessageRepository;
+import com.ako.data.IMessageRepository;
 import com.ako.data.MessageUser;
-import com.ako.data.User;
 
 @Component
 @Service
@@ -33,23 +33,26 @@ public class MessageService {
 	private JavaMailSender javaMailSender;
 
 	@Autowired
-	private MessageRepository messageRepository;
+	private IMessageRepository messageRepository;
+	
+	@Autowired
+	private IMessageUserRepository  messageUserRepository;
 
 	private static final Logger logger = LoggerFactory.getLogger(MessageService.class);
-	
-	
+
 	/**
 	 * Fetch all the users
 	 * 
 	 * @return Return a list of all users
 	 */
-	
-	public List<Message> getAllMessages() {
+
+	public List<Message> getAllMessages(int id) {
 		List<Message> messages = new ArrayList<>();
-		this.messageRepository.findAll().forEach(messages::add);
-		return messages;
+		List<Message> messages1 = this.messageRepository.findByUserId(id);
+		this.messageRepository.findByUserId(id).forEach(messages::add);
+		return messages1;
 	}
-	
+
 	/**
 	 * Fetch message by id
 	 * 
@@ -59,14 +62,35 @@ public class MessageService {
 	public Message getMessage(int id) {
 		return this.messageRepository.findOne(id);
 	}
-	
+
+	/**
+	 * save message by id
+	 * 
+	 * @param id
+	 * @return The message identified by given id
+	 */
+
+	public void saveMessage(Message message) {
+		this.messageRepository.save(message);
+	}
+
+	/**
+	 * delete message by id
+	 * 
+	 * @param id
+	 * @return The message identified by given id
+	 */
+	public void deleteMessage(int id) {
+		this.messageRepository.delete(id);
+	}
+
 	/**
 	 * simple send text message
 	 * 
 	 * @param Message
 	 */
 	@Async
-	public void sendMessage(Message Message) {
+	private void sendMessage(Message Message) {
 
 		try {
 			SimpleMailMessage mail = new SimpleMailMessage();
@@ -81,7 +105,7 @@ public class MessageService {
 			e.printStackTrace();
 		} finally {
 			// save to database
-			//this.messageRepository.save(Message);
+			// this.messageRepository.save(Message);
 		}
 	}
 	
@@ -92,6 +116,16 @@ public class MessageService {
 		AkoUtility.copyNonNullProperties(message, existing);
 		
 		return this.messageRepository.save(existing);
+	}
+	
+	public void createMessage(Message message) {
+		Message createdMessage = this.messageRepository.save(message);
+		List<MessageUser> messageUsers = message.getMessageUsers();
+		for (MessageUser messageUser : messageUsers) {
+			
+			messageUser.setMessageId(createdMessage.getId());
+		}
+		this.messageUserRepository.save(messageUsers);
 	}
 	
 	public void sendMessageWithAttachment(String to, String subject, String text, String pathToAttachment) {

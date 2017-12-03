@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS ako.file (
 	file_url VARCHAR(100) NOT NULL 
 );
 
-INSERT INTO ako.file (id, name, description, file_s3_url) 
+INSERT INTO ako.file (id, name, description, file_url) 
     VALUES(1, 'ENPM613', 'Syllabus for ENPM613', 'https://s3-us-west-2.amazonaws.com/enpm613-ako/Syllabus_Default.pdf');
 
 
@@ -152,7 +152,7 @@ INSERT INTO ako.assignment (id, name, due_date, complete)
 INSERT INTO ako.assignment (id, name, due_date, complete)
     VALUES (3, 'Software Implementation', DATE('2017-12-03'), 0);
 INSERT INTO ako.assignment (id, name, due_date, complete)
-    VALUES (4, 'Final Exame', DATE('2017-12-13'), 0);
+    VALUES (4, 'Final Exam', DATE('2017-12-13'), 0);
 
 
 /* Message Relation */
@@ -230,6 +230,7 @@ INSERT INTO ako.message_user_type VALUES ('03','Cc');
 INSERT INTO ako.message_user_type VALUES ('04','Bcc');
 
 CREATE TABLE IF NOT EXISTS ako.message_user (
+	id MEDIUMINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	message_id MEDIUMINT NOT NULL,
 	user_id INT NOT NULL, /* Could be an individual user */
 	group_id INT, /* Could be an individual group. For each member of the group, insert a record into this relation. */
@@ -237,8 +238,7 @@ CREATE TABLE IF NOT EXISTS ako.message_user (
 	CONSTRAINT FOREIGN KEY (message_id) REFERENCES ako.message(id) ON DELETE CASCADE,
 	CONSTRAINT FOREIGN KEY (user_id) REFERENCES ako.user(id),
 	CONSTRAINT FOREIGN KEY (group_id) REFERENCES ako.group(id),
-	CONSTRAINT FOREIGN KEY (message_user_type_id) REFERENCES ako.message_user_type(id),
-	PRIMARY KEY (message_id, user_id, message_user_type_id)
+	CONSTRAINT FOREIGN KEY (message_user_type_id) REFERENCES ako.message_user_type(id)
 );
 
 /* drop users and flush privileges; owing to this bug : https://bugs.mysql.com/bug.php?id=28331 */

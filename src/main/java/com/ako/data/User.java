@@ -106,11 +106,7 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
     private List<Group> userGroups;
     
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "Message_user",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"))
-    private List<Message> userMessages;
+
     
 	public int getId() {
 		return id;
@@ -212,14 +208,6 @@ public class User implements UserDetails {
 	
 	public void setUserGroups(List<Group> userGroups) {
 		this.userGroups = userGroups;
-	}
-	
-	public List<Message> getUserMessages() {
-		return userMessages;
-	}
-	
-	public void setUserMessages(List<Message> userMessages) {
-		this.userMessages = userMessages;
 	}
 
 	@JsonIgnore
