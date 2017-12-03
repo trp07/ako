@@ -44,6 +44,8 @@ public class Module {
 	@Column(nullable = false)
 	private String description;
 	
+	@Column(nullable = false)
+	private boolean isPublished;;
 	
 	@OneToMany(mappedBy = "module")
 	private List<File> moduleFiles;
@@ -77,6 +79,14 @@ public class Module {
     @JsonSetter("description")
     public void setDescription(String description) {
     	this.description = description;
+    }
+    @JsonGetter("isPublished")
+    public boolean getIsPublished(){
+    	return isPublished;
+    }
+    @JsonSetter("isPublished")
+    public void setIsPublished(boolean isPublished) {
+    	this.isPublished = isPublished;
     }
     public List<File> getModuleFiles() {
     	return this.moduleFiles;
