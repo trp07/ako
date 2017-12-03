@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,22 +23,25 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.mail.SimpleMailMessage;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Message {
-
 	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
 	
 	@Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
 	private Date createDate;
 	
-	@OneToOne(optional = false)
-	@JoinColumn(name="id")
-	private Course course;
+	//@OneToOne(optional = false)
+	//@JoinColumn(name="courseId")
+	//private Course course;
+
+	@Column(nullable = false)
+	private int courseId;
 	
 	@Column(nullable = false)
 	private String subject;
@@ -45,15 +49,12 @@ public class Message {
 	@Column(nullable = false)
 	private String body;
 	
-	@OneToOne(optional = true)
-	@JoinColumn(name="id")
-	private Message previousMessage;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name = "Message_user", joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"), 
-		inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+	private Integer previousMessageId;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "messageId")
 	private List<MessageUser> messageUsers; // TODO
-	
+    
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Message_file", joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"), 
 		inverseJoinColumns = @JoinColumn(name = "file_id", referencedColumnName = "id"))
@@ -69,12 +70,13 @@ public class Message {
 		return createDate;
 	}
 	
-	public Course getCourse(){
-		return course;
-	}
-	public void setCourse(Course course){
-		this.course = course;
-	}
+	//@JsonIgnore
+	//public Course getCourse(){
+	//	return course;
+	//}
+	//public void setCourse(Course course){
+	//	this.course = course;
+	//}
 	
 	public String getSubject() {
 		return subject;
@@ -92,12 +94,12 @@ public class Message {
 		this.body = body;
 	}
 	
-	public int getPreviousMessageId() {
-		return id;
+	public Integer getPreviousMessageId() {
+		return previousMessageId;
 	}
 	
-	public void setPreviousMessageId(Message previousMessage) {
-		this.previousMessage = previousMessage;
+	public void setPreviousMessageId(Integer previousMessage) {
+		this.previousMessageId = previousMessage;
 	}
 
 //	private boolean result;
@@ -141,6 +143,14 @@ public class Message {
 	
 	public List<MessageUser> getMessageUsers() {
 		return messageUsers;
+	}
+
+	public int getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(int courseId) {
+		this.courseId = courseId;
 	}
 
 }

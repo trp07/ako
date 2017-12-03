@@ -3,7 +3,6 @@ package com.ako.data;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +13,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.joda.time.LocalDate;
 import org.springframework.data.annotation.CreatedDate;
 
 /**
@@ -22,7 +20,7 @@ import org.springframework.data.annotation.CreatedDate;
  * @author Tim
  */
 @Entity
-@Table(name="Syllabus")
+@Table(name="assignment")
 public class Syllabus {
 
     @Id
@@ -35,7 +33,7 @@ public class Syllabus {
     private Date createDate;
     
     @Column(nullable = false)
-    private String assignment;
+    private String name;
     
     @Column(nullable = false)
     private Date dueDate;
@@ -48,19 +46,19 @@ public class Syllabus {
     *   CONSTRUCTORS
     ************************************/    
     public Syllabus(String assignment, Date dueDate) {
-        this.assignment = assignment;
+        this.name = assignment;
         this.dueDate = dueDate;
         this.complete = false;
     }
     
     public Syllabus(String assignment) {
-        this.assignment = assignment;
+        this.name = assignment;
         this.dueDate = new Date();
         this.complete = false;
     }
 
     public Syllabus() {
-        this.assignment = "Not Specified.";
+        this.name = "Not Specified.";
         this.dueDate = new Date();
         this.complete = false;
     }
@@ -78,14 +76,13 @@ public class Syllabus {
     }
 
     public String getAssignment() {
-        return assignment;
+        return name;
     }
 
     public void setAssignment(String assignment) {
-        this.assignment = assignment;
+        this.name = assignment;
     }
 
-    @JsonIgnore
     public Date getDueDate() {
         return dueDate;
     }

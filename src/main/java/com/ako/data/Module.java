@@ -3,7 +3,6 @@ package com.ako.data;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,13 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
@@ -34,11 +30,11 @@ public class Module {
 	private int id;
 	
 	@Column(nullable = false, updatable = false)
-        @Temporal(TemporalType.TIMESTAMP)
-        @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
 	private Date createDate;
 	
-	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="course_id")
 	private Course course;
 	
@@ -48,10 +44,20 @@ public class Module {
 	@Column(nullable = false)
 	private String description;
 	
+	@Column(nullable = false)
+	private boolean isPublished;;
 	
-	@OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "module")
 	private List<File> moduleFiles;
 	
+	@JsonGetter("id")
+	public int getId(){
+    	return id;
+    }
+	@JsonGetter("createDate")
+	public Date getCreateDate(){
+    	return createDate;
+    }
     public Course getCourse(){
     	return course;
     }
@@ -73,6 +79,14 @@ public class Module {
     @JsonSetter("description")
     public void setDescription(String description) {
     	this.description = description;
+    }
+    @JsonGetter("isPublished")
+    public boolean getIsPublished(){
+    	return isPublished;
+    }
+    @JsonSetter("isPublished")
+    public void setIsPublished(boolean isPublished) {
+    	this.isPublished = isPublished;
     }
     public List<File> getModuleFiles() {
     	return this.moduleFiles;

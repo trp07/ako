@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import com.ako.service.S3Service;
 import com.ako.service.SyllabusService;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,7 +58,7 @@ public class SyllabusController {
     
     @RequestMapping(method=RequestMethod.GET, value="/download")
     public @ResponseBody String downloadSyllabus() {
-        logger.info("SyllabusController.downloadSyllabus called");
+        logger.info("====SyllabusController==== downloadSyllabus() called");
         return this.downloadLink;
 	}
 
@@ -70,17 +69,17 @@ public class SyllabusController {
         String fname = file.getOriginalFilename();
         String dlink;
 
-        logger.info("SyllabusController.uploadSyllabus called with: " + fname);
+        logger.info("====SyllabusController==== uploadSyllabus() called with: " + fname);
         try {
             s3Service.uploadFile(fname, file);
             dlink = s3Service.generateDownloadLink(fname);
             if (!dlink.equals("NO_URL")) {
                 this.setDownloadLink(dlink);
             }
-            logger.info("SyllabusController.uploadFile successful!");
+            logger.info("====SyllabusController==== uploadFile() successful!");
             
         } catch (Exception ace) {
-            logger.error("SyllabusController.UploadSyllabus Error");
+            logger.error("====SyllabusController==== uploadSyllabus() Error");
         }
         return this.downloadLink;
     }
@@ -92,26 +91,32 @@ public class SyllabusController {
     
     @RequestMapping(method=RequestMethod.GET, value="/all.json")
     public @ResponseBody List<Syllabus> getSyllabus() {
+        logger.info("====SyllabusController==== getSyllabus() called");
         return syllabusService.getAllAssignments();
     }
 
-    @RequestMapping(method=RequestMethod.POST, value="/add/{assignment}")
-    public @ResponseBody void addAssignment(@PathVariable("assignment") String assignment) {
-            syllabusService.addAssignment(assignment);
+    @RequestMapping(method=RequestMethod.POST, value="/add/{assignment}/{dueDate}")
+    public @ResponseBody void addAssignment(@PathVariable("assignment") String assignment, @PathVariable("dueDate") String dueDate) {
+        logger.info("====SyllabusController==== addAssignment() called with: " + assignment + " => " + dueDate);
+        syllabusService.addAssignment(assignment, dueDate);
     }
     
-    @RequestMapping(method=RequestMethod.PUT, value="/update/{id}")
-    public @ResponseBody void updateAssignment(@PathVariable("id") int id, String assignment) {
-            syllabusService.updateSyllabus(id, assignment);
+    @RequestMapping(method=RequestMethod.PUT, value="/update/{id}/{assignment}")
+    public @ResponseBody void updateAssignment(@PathVariable("id") int id, 
+                @PathVariable("assignment") String assignment) {
+        logger.info("====SyllabusController==== updateAssignment() called with: " + assignment);
+        syllabusService.updateSyllabus(id, assignment);
     }
     
-    @RequestMapping(method=RequestMethod.DELETE, value="/delete/{id}")
-    public @ResponseBody void deleteAssignment(@PathVariable("id") int id) {
-            syllabusService.deleteOneById(id);
+    @RequestMapping(method=RequestMethod.DELETE, value="/delete/{assignment}")
+    public @ResponseBody void deleteAssignment(@PathVariable("assignment") String assignment) {
+        logger.info("====SyllabusController==== deleteAssignment() called with: " + assignment);
+        syllabusService.deleteOneByName(assignment);
     }
     
     @RequestMapping(method=RequestMethod.DELETE, value="/deleteAll")
     public int deleteAll() {
-            return syllabusService.deleteAll();
+        logger.info("====SyllabusController==== deleteAll() called");
+        return syllabusService.deleteAll();
     }
 }
