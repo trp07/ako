@@ -15,13 +15,15 @@
     <form ng-submit="addAssignment(assignment)">
         <div class="col-lg-8">
             <input class="form-control" placeholder="Enter Assignment" type="text" ng-model="assignment" required min="1" />
+            <input type="date" id="dueDateInput" name="input" ng-model="resetDate.due_date"
+       placeholder="yyyy-MM-dd" min="2017-08-31" max="2017-12-31" required />
         </div>
     </form>
 
     <button class="btn btn-primary" ng-disabled="!assignment" ng-hide="editMode" ng-click="addAssignment(assignment)">Add Assignment</button>
     <button type="btn btn-primary" class="btn btn-primary"
             ng-disabled="!assignment" ng-show="editMode"
-            ng-click="updateSyllabus(assignment)">Save</button>
+            ng-click="updateAssignment(assignment)">Save</button>
     <button type="btn btn-primary" class="btn btn-primary" ng-click="resetAssignmentField()">Reset</button>
 </div>
 <hr />
@@ -43,21 +45,19 @@
 <table class="table table-bordered table-striped" ng-show="syllabus.length > 0">
     <thead>
     <tr>
-        <th style="text-align: center; width: 25px;">Delete</th>
-        <th style="text-align: center; width: 25px;">Update</th>
-        <th style="text-align: center; width: 25px;">Id</th>
-        <th style="text-align: center;">Assignment</th>
-        <th style="text-align: center;">Due Date</th>
+        <th style="text-align:center; width:25px;">Delete</th>
+        <th style="text-align:center; width:25px;">Update</th>
+        <th style="text-align:center; width:300px;">Assignment</th>
+        <th style="text-align:center;">Due Date</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="assignment in syllabus | filter:searchAssignment">
-        <td  style="width:70px;text-align:center;"><button class="btn btn-mini btn-danger" ng-click="deleteAssignment(id)">Delete</button></td>
-        <td  style="width:70px;text-align:center;"><button class="btn btn-mini btn-danger" ng-click="editAssignment(id, assignment)">Update</button></td>
-        <td>{{assignment.id}}</td>
+        <td  style="width:70px;text-align:center;"><button class="btn btn-mini btn-danger" ng-click="deleteAssignment(assignment)">Delete</button></td>
+        <td  style="width:70px;text-align:center;"><button class="btn btn-mini btn-danger" ng-click="editAssignment(assignment)">Update</button></td>
         <td>{{assignment.assignment}}</td>
-        <td>{{assignment.dueDate}}</td>
+        <td>{{assignment.dueDate | date: "yyyy-MM-dd"}}</td>
     </tr>
     </tbody>
 </table>
-<button class="btn btn-danger"  ng-show="syllabus.length >= 1" ng-click="deleteAll()">Delete All Assignments</button>
+<button class="btn btn-danger" style="width:140px;"  ng-show="syllabus.length >= 1" ng-click="deleteAll()">Delete All Assignments</button>

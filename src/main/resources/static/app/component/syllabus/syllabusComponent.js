@@ -1,4 +1,4 @@
-akoApp.component('syllabus', {
+akoApp.component('syllabus', ['ngMaterial', 'ngMessages'], {
     templateUrl: "/app/component/syllabus/syllabusTemplate.html",
     bindings: {},
     controller: function($scope, $http){
@@ -8,6 +8,13 @@ akoApp.component('syllabus', {
         $scope.editMode = false;
         $scope.id = '';
         $scope.syllabusLink = 'https://s3-us-west-2.amazonaws.com/enpm613-ako/Syllabus_Default.pdf';
+
+        $scope.due_date = new Date();
+
+        $scope.resetDate = {
+            due_date: new Date(2017, 11, 06)
+       };
+
 
         $scope.uploadSyllabus = function(syllabus_file){
              $scope.resetError();
@@ -41,7 +48,8 @@ akoApp.component('syllabus', {
 
         $scope.addAssignment = function(assignment){
             $scope.resetError();
-            console.log("====syllabusComponent.js==== addAssignment() called with: " + assignment);
+            console.log("====syllabusComponent.js==== addAssignment() called with: " +
+                assignment + " " + $scope.resetDate.due_date.getTime());
             $http.post('/syllabus/add/' + assignment).success(function(response){
                 $scope.getAllAssignments();
             }).error(function() {
@@ -50,10 +58,10 @@ akoApp.component('syllabus', {
             $scope.assignment = '';
         };
 
-        $scope.deleteAssignment = function(id){
+        $scope.deleteAssignment = function(assignment){
             $scope.resetError();
-            console.log("====syllabusComponent.js==== deleteAssignment() called");
-            $http.delete('/syllabus/delete/'+id).success(function(response){
+            console.log("====syllabusComponent.js==== deleteAssignment() called with: " + assignment.assignment);
+            $http.delete('/syllabus/delete/'+ assignment.assignment).success(function(response){
                 $scope.getAllAssignments();
             }).error(function() {
                 $scope.setError('Could not delete assignment');
@@ -70,20 +78,21 @@ akoApp.component('syllabus', {
             })
         };
 
-        $scope.editAssignment = function(id, assignment){
-            console.log("====syllabusComponent.js==== ediAssignment() called");
+        $scope.editAssignment = function(assignment){
+            console.log("====syllabusComponent.js==== editAssignment() called for: " assignment.assignment);
             $scope.resetError();
-            $scope.assignment = assignment;
-            $scope.id = id;
+            $scope.assignment = assignment.assignment;
+            $scope.id = assignment.id;
             $scope.editMode = true;
         };
 
-        $scope.updateAssignment = function(id, assignment){
+        $scope.updateAssignment = function(assignment){
             $scope.resetError();
-            console.log("====syllabusComponent.js==== updateAssignment() called");
+            console.log("====syllabusComponent.js==== updateAssignment() called for: " +
+                $scope.assignment + " => " + assignment);
             $http.put('/syllabus/update/'+ $scope.id + '/' + assignment).success(function(response){
                 $scope.getAllAssignments();
-                $scope.position = '';
+                $scope.id = '';
                 $scope.assignment = '';
                 $scope.editMode = false;
             }).error(function(){

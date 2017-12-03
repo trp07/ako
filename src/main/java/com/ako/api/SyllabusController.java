@@ -95,22 +95,23 @@ public class SyllabusController {
         return syllabusService.getAllAssignments();
     }
 
-    @RequestMapping(method=RequestMethod.POST, value="/add/{assignment}")
-    public @ResponseBody void addAssignment(@PathVariable("assignment") String assignment) {
-        logger.info("====SyllabusController==== addAssignment() called with: " + assignment);
-        syllabusService.addAssignment(assignment);
+    @RequestMapping(method=RequestMethod.POST, value="/add/{assignment}/{dueDate}")
+    public @ResponseBody void addAssignment(@PathVariable("assignment") String assignment, @PathVariable("dueDate") String dueDate) {
+        logger.info("====SyllabusController==== addAssignment() called with: " + assignment + " => " + dueDate);
+        syllabusService.addAssignment(assignment, dueDate);
     }
     
-    @RequestMapping(method=RequestMethod.PUT, value="/update/{id}")
-    public @ResponseBody void updateAssignment(@PathVariable("id") int id, String assignment) {
+    @RequestMapping(method=RequestMethod.PUT, value="/update/{id}/{assignment}")
+    public @ResponseBody void updateAssignment(@PathVariable("id") int id, 
+                @PathVariable("assignment") String assignment) {
         logger.info("====SyllabusController==== updateAssignment() called with: " + assignment);
         syllabusService.updateSyllabus(id, assignment);
     }
     
-    @RequestMapping(method=RequestMethod.DELETE, value="/delete/{id}")
-    public @ResponseBody void deleteAssignment(@PathVariable("id") int id) {
-        logger.info("====SyllabusController==== deleteAssignment() called");
-        syllabusService.deleteOneById(id);
+    @RequestMapping(method=RequestMethod.DELETE, value="/delete/{assignment}")
+    public @ResponseBody void deleteAssignment(@PathVariable("assignment") String assignment) {
+        logger.info("====SyllabusController==== deleteAssignment() called with: " + assignment);
+        syllabusService.deleteOneByName(assignment);
     }
     
     @RequestMapping(method=RequestMethod.DELETE, value="/deleteAll")
