@@ -96,6 +96,7 @@ CREATE TABLE IF NOT EXISTS ako.module (
 	course_id INT NOT NULL,
 	name VARCHAR(50) NOT NULL,
 	description TEXT,
+	is_published TINYINT(1) NOT NULL,
 	CONSTRAINT FOREIGN KEY (course_id) REFERENCES ako.course(id) ON DELETE CASCADE
 );
 
