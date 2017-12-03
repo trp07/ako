@@ -17,12 +17,13 @@ akoApp.factory('moduleService', function ($http, $q, BASE_URL, store, $state) {
     }
 	
 	// Create a module for this course
-	var createModule = function(courseId, name, description) {
+	var createModule = function(courseId, name, description,isPublished) {
 		var deferred = $q.defer();
 		var data = {
 				'courseId':courseId,
 				'name':name,
-				'description':description
+				'description':description,
+				'isPublished':isPublished
 			}
         $http.post(BASE_URL + '/module/', data).then(function (moduleData) {
         	deferred.resolve(moduleData);
@@ -31,15 +32,9 @@ akoApp.factory('moduleService', function ($http, $q, BASE_URL, store, $state) {
 	}
 	
 	// Update a module
-	var editModule = function(moduleId, courseId, name, description) {
+	var editModule = function(module) {
 		var deferred = $q.defer();
-		var data = {
-				'moduleId':moduleId,
-				'courseId':courseId,
-				'name':name,
-				'description':description
-			}
-        $http.put(BASE_URL + '/module/', data).then(function (moduleData) {
+        $http.put(BASE_URL + '/module/', module).then(function (moduleData) {
         	deferred.resolve(moduleData);
         }).catch(deferred.reject);
         return deferred.promise;

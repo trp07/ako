@@ -53,7 +53,7 @@ public class ModuleService {
 	 * @return
 	 */
 	public Module uploadModule(Module module) {
-		logger.debug("The module service received a request to ADD a module for course " + module.getCourse().getId() + ".");
+		logger.debug("The module service received a request to ADD a module for course " + module.getId()+ ".");
 		if (this.moduleRepository.exists(module.getId())) {
 			return saveModule(module);
 		}
@@ -76,7 +76,7 @@ public class ModuleService {
 	public List<Module> deleteModule(Module module) {
 		logger.debug("The module service received a request to DELETE the module with id " + module.getId() + ".");
 		moduleRepository.delete(module);
-		return getAllModules(module.getCourse().getId());
+		return getAllModules(module.getCourseId());
 	}
 
 }
