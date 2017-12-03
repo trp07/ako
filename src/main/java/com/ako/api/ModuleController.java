@@ -45,7 +45,9 @@ public class ModuleController {
 	@RequestMapping("/{courseId}")
 	public List<Module> viewModules(@PathVariable int courseId) {
 		logger.info("The module controller received a request to retrieve all modules for course " + courseId + ".");
-		return moduleService.getAllModules(courseId);
+		List<Module> moduleList = moduleService.getAllModules(courseId);
+		logger.debug("The module list has size " + moduleList.size() + ".");
+		return moduleList;
 	}
 	
 	/**

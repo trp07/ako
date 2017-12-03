@@ -1,7 +1,11 @@
 <div class="alert alert-error" ng-show="error">{{errorMessage}}</div>
-<div ng-repeat="m in modules">
-    {{m.key}}: {{m.value}}
+<h1>Modules</h1>
+<div layout="row" layout-align="end center">
+    <md-button class="md-raised md-primary" ng-click="displayAddModuleForm()">Add Module</md-button>
 </div>
-<div class="row">
-    <h2>If the user is an admin, add the '+' sign here </h2>
+<div ng-repeat="m in modules">
+	<md-accordion-content md-heading="{{m.name}} - {{m.description}}" md-arrow="true">
+		<div ng-repeat="f in m.moduleFiles">
+		</div>>
+     </md-accordion-content>
 </div>
