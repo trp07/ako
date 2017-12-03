@@ -68,4 +68,16 @@ akoApp.config(function ($stateProvider, $urlServiceProvider, $urlRouterProvider)
             },
         },
     });
+    $stateProvider.state('module', {
+        parent: 'index',
+        url: '/module',
+        params: {
+            user: null
+        },
+        views: {
+            'detail@index': {
+                component: 'module',
+            },
+        },
+    });
 });

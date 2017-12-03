@@ -1,0 +1,28 @@
+<md-dialog aria-label="Module Add Dialog" class="fullscreen-dialog">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon class="fa fa-times fa-2x"></md-icon>
+      </md-button>
+      <h2 flex="flex">Add Module</h2>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <form name="addModule"></form>
+    <div layout="layout" layout-sm="column">
+      <md-input-container style="width:80%">
+        <label>Name</label>
+        <input ng-model="module.name"/>
+      </md-input-container>
+    </div>
+    <div layout="layout" layout-sm="column"></div>
+    <md-input-container flex="flex">
+      <label>Description</label>
+      <input ng-model="module.description"/>
+    </md-input-container>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised md-primary" ng-click="addModule()">Add Module</md-button> 
+    </md-dialog-actions>
+</md-dialog>
