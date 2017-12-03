@@ -151,7 +151,7 @@ INSERT INTO ako.assignment (id, name, due_date, complete)
 INSERT INTO ako.assignment (id, name, due_date, complete)
     VALUES (3, 'Software Implementation', DATE('2017-12-03'), 0);
 INSERT INTO ako.assignment (id, name, due_date, complete)
-    VALUES (4, 'Final Exame', DATE('2017-12-13'), 0);
+    VALUES (4, 'Final Exam', DATE('2017-12-13'), 0);
 
 
 /* Message Relation */

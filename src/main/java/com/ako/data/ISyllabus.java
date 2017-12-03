@@ -12,9 +12,9 @@ import com.ako.data.Syllabus;
 public interface ISyllabus {
     public List<Syllabus> getAllAssignments();
     public Syllabus getAssignment(int id);
-    public Syllabus addAssignment(String assignment);
+    public Syllabus addAssignment(String assignment, String dueDate);
     public Syllabus updateSyllabus(int id, String assignment);
-    public Syllabus findByAssignment(String assignment);
+    public Syllabus findByName(String assignment);
     public Syllabus findByDueDate(Date dueDate);
     public List<Syllabus> findByCompleted(boolean completed);
     public int deleteAll();

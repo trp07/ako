@@ -83,7 +83,6 @@ public class Syllabus {
         this.name = assignment;
     }
 
-    @JsonIgnore
     public Date getDueDate() {
         return dueDate;
     }
