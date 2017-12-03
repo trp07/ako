@@ -19,9 +19,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.ako.core.AkoUtility;
 import com.ako.data.IMessageUserRepository;
 import com.ako.data.Message;
-import com.ako.data.MessageRepository;
+import com.ako.data.IMessageRepository;
 import com.ako.data.MessageUser;
 
 @Component
@@ -32,7 +33,7 @@ public class MessageService {
 	private JavaMailSender javaMailSender;
 
 	@Autowired
-	private MessageRepository messageRepository;
+	private IMessageRepository messageRepository;
 	
 	@Autowired
 	private IMessageUserRepository  messageUserRepository;
@@ -45,10 +46,11 @@ public class MessageService {
 	 * @return Return a list of all users
 	 */
 
-	public List<Message> getAllMessages() {
+	public List<Message> getAllMessages(int id) {
 		List<Message> messages = new ArrayList<>();
-		this.messageRepository.findAll().forEach(messages::add);
-		return messages;
+		List<Message> messages1 = this.messageRepository.findByUserId(id);
+		this.messageRepository.findByUserId(id).forEach(messages::add);
+		return messages1;
 	}
 
 	/**
@@ -106,7 +108,16 @@ public class MessageService {
 			// this.messageRepository.save(Message);
 		}
 	}
-
+	
+	public Message updateUser(Message message) {
+		//spring JPA does not let us update partial object
+		//fetch the existing from db and update the existing object instead
+		Message existing = this.messageRepository.findOne(message.getId());
+		AkoUtility.copyNonNullProperties(message, existing);
+		
+		return this.messageRepository.save(existing);
+	}
+	
 	public void createMessage(Message message) {
 		Message createdMessage = this.messageRepository.save(message);
 		List<MessageUser> messageUsers = message.getMessageUsers();

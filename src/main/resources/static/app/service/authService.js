@@ -1,5 +1,5 @@
-akoApp.factory('authService', function ($http, $q, BASE_URL) {
-
+akoApp.factory('authService', function ($http, $q, BASE_URL, store, $state) {
+    var loggedInUser = null;
     var login = function (userName, password) {
         var data = {
             'username': userName,
@@ -10,9 +10,12 @@ akoApp.factory('authService', function ($http, $q, BASE_URL) {
             // checking if the token is available in the response
             if (res.data.access_token) {
                 // setting the Authorization Bearer token with JWT token
-                $http.defaults.headers.common.Authorization = 'Bearer ' + res.data.access_token;
+                setJWTToken(res.data.access_token);
 
-                getUser().then(deferred.resolve).catch(deferred.reject);
+                getUser().then(function (userData) {
+                    loggedInUser = userData.data;
+                    deferred.resolve(userData);
+                }).catch(deferred.reject);
             } else {
                 deferred.reject();
             }
@@ -20,8 +23,22 @@ akoApp.factory('authService', function ($http, $q, BASE_URL) {
         return deferred.promise;
     }
 
+    var logout = function () {
+        store.remove('access_token');
+        $state.go('login');
+    }
+
     var getUser = function () {
-        return $http.get(BASE_URL + '/users/whoami');
+        var deferred = $q.defer();
+        if (!loggedInUser) {
+            $http.get(BASE_URL + '/users/whoami').then(function (userData) {
+                loggedInUser = userData.data;
+                deferred.resolve(loggedInUser);
+            }).catch(deferred.reject);
+        } else {
+            deferred.resolve(loggedInUser);
+        }
+        return deferred.promise;
     };
 
     var getQRCodeURL = function () {
@@ -37,7 +54,7 @@ akoApp.factory('authService', function ($http, $q, BASE_URL) {
             // checking if the token is available in the response
             if (res.data.access_token) {
                 // setting the Authorization Bearer token with JWT token
-                $http.defaults.headers.common.Authorization = 'Bearer ' + res.data.access_token;
+                setJWTToken(res.data.access_token);
             } else {
                 deferred.reject();
             }
@@ -47,14 +64,18 @@ akoApp.factory('authService', function ($http, $q, BASE_URL) {
     };
 
     var refreshToken = function () {
-        console.error('refreshToken');
+        //TODO: make a refresh token call
     };
+    var setJWTToken = function (token) {
+        store.set('access_token', token);
 
+    };
     return {
         getUser: getUser,
         login: login,
         refreshToken: refreshToken,
         getQRCodeURL: getQRCodeURL,
         verifyCode: verifyCode,
+        logout: logout
     };
 });

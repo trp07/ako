@@ -12,6 +12,10 @@
     text-align: center;
 }
 
+._md-nav-button {
+    text-transform: none;
+}
+
 .message-dialog-content md-content span {
     display: inline-block;
     text-align: left;
@@ -32,6 +36,28 @@
 .message-dialog-content {
     max-width: 425px;
     overflow: hidden;
+}
+
+.message-dialog-content md-toolbar {
+    min-height: 20px;
+    padding: 0 24px 0 25px;
+}
+
+.user-profile-images {
+    margin: 10px;
+    min-width: 200px;
+    color: #FFF;
+    height: auto;
+    overflow: auto;
+}
+
+.user-profile-images .img {
+    float: right;
+    height: auto;
+}
+
+.round-img {
+    border-radius: 50%;
 }
 
 .message-dialog-content md-toolbar {

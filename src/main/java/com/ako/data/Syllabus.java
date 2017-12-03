@@ -1,46 +1,65 @@
 package com.ako.data;
 
+import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import org.joda.time.LocalDate;
+import org.springframework.data.annotation.CreatedDate;
 
 /**
  * Syllabus model representing Syllabus table
  * @author Tim
  */
 @Entity
+@Table(name="assignment")
 public class Syllabus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String assignment;
-    private LocalDate dueDate;
+    
+    @Column(nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
+    private Date createDate;
+    
+    @Column(nullable = false)
+    private String name;
+    
+    @Column(nullable = false)
+    private Date dueDate;
+    
+    @Column(nullable = false)
     private boolean complete;
     
     
     /************************************
     *   CONSTRUCTORS
     ************************************/    
-    public Syllabus(String assignment, LocalDate dueDate) {
-        this.assignment = assignment;
+    public Syllabus(String assignment, Date dueDate) {
+        this.name = assignment;
         this.dueDate = dueDate;
         this.complete = false;
     }
     
     public Syllabus(String assignment) {
-        this.assignment = assignment;
-        this.dueDate = new LocalDate();
+        this.name = assignment;
+        this.dueDate = new Date();
         this.complete = false;
     }
 
     public Syllabus() {
-        this.assignment = "Not Specified.";
-        this.dueDate = new LocalDate();
+        this.name = "Not Specified.";
+        this.dueDate = new Date();
         this.complete = false;
     }
     
@@ -50,27 +69,34 @@ public class Syllabus {
     public int getId() {
         return id;
     }
+    
+    @JsonIgnore
+    public Date getCreateDate() {
+            return createDate;
+    }
 
     public String getAssignment() {
-        return assignment;
+        return name;
     }
 
     public void setAssignment(String assignment) {
-        this.assignment = assignment;
+        this.name = assignment;
     }
 
-    public LocalDate getDueDate() {
+    public Date getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDate dueDate) {
+    public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
 
+    @JsonIgnore
     public boolean isComplete() {
         return this.complete;
     }
 
+    @JsonIgnore
     public void setComplete(boolean completed) {
         this.complete = completed;
     }

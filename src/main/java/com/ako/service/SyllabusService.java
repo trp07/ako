@@ -1,11 +1,11 @@
 package com.ako.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.joda.time.LocalDate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,15 +52,14 @@ public class SyllabusService implements ISyllabus {
     /**
      * Add an assignment
      * @param String assignment
+     * @param String dueDate
      * @return the added assignment
      */
     @Override
-    public Syllabus addAssignment(String assignment) {
+    public Syllabus addAssignment(String assignment, String dueDate) {
         logger.info("====SyllabusService==== addAssignmet() called");
-        Syllabus a = new Syllabus(assignment);
-        if (this.repository.exists(a.getId())) {
-            return this.updateSyllabus(a.getId(), assignment);
-        }
+        Date dd = new Date(Long.parseLong(dueDate));
+        Syllabus a = new Syllabus(assignment, dd);
         return this.repository.save(a);
     }
 
@@ -84,18 +83,18 @@ public class SyllabusService implements ISyllabus {
      * @return the assignment
      */
     @Override
-    public Syllabus findByAssignment(String assignment) {
+    public Syllabus findByName(String assignment) {
         logger.info("====SyllabusService==== findByAssignment() called");
-        return this.repository.findByAssignment(assignment);
+        return this.repository.findByName(assignment);
     }
 
     /**
      * Find assignment by Due Date
-     * @param LocalDate dueDate
+     * @param Date dueDate
      * @return the assignment
      */
     @Override
-    public Syllabus findByDueDate(LocalDate dueDate) {
+    public Syllabus findByDueDate(Date dueDate) {
         logger.info("====SyllabusService==== findByDueDate() called");
         return this.repository.findByDueDate(dueDate);
     }
@@ -141,7 +140,7 @@ public class SyllabusService implements ISyllabus {
     @Override
     public Syllabus deleteOneByName(String assignment) {
         logger.info("====SyllabusService==== deleteOne() called");
-        Syllabus a = this.repository.findByAssignment(assignment);
+        Syllabus a = this.repository.findByName(assignment);
         this.repository.delete(a.getId());
         return a;
     }

@@ -22,9 +22,9 @@ public class MessageController {
 	@Autowired
 	MessageService messageService;
 
-	@RequestMapping("/all")
-	public List<Message> getAllMessages() {
-		return messageService.getAllMessages();
+	@RequestMapping("/all/{id}")
+	public List<Message> getAllMessages(@PathVariable int id) {
+		return messageService.getAllMessages(id);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, path = "/send")

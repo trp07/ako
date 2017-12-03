@@ -1,6 +1,6 @@
 akoApp.service('messageService', function ($http, $q, BASE_URL) {
-    this.getAllMessages = function () {
-        return $http.get(BASE_URL + '/messages/all');
+    this.getAllMessages = function (id) {
+        return $http.get(BASE_URL + '/messages/all/' + id);
     };
 
     this.postMessage = function (message) {

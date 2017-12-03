@@ -1,7 +1,7 @@
 akoApp.component('messages', {
     templateUrl: "/app/component/messages/messageTemplate.html",
     bindings: {},
-    controller: function ($q, $rootScope, messageService, msgDialogService) {
+    controller: function ($q, $rootScope, messageService, msgDialogService, authService) {
         this.newMessage = {
             messageUsers: [],
             previousMessageId: null,
@@ -14,11 +14,15 @@ akoApp.component('messages', {
             this.messageUserTypeId = messageUserTypeId;
             this.userId = null;
         }
-
         var ctrl = this;
-
+        this.currentUser = null;
         this.$onInit = function () {
-            this.refreshMessages();
+            //Do other stuff
+            var self = this;
+            authService.getUser().then(function (user) {
+                self.currentUser = user;
+                self.refreshMessages();
+            });
         };
 
         this.selectedMessageIndex = null;
@@ -60,8 +64,22 @@ akoApp.component('messages', {
         }
 
         this.refreshMessages = function () {
-            messageService.getAllMessages().then(function (messages) {
+            messageService.getAllMessages(this.currentUser.id).then(function (messages) {
                 ctrl.messages = messages.data;
+                ctrl.sentMessages = [];
+                ctrl.receivedMessages = [];
+                ctrl.messages.forEach(function (message) {
+                    if (message.fromUsers.user.id == ctrl.currentUser.id) {
+                        ctrl.sentMessages.push(message);
+                    }
+                });
+                ctrl.messages.forEach(function (message) {
+                    message.toUsers.forEach(function (messageUser) {
+                        if (messageUser.user.id == ctrl.currentUser.id) {
+                            ctrl.receivedMessages.push(message);
+                        }
+                    })
+                });
             })
         }
 
@@ -72,11 +90,13 @@ akoApp.component('messages', {
                 toUser.userId = this.selectedUser.id;
 
                 var fromUser = new messageUser("FROM");
-                fromUser.userId = 1000000004;
+                fromUser.userId = this.currentUser.id;
 
                 this.newMessage.messageUsers = [toUser, fromUser];
-                messageService.postMessage(this.newMessage).then(ctrl.refreshMessages);
-                msgDialogService.showInfo("Message Sent")
+                messageService.postMessage(this.newMessage).then(function (response) {
+                    ctrl.refreshMessages();
+                    msgDialogService.showInfo("Message Sent")
+                });
             } else {
                 msgDialogService.showError("Please select the recipient")
             }

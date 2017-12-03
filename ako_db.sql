@@ -88,6 +88,7 @@ INSERT INTO ako.course (short_name,year,semester_id,section,description)
 INSERT INTO ako.course (short_name,year,semester_id,section,description) 
 		VALUES ('ENPM614','2017','01','0101','Software Testing');
 
+
 /* Module Relation */
 CREATE TABLE IF NOT EXISTS ako.module (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -105,8 +106,12 @@ CREATE TABLE IF NOT EXISTS ako.file (
 	module_id INT, 
 	name VARCHAR(50) NOT NULL,
 	description TEXT NOT NULL,
-	file_s3_url VARCHAR(100) NOT NULL 
+	file_url VARCHAR(100) NOT NULL 
 );
+
+INSERT INTO ako.file (id, name, description, file_url) 
+    VALUES(1, 'ENPM613', 'Syllabus for ENPM613', 'https://s3-us-west-2.amazonaws.com/enpm613-ako/Syllabus_Default.pdf');
+
 
 /* Syllabus Relation */
 CREATE TABLE IF NOT EXISTS ako.syllabus (
@@ -120,6 +125,34 @@ CREATE TABLE IF NOT EXISTS ako.syllabus (
 	CONSTRAINT FOREIGN KEY (course_id) REFERENCES ako.course(id) ON DELETE CASCADE,
 	CONSTRAINT FOREIGN KEY (file_id) REFERENCES ako.file(id) 
 );
+
+INSERT INTO ako.syllabus (id, course_id, file_id, name, description, syllabus_text)
+    VALUES (1, (select id from ako.course where short_name = 'ENPM613'), 
+            (select id from ako.file where name = 'ENPM613'), 'ENPM613', 
+            'Syllabus for ENPM613', 'See Assignments Table');
+
+
+/* Assignment Relation - new for adding assignments */
+CREATE TABLE IF NOT EXISTS ako.assignment (
+	id MEDIUMINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+	syllabus_id INT, 
+	name VARCHAR(100) NOT NULL,
+    due_date DATE NOT NULL,
+    complete INT NOT NULL,
+	description TEXT,
+	CONSTRAINT FOREIGN KEY (syllabus_id) REFERENCES ako.syllabus(id) 
+);
+
+INSERT INTO ako.assignment (id, name, due_date, complete)
+    VALUES (1, 'Software Architecture Design (SAD)', DATE('2017-10-30'), 1);
+INSERT INTO ako.assignment (id, name, due_date, complete)
+    VALUES (2, 'Software Detailed Design (SADD)', DATE('2017-11-26'), 1);
+INSERT INTO ako.assignment (id, name, due_date, complete)
+    VALUES (3, 'Software Implementation', DATE('2017-12-03'), 0);
+INSERT INTO ako.assignment (id, name, due_date, complete)
+    VALUES (4, 'Final Exam', DATE('2017-12-13'), 0);
+
 
 /* Message Relation */
 CREATE TABLE IF NOT EXISTS ako.message (
@@ -196,6 +229,7 @@ INSERT INTO ako.message_user_type VALUES ('03','Cc');
 INSERT INTO ako.message_user_type VALUES ('04','Bcc');
 
 CREATE TABLE IF NOT EXISTS ako.message_user (
+	id MEDIUMINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	message_id MEDIUMINT NOT NULL,
 	user_id INT NOT NULL, /* Could be an individual user */
 	group_id INT, /* Could be an individual group. For each member of the group, insert a record into this relation. */

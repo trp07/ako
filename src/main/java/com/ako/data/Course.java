@@ -22,6 +22,7 @@ import javax.persistence.TemporalType;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
@@ -45,7 +46,7 @@ public class Course {
 	String year;
 
 	@OneToOne(optional = false)
-	@JoinColumn(name="id")
+	@JoinColumn(name="semester_id")
 	Semester semester;
 
 	@Column(nullable = false)
@@ -60,8 +61,6 @@ public class Course {
 			inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
 	private List<User> courseUsers;
 
-	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-	private List<Module> courseModules;
 
 	@JsonGetter("id")
 	public int getId() {
@@ -117,11 +116,5 @@ public class Course {
 	public void setCourseUsers(List<User> courseUsers){
 		this.courseUsers = courseUsers;
 	}
-	
-    public List<Module> getCourseModules() {
-    	return this.courseModules;
-    }
-    public void setCourseModules(List<Module> courseModules){
-    	this.courseModules = courseModules;
-    }
+
 }
