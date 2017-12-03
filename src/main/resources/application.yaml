@@ -15,7 +15,7 @@ jwt:
 # set active profile here
 spring:
   profiles:
-    active: "prod"
+    active: "dev"
 
 ---
 

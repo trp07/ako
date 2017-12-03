@@ -106,4 +106,8 @@ public class UserService implements UserDetailsService {
 		this.repository.save(user);
 	}
 
+	public List<User> getAutocompleteResult(String searchTerm) {
+		return this.repository.findByFirstnameStartsWith(searchTerm);
+	}
+
 }

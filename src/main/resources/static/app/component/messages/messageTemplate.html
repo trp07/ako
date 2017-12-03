@@ -1,0 +1,193 @@
+<!-- HEADER TOOL BAR -->
+<header>
+    <md-toolbar scroll-shrink layout="row">
+        <div>
+            <h3>
+                <span>Messages</span>
+            </h3>
+        </div>
+    </md-toolbar>
+</header>
+<!-- tabs -->
+<!--Inbox-->
+<md-tabs md-dynamic-height md-border-bottom>
+    <md-tab label="Inbox">
+        <md-tab-body>
+            <md-content class="md-padding">
+                <div layout="row">
+                    <div flex>
+                        <md-content>
+                            <md-list flex>
+                                <md-list-item class="md-3-line" ng-repeat="message in $ctrl.messages|orderBy:'-message.createDate'" ng-click="$ctrl.onMessageSelect($index,message)">
+                                    <div class="md-list-item-text" layout="column">
+                                        <div layout="row">
+                                            <div flex="40">
+                                                <h3>From : {{ message.fromUsers.user.firstName }} {{ message.fromUsers.user.lastName }}</h3>
+                                            </div>
+                                            <div flex="30"> </div>
+                                            <div flex="20">
+                                                <h3>{{message.createDate | date:'medium'}}</h3>
+                                            </div>
+                                        </div>
+                                        <h3>{{ message.fromUsers.user.email }}</h3>
+                                        <h4>Subject : {{ message.subject }}</h4>
+                                        <p>{{message.body}}</p>
+
+                                        <md-divider ng-if="!$last"></md-divider>
+                                    </div>
+                                </md-list-item>
+                            </md-list>
+                        </md-content>
+                    </div>
+                    <!--SELECTED MESSAGE-->
+                    <div class="md-sidenav-left" md-component-id="left" md-disable-backdrop flex ng-if="$ctrl.showMessage">
+
+                        <md-card>
+                            <md-card-title>
+                                <md-card-title-text>
+                                    <div class="md-headline">
+                                        <span>{{$ctrl.selectedMessage.fromUsers.user.firstName}}  {{$ctrl.selectedMessage.fromUsers.user.lastName}}</span>
+                                    </div>
+                                    <span class="md-subhead">{{$ctrl.selectedMessage.fromUsers.user.email}}</span>
+                                    <span class="md-subhead">Subject : {{$ctrl.selectedMessage.subject}}</span>
+                                </md-card-title-text>
+                            </md-card-title>
+                            <md-divider ng-if="!$last"></md-divider>
+                            <md-card-content>
+                                <div flex>
+                                    <md-input-container class="md-block">
+                                        {{$ctrl.selectedMessage.body}}
+                                    </md-input-container>
+                                </div>
+                            </md-card-content>
+
+                            <div>
+                                <md-fab-toolbar md-open="$ctrl.isOpen" md-direction="{{demo.selectedDirection}}">
+                                    <md-fab-trigger>
+                                        <md-button aria-label="menu" class="md-fab md-primary">
+                                            <i class="material-icons">reorder</i>
+                                        </md-button>
+                                    </md-fab-trigger>
+                                    <md-divider ng-if="!$last"></md-divider>
+                                    <md-toolbar>
+                                        <md-fab-actions class="md-toolbar-tools">
+                                            <md-button aria-label="comment" class="md-icon-button">
+                                                <i class="material-icons">reply</i>
+                                            </md-button>
+                                            <md-button aria-label="comment" class="md-icon-button">
+                                                <i class="material-icons">reply_all</i>
+                                            </md-button>
+                                            <md-button aria-label="comment" class="md-icon-button">
+                                                <i class="material-icons">drafts</i>
+                                            </md-button>
+                                        </md-fab-actions>
+                                    </md-toolbar>
+                                </md-fab-toolbar>
+                            </div>
+                        </md-card>
+                    </div>
+                </div>
+            </md-content>
+        </md-tab-body>
+    </md-tab>
+
+    <!--SENT -->
+    <md-tab label="Sent">
+        <md-tab-body>
+            <md-content class="md-padding">
+                <div layout="row">
+                    <div flex>
+                        <md-content>
+                            <md-list flex>
+                                <md-list-item class="md-3-line" ng-repeat="message in $ctrl.messages" ng-click="$ctrl.onMessageSelect($index,message)">
+                                    <div class="md-list-item-text" layout="column">
+                                        <h3>To : {{message.toUsers[0].user.firstName}} {{message.toUsers[0].user.lastName}}
+                                        </h3>
+                                        <h3>{{message.toUsers[0].user.email}}</h3>
+                                        <h4>Subject : {{ message.subject }}</h4>
+                                        <p>{{message.body}}</p>
+                                    </div>
+                                    <md-divider ng-if="!$last"></md-divider>
+                                </md-list-item>
+                            </md-list>
+                        </md-content>
+                    </div>
+
+
+                    <div class="md-sidenav-left" md-component-id="left" md-disable-backdrop flex ng-if="$ctrl.showMessage">
+
+                        <md-card>
+                            <md-card-title>
+                                <md-card-title-text>
+                                    <div class="md-headline">
+                                        <span> To : {{$ctrl.selectedMessage.toUsers[0].user.firstName}} {{$ctrl.selectedMessage.toUsers[0].user.lastName}}         <md-tooltip md-direction="right">{{$ctrl.selectedMessage.toUsers[0].user.email}}</md-tooltip></span>
+                                    </div>
+                                    <span class="md-subhead">Subject : {{$ctrl.selectedMessage.subject}}</span>
+
+                                </md-card-title-text>
+                            </md-card-title>
+
+                            <md-card-content>
+                                <div flex>
+                                    <md-input-container class="md-block">
+                                        {{$ctrl.selectedMessage.body}}
+                                    </md-input-container>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                    </div>
+                </div>
+            </md-content>
+        </md-tab-body>
+    </md-tab>
+    <!--Compose Message -->
+    <md-tab label="Compose Message">
+        <md-tab-body>
+            <md-content class="md-padding">
+                <div layout="row">
+                    <div flex>
+                        <md-content>
+                            <md-card>
+                                <md-card-content>
+                                    <div layout="column" class="compose-message">
+                                        <form name="composeMessage" class="md-padding" layout="column">
+                                            <md-input-container>
+                                                <label>TO :</label>
+                                                <md-autocomplete md-selected-item="$ctrl.selectedUser" md-search-text="$ctrl.searchText" md-items="user in $ctrl.getMatchingUsers($ctrl.searchText)" md-item-text="user.firstName" md-min-length="3" required>
+                                                    <md-item-template>
+                                                        <span md-highlight-text="$ctrl.searchText">{{user.firstName}}</span>
+                                                    </md-item-template>
+                                                    <md-not-found>
+                                                        No matches found.
+                                                    </md-not-found>
+                                                </md-autocomplete>
+                                            </md-input-container>
+                                            <md-input-container ng-disabled="true">
+                                                <label>cc</label>
+                                                <input type="email" ng-model="$ctrl.user_id" />
+                                            </md-input-container>
+                                            <md-input-container>
+                                                <label>Subject :</label>
+                                                <input type="text" ng-model="$ctrl.newMessage.subject" required/>
+                                            </md-input-container>
+
+                                            <md-input-container>
+                                                <label>Body :</label>
+                                                <input type="text" ng-model="$ctrl.newMessage.body" placeholder="Enter message" required/>
+                                            </md-input-container>
+
+                                            <div layout="row" layout-align="center center" style="padding-top:20px">
+                                                <md-button type="submit" ng-click="$ctrl.sendMessage()" class="md-raised md-primary" ng-disabled="composeMessage.$invalid">Send</md-button>
+                                                <div flex="flex"></div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </md-card-content>
+                            </md-card>
+                        </md-content>
+                    </div>
+                </div>
+            </md-content>
+        </md-tab-body>
+    </md-tab>
+</md-tabs>

@@ -21,4 +21,9 @@ akoApp.config(function($stateProvider, $urlServiceProvider, $urlRouterProvider) 
       url: '/syllabus',
       component: 'syllabus'
   });
+    
+    $stateProvider.state('messages', {
+    url: '/messages',
+    component: 'messages'
+  })
 });

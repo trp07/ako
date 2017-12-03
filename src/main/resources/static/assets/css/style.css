@@ -1,40 +1,132 @@
 .loginBox {
-  max-width:  90%;
-  width: 500px
+    max-width: 90%;
+    width: 500px
 }
 
-.stretch input  {
-  width: 100%
+.stretch input {
+    width: 100%
 }
 
 
-.message-dialog-content md-content{
-    text-align: center;   
+.message-dialog-content md-content {
+    text-align: center;
 }
 
-.message-dialog-content md-content span{
+.message-dialog-content md-content span {
     display: inline-block;
     text-align: left;
 }
 
-.message-dialog-content .close-btn{
-   text-align: center;
-   line-height: 0px;
-   text-transform: none;
-   padding: 0 15px;
-   min-width: 10px;
+.message-dialog-content .close-btn {
+    text-align: center;
+    line-height: 0px;
+    text-transform: none;
+    padding: 0 15px;
+    min-width: 10px;
 }
 
-.message-dialog-content .close-btn .md-button{
-   text-transform: none;
+.message-dialog-content .close-btn .md-button {
+    text-transform: none;
 }
 
-.message-dialog-content{
-   max-width: 425px;
-   overflow: hidden;
+.message-dialog-content {
+    max-width: 425px;
+    overflow: hidden;
 }
 
-.message-dialog-content md-toolbar{
-   min-height: 20px;
-   padding: 0 24px 0 25px;
+.message-dialog-content md-toolbar {
+    min-height: 20px;
+    padding: 0 24px 0 25px;
+}
+
+h2 {
+    margin-bottom: -15px;
+    color: gray;
+}
+
+h1 {
+    margin-top: 0px;
+}
+
+label {
+    min-height: 20px;
+    margin-left: 0px;
+}
+
+.qr {
+    border-radius: 0px;
+    height: 50px;
+    width: 50px;
+    margin-left: 38px;
+    margin-top: 150px;
+}
+
+.flex-60 {
+    margin-left: 15px;
+}
+
+.md-datepicker-button {
+    margin-left: -15px !important
+}
+
+.md-datepicker-input {
+    margin-right: 238px;
+    margin-left: -30px;
+    min-width: 150px;
+}
+
+.button {
+    margin-left: 238px;
+}
+
+.profile-pic {
+    border-radius: 100%;
+}
+
+.ng-valid md-input {
+    padding: -2px;
+}
+
+.full-heigth {
+    height: -moz-calc(100% - 64px);
+    height: -webkit-calc(100% - 64px);
+    height: calc(100% - 64px);
+}
+
+.userList {
+    height: 100%;
+}
+
+.md-accent {
+    height: 100%
+}
+
+.md-icon-float {
+    margin-top: 0 !important;
+    margin-left: 10px
+}
+
+.md-pagination-wrapper {
+    background-color: rgb(63, 81, 183);
+}
+
+.tabsdemoDynamicHeight md-content {
+    background-color: transparent !important;
+}
+
+.tabsdemoDynamicHeight md-content md-tabs {
+    background: #f6f6f6;
+    border: 1px solid #e1e1e1;
+}
+
+.tabsdemoDynamicHeight md-content md-tabs md-tabs-wrapper {
+    background: white;
+}
+
+.tabsdemoDynamicHeight md-content h1:first-child {
+    margin-top: 0;
+}
+
+.compose-message md-input-container {
+    margin: unset !important;
 }
