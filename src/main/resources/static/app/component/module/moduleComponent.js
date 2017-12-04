@@ -8,11 +8,12 @@ akoApp.component('module', {
 	require: {
 		parent: '^^layout'
 	},
-	controller: function($scope, $http, moduleService, $mdDialog){
+	controller: function($scope, $http, moduleService, $mdDialog, $state){
 		/**
 		 * On init
 		 */
 		this.data = null
+		self = this
 		courseId = '3'
 			// Variables used when adding/editing/deleting a module
 
@@ -21,37 +22,30 @@ akoApp.component('module', {
 			$scope.description = null
 			$scope.isPublished = null
 			console.log('Getting all of the modules');
-		moduleService.viewModules(courseId).then(function (data) {
-			$scope.modules = data;
-		});
+			reload = function() {
+				moduleService.viewModules(courseId).then(function (data) {
+					$scope.modules = data;
+				});
+			}
+			
+			reload();
 
 		// Add  Dialog controller
-		var AddModuleDialogController = function ($scope, $mdDialog) {
+		var AddModuleDialogController = function () {
 			return ['$scope', '$mdDialog', function ($scope, $mdDialog) {
-				$scope.closeDialog = function () {
-					if ($scope.isPublished = undefined) {
+				$scope.moduleAdd = function () {
+					if (!$scope.isPublished) {
 						$scope.isPublished = false;
 					}
+					moduleService.createModule(courseId, $scope.name , $scope.description , $scope.isPublshed).then(function (data) {
+						
+					});
 					$mdDialog.hide();
 				};
-				$scope.addModule = function () {
-					console.log("Accessed add module");
-				};
+				$scope.closeDialog = function() {
+					$mdDialog.hide();
+				}
 			}]
-		}
-
-		$scope.addModule =  function(ev){
-			console.log("Hit the add module button");
-			if (scope.isPublished = undefined) {
-				scope.isPublished = false;
-			}
-			console.log('You said the isPublished was ' + $scope.isPublished + '.');
-//			moduleService.createModule($scope.name , $scope.description , $scope.isPublshed).then(function (data) {
-//			moduleService.viewModules(courseId).then(function (data) {
-//			$scope.modules = data;
-//			});
-//			});
-			$mdDialog.hide();
 		}
 
 		$scope.displayAddModuleForm = function (ev) {
@@ -63,7 +57,8 @@ akoApp.component('module', {
 				controller: AddModuleDialogController()
 			})
 			.then(function() {
-
+				console.log("Reloading")
+				reload();
 			}, function() {
 				console.log('You cancelled the dialog.');
 			});
@@ -108,6 +103,43 @@ akoApp.component('module', {
 					});
 				});
 			}
+		}
+		// Edit the module
+		var EditModuleDialogController = function (module) {
+			return ['$scope', '$mdDialog', function ($scope, $mdDialog) {
+				$scope.moduleEdit = function () {
+					console.log("Hit the edit module button");
+					if ($scope.name) {
+						module.name = $scope.name;
+					}
+					if ($scope.description) {
+						module.description = $scope.description;
+					}
+					$mdDialog.hide();
+					moduleService.editModule(module).then(function (data) {
+						reload();
+					});
+				};
+				$scope.closeDialog = function() {
+					$mdDialog.hide();
+				}
+			}]
+		}
+		$scope.displayEditForm = function (module) {
+			$scope.name = null
+			$scope.description = null
+			$scope.isPublished = null
+			$mdDialog.show({
+				clickOutsideToClose: true,
+				templateUrl: '/app/component/module/moduleEditTemplate.html',
+				parent: angular.element(document.body),
+				controller: EditModuleDialogController(module)
+			})
+			.then(function() {
+				reload();
+			}, function() {
+				console.log('You cancelled the dialog.');
+			});
 		}
 	}
 });

@@ -9,6 +9,7 @@
 		<md-button style="min-width: 22px;" class="md-raised md-primary" ng-click="deleteModule(m.id)">D</md-button>
 		<md-button style="min-width: 22px;" class="md-raised md-primary" ng-click="publish(m)">P</md-button>
 		<md-button style="min-width: 22px;" class="md-raised md-primary" ng-click="unpublish(m)">U</md-button>
+		<md-button style="min-width: 22px;" class="md-raised md-primary" ng-click="displayEditForm(m)">E</md-button>
     	<md-accordion-content md-heading="{{m.name}} - {{m.description}} : Published = {{m.isPublished}}" md-arrow="true">
 			<div ng-repeat="f in m.moduleFiles">
 			</div>>
