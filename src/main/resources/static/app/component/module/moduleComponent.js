@@ -1,35 +1,56 @@
 akoApp.component('module', {
 	templateUrl: "/app/component/module/moduleTemplate.html",
 	bindings: {
-		userId: '<',
-		password: '<',
-		courseId: '<'
+		user: '<'
 	},
 	require: {
 		parent: '^^layout'
 	},
-	controller: function($scope, $http, moduleService, $mdDialog, $state){
+	controller: function($scope, $http, moduleService, authService, $mdDialog, $state){
 		/**
 		 * On init
 		 */
-		this.data = null
-		self = this
+		$scope.isAdmin = false
 		courseId = '3'
-			// Variables used when adding/editing/deleting a module
-
-			$scope.moduleId = null
-			$scope.name = null
-			$scope.description = null
-			$scope.isPublished = null
+		// Variables used when adding/editing/deleting a module
+		$scope.moduleId = null
+		$scope.name = null
+		$scope.description = null
+		$scope.isPublished = null
+		var reload = function() {
 			console.log('Getting all of the modules');
-			reload = function() {
+			$scope.modules = null;
+			if ($scope.isAdmin) {
 				moduleService.viewModules(courseId).then(function (data) {
 					$scope.modules = data;
 				});
+			} else {
+				moduleService.viewPublishedModules(courseId).then(function (data) {
+					$scope.modules = data;
+				});
 			}
-			
-			reload();
 
+		}
+		
+		var getUserType = function() {
+			$http.get('/users/whoami').success(function (userData) {
+	        	console.log("User data is " + userData.firstName);
+	        	if (userData.userTypeId == 2) {
+	        		$scope.isAdmin = true;
+	        		moduleService.viewModules(courseId).then(function (data) {
+						$scope.modules = data;
+					});
+	        	} else {
+	        		$scope.isAdmin = false;
+	        		moduleService.viewPublishedModules(courseId).then(function (data) {
+						$scope.modules = data;
+					});
+	        	}
+	        	
+	        })
+        }
+		getUserType();
+		
 		// Add  Dialog controller
 		var AddModuleDialogController = function () {
 			return ['$scope', '$mdDialog', function ($scope, $mdDialog) {
@@ -49,59 +70,69 @@ akoApp.component('module', {
 		}
 
 		$scope.displayAddModuleForm = function (ev) {
-			$mdDialog.show({
-				clickOutsideToClose: true,
-				templateUrl: '/app/component/module/moduleAddTemplate.html',
-				parent: angular.element(document.body),
-				targetEvent: ev,
-				controller: AddModuleDialogController()
-			})
-			.then(function() {
-				console.log("Reloading")
-				reload();
-			}, function() {
-				console.log('You cancelled the dialog.');
-			});
+			if ($scope.isAdmin) {
+				$mdDialog.show({
+					clickOutsideToClose: true,
+					templateUrl: '/app/component/module/moduleAddTemplate.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					controller: AddModuleDialogController()
+				})
+				.then(function() {
+					console.log("Reloading")
+					reload();
+				}, function() {
+					console.log('You cancelled the dialog.');
+				});
+			}
 		}
 
 		// Add a file to the module
 		$scope.addFile = function(moduleId) {
-			console.log('Hitting add file for module ' + moduleId + '.');
+			if ($scope.isAdmin) {
+				console.log('Hitting add file for module ' + moduleId + '.');
+			}
 		}
 
 		// Delete module module
 		$scope.deleteModule = function (moduleId){
-			console.log('Deleting module with id ' + moduleId  + '.');
-			moduleService.deleteModule(moduleId).then(function (data) {
-				$scope.modules = data;
-			});
+			if ($scope.isAdmin) {
+				console.log('Deleting module with id ' + moduleId  + '.');
+				moduleService.deleteModule(moduleId).then(function (data) {
+					$scope.modules = data;
+				});
+			}
 		}
 
 		// Publishing module 
 		$scope.publish = function (module){
-			console.log('Publishing module with id ' + module.id + ' with courseId ' + module.courseId + '.');
-			if (!module.isPublished) {
-				console.log('Calling the module service');
-				module.isPublished = true;
-				moduleService.editModule(module).then(function (data) {
-					moduleService.viewModules(courseId).then(function (data) {
-						$scope.modules = data;
+			if ($scope.isAdmin) {
+				console.log('Publishing module with id ' + module.id + ' with courseId ' + module.courseId + '.');
+				if (!module.isPublished) {
+					console.log('Calling the module service');
+					module.isPublished = true;
+					moduleService.editModule(module).then(function (data) {
+						moduleService.viewModules(courseId).then(function (data) {
+							$scope.modules = data;
+						});
 					});
-				});
+				}
 			}
 		}
 
 		// Un-publish module 
 		$scope.unpublish = function (module){
-			console.log('Publishing module with id ' + module.id + '.');
-			if (module.isPublished) {
-				console.log('Calling the module service');
-				module.isPublished = false;
-				moduleService.editModule(module).then(function (data) {
-					moduleService.viewModules(courseId).then(function (data) {
-						$scope.modules = data;
+			if($scope.isAdmin) {
+				console.log('Publishing module with id ' + module.id + '.');
+				if (module.isPublished) {
+					console.log('Calling the module service');
+					module.isPublished = false;
+					moduleService.editModule(module).then(function (data) {
+						moduleService.viewModules(courseId).then(function (data) {
+							$scope.modules = data;
+						});
 					});
-				});
+				}
 			}
 		}
 		// Edit the module
@@ -126,20 +157,22 @@ akoApp.component('module', {
 			}]
 		}
 		$scope.displayEditForm = function (module) {
-			$scope.name = null
-			$scope.description = null
-			$scope.isPublished = null
-			$mdDialog.show({
-				clickOutsideToClose: true,
-				templateUrl: '/app/component/module/moduleEditTemplate.html',
-				parent: angular.element(document.body),
-				controller: EditModuleDialogController(module)
-			})
-			.then(function() {
-				reload();
-			}, function() {
-				console.log('You cancelled the dialog.');
-			});
+			if ($scope.isAdmin) {
+				$scope.name = null
+				$scope.description = null
+				$scope.isPublished = null
+				$mdDialog.show({
+					clickOutsideToClose: true,
+					templateUrl: '/app/component/module/moduleEditTemplate.html',
+					parent: angular.element(document.body),
+					controller: EditModuleDialogController(module)
+				})
+				.then(function() {
+					reload();
+				}, function() {
+					console.log('You cancelled the dialog.');
+				});
+			}
 		}
 	}
 });

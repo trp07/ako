@@ -1,5 +1,6 @@
 package com.ako.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -35,6 +36,23 @@ public class ModuleService {
 	public List<Module> getAllModules(int courseId) {
 		logger.debug("The module service received a request to get all modules for course " + courseId + ".");
 		return moduleRepository.findByCourseId(courseId);
+	}
+	
+	/**
+	 * Returns all of the published modules for a given course
+	 * @param course
+	 * @return
+	 */
+	public List<Module> getAllPublishedModules(int courseId) {
+		logger.debug("The module service received a request to get all published modules for course " + courseId + ".");
+		List<Module> modules = moduleRepository.findByCourseId(courseId);
+		List<Module> publishedModules = new ArrayList<Module>();
+		for (Module module: modules) {
+			if (module.getIsPublished()) {
+				publishedModules.add(module);
+			}
+		}
+		return publishedModules;
 	}
 
 	/**

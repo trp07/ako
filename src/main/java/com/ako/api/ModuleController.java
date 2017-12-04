@@ -51,6 +51,19 @@ public class ModuleController {
 	}
 	
 	/**
+	 * Gets all of the modules for a given course that are published
+	 * @param courseId
+	 * @return
+	 */
+	@RequestMapping("/published/{courseId}")
+	public List<Module> viewPublishedModules(@PathVariable int courseId) {
+		logger.info("The module controller received a request to retrieve all PUBLISHED modules for course " + courseId + ".");
+		List<Module> moduleList = moduleService.getAllPublishedModules(courseId);
+		logger.debug("The module list has size " + moduleList.size() + ".");
+		return moduleList;
+	}
+	
+	/**
 	 * Creates a module
 	 * @param module
 	 * @return
