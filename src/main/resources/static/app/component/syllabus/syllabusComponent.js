@@ -5,14 +5,28 @@ akoApp.component('syllabus', ['ngMaterial', 'ngMessages'], {
 
         this.name = "AKO Syllabus";
 
+        $scope.userAdmin = false;
         $scope.editMode = false;
         $scope.id = '';
         $scope.syllabusLink = 'https://s3-us-west-2.amazonaws.com/enpm613-ako/Syllabus_Default.pdf';
-
         $scope.due_date = new Date();
 
         $scope.resetDate = {
             due_date: new Date(2017, 11, 06)
+        };
+
+
+        $scope.getUserType = function() {
+            $scope.resetError();
+            console.log("====syllabusComponent.js==== getUserType() called");
+            $http.get('/users/whoami').success(function(response) {
+                if (reponse.userTypeId == 2) {
+                    $scope.userAdmin = true;
+                }
+            }).error(function () {
+                $scope.setError('Unable to retrieve user type');
+            });
+            console.log('====syllabusComponent.js==== /whoami admin/teacher?: ' + $scope.userAdmin);
         };
 
 
@@ -26,6 +40,7 @@ akoApp.component('syllabus', ['ngMaterial', 'ngMessages'], {
             });
         };
 
+
         $scope.getSyllabusLink = function () {
             $scope.resetError();
             console.log("====syllabusComponent.js==== getSyllabusLink() called");
@@ -36,6 +51,7 @@ akoApp.component('syllabus', ['ngMaterial', 'ngMessages'], {
             });
         };
 
+
         $scope.getAllAssignments = function () {
             $scope.resetError();
             console.log("====syllabusComponent.js==== getAllAssignments() called");
@@ -45,6 +61,7 @@ akoApp.component('syllabus', ['ngMaterial', 'ngMessages'], {
                 $scope.setError('Could not display all assignments');
             });
         };
+
 
         $scope.addAssignment = function (assignment) {
             $scope.resetError();
@@ -58,6 +75,7 @@ akoApp.component('syllabus', ['ngMaterial', 'ngMessages'], {
             $scope.assignment = '';
         };
 
+
         $scope.deleteAssignment = function (assignment) {
             $scope.resetError();
             console.log("====syllabusComponent.js==== deleteAssignment() called with: " + assignment.assignment);
@@ -67,6 +85,7 @@ akoApp.component('syllabus', ['ngMaterial', 'ngMessages'], {
                 $scope.setError('Could not delete assignment');
             });
         };
+
 
         $scope.deleteAll = function () {
             $scope.resetError();
@@ -78,6 +97,7 @@ akoApp.component('syllabus', ['ngMaterial', 'ngMessages'], {
             })
         };
 
+
         $scope.editAssignment = function (assignment) {
             console.log("====syllabusComponent.js==== editAssignment() called for: " + assignment.assignment);
             $scope.resetError();
@@ -85,6 +105,7 @@ akoApp.component('syllabus', ['ngMaterial', 'ngMessages'], {
             $scope.id = assignment.id;
             $scope.editMode = true;
         };
+
 
         $scope.updateAssignment = function (assignment) {
             $scope.resetError();
@@ -100,6 +121,7 @@ akoApp.component('syllabus', ['ngMaterial', 'ngMessages'], {
             })
         };
 
+
         $scope.resetAssignmentField = function () {
             $scope.resetError();
             console.log("====syllabusComponent.js==== resetAssignmentField() called");
@@ -107,11 +129,14 @@ akoApp.component('syllabus', ['ngMaterial', 'ngMessages'], {
             $scope.editMode = false;
         };
 
+
         $scope.resetError = function () {
             $scope.error = false;
             console.log("====syllabusComponent.js==== resetError() called");
+            console.log("====syllabusComponent.js==== userAdmin: " + $scope.userAdmin);
             $scope.errorMessage = '';
         };
+
 
         $scope.setError = function (message) {
             console.log("====syllabusComponent.js==== setError() called");
@@ -119,8 +144,8 @@ akoApp.component('syllabus', ['ngMaterial', 'ngMessages'], {
             $scope.errorMessage = message;
         };
 
+        $scope.getUserType();
         $scope.getAllAssignments();
-        //$scope.getSyllabusLink();
 
     }
 });
