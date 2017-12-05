@@ -20,7 +20,7 @@ akoApp.component('syllabus', ['ngMaterial', 'ngMessages'], {
             $scope.resetError();
             console.log("====syllabusComponent.js==== getUserType() called");
             $http.get('/users/whoami').success(function(response) {
-                if (reponse.userTypeId == 2) {
+                if (response.userTypeId == 2) {
                     $scope.userAdmin = true;
                 }
             }).error(function () {
