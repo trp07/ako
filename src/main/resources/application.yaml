@@ -54,7 +54,7 @@ spring:
     password: "Enpm61320!7"
   mail:
     username: akoatumd@gmail.com
-    password: akoatumd123
+    password: "[Q+7ca&h"
     host: smtp.gmail.com 
     port: 587
     properties:
