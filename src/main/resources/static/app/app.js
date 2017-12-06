@@ -1,4 +1,4 @@
-var akoApp = angular.module("akoApp", ['ngMaterial', 'ui.router', 'angular-jwt', 'ngMaterialAccordion', 'angular-storage', 'ngResource']);
+var akoApp = angular.module("akoApp", ['ngMaterial', 'ui.router', 'angular-jwt', 'ngMaterialAccordion', 'angular-storage', 'ngResource', 'textSizeSlider']);
 
 akoApp.constant('BASE_URL', 'http://localhost:8080');
 

@@ -67,7 +67,7 @@ akoApp.component('syllabus', {
             $scope.resetError();
             console.log("====syllabusComponent.js==== addAssignment() called with: " +
                 assignment + " " + $scope.resetDate.due_date.getTime());
-            $http.post(BASE_URL + '/syllabus/add/' + assignment).success(function (response) {
+            $http.post(BASE_URL + '/syllabus/add/' + assignment + '/' + $scope.resetDate.due_date.getTime()).success(function (response) {
                 $scope.getAllAssignments();
             }).error(function () {
                 $scope.setError('Could not add assignment');
