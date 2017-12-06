@@ -1,43 +1,41 @@
-<md-card>
-    <div layout="row">
-        <div layout="column" layout-align="space-around top" flex="20" class="user-profile-images">
-            <div class="img">
-                <img class="profile-pic round-img" src="http://via.placeholder.com/200x200 ">
-            </div>
-            <div class="img">
-                <img ng-if="$ctrl.user.hasMfaActive " ng-src="{{$ctrl.qrCodeURL}} ">
-            </div>
+<div layout="row">
+    <div layout="column" layout-align="space-around top" flex="20" class="user-profile-images">
+        <div class="img">
+            <img class="profile-pic round-img" src="http://via.placeholder.com/200x200 ">
         </div>
-        <div flex="80 ">
-            <div layout="column " layout-padding>
-                <md-input-container class="md-icon-float ">
-                    <!-- Use floating label instead of placeholder -->
-                    <label style="margin-left:0px ">First Name</label>
-                    <input ng-model="$ctrl.user.firstName " type="text " style="padding-top:0 ">
-                </md-input-container>
-                <md-input-container class="md-icon-float ">
-                    <!-- Use floating label instead of placeholder -->
-                    <label style="margin-left:0px ">Last Name</label>
-                    <input ng-model="$ctrl.user.lastName " type="text " style="padding-top:0 ">
-                </md-input-container>
-                <md-input-container class="md-icon-float ">
-                    <!-- Use floating label instead of placeholder -->
-                    <label style="margin-left:0px ">Email</label>
-                    <input ng-model="$ctrl.user.email " type="text " style="padding-top:0 ">
-                </md-input-container>
-                <md-input-container class="md-icon-float ">
-                    <!-- Use floating label instead of placeholder -->
-                    <br>
-                    <md-datepicker ng-model="$ctrl.user.birthDate " md-placeholder="Enter date of birth "></md-datepicker>
-                </md-input-container>
-                <md-switch ng-model="$ctrl.user.hasMfaActive " aria-label="Finished? " ng-change="$ctrl.setMfaActive($ctrl.user.hasMfaActive) ">
-                    2-step verification
-                </md-switch>
-                <div flex class="button ">
-                    <md-button class="md-raised md-primary save" ng-click="$ctrl.saveChanges()">Save</md-button>
-                    <md-button class="md-raised cancel " ng-click="$ctrl.reset()">Reset</md-button>
-                </div>
+        <div class="img">
+            <img ng-if="$ctrl.user.hasMfaActive " ng-src="{{$ctrl.qrCodeURL}} ">
+        </div>
+    </div>
+    <div flex="80" class="detail-container">
+        <div layout="column">
+            <md-input-container class="md-icon-float ">
+                <!-- Use floating label instead of placeholder -->
+                <label style="margin-left:0px ">First Name</label>
+                <input ng-model="$ctrl.user.firstName " type="text " style="padding-top:0 ">
+            </md-input-container>
+            <md-input-container class="md-icon-float ">
+                <!-- Use floating label instead of placeholder -->
+                <label style="margin-left:0px ">Last Name</label>
+                <input ng-model="$ctrl.user.lastName " type="text " style="padding-top:0 ">
+            </md-input-container>
+            <md-input-container class="md-icon-float ">
+                <!-- Use floating label instead of placeholder -->
+                <label style="margin-left:0px ">Email</label>
+                <input ng-model="$ctrl.user.email " type="text " style="padding-top:0 ">
+            </md-input-container>
+            <md-input-container class="md-icon-float ">
+                <!-- Use floating label instead of placeholder -->
+                <br>
+                <md-datepicker ng-model="$ctrl.user.birthDate " md-placeholder="Enter date of birth "></md-datepicker>
+            </md-input-container>
+            <md-switch ng-model="$ctrl.user.hasMfaActive " aria-label="Finished? " ng-change="$ctrl.setMfaActive($ctrl.user.hasMfaActive) ">
+                2-step verification
+            </md-switch>
+            <div flex class="button ">
+                <md-button class="md-raised md-primary save" ng-click="$ctrl.saveChanges()">Save</md-button>
+                <md-button class="md-raised cancel " ng-click="$ctrl.reset()">Reset</md-button>
             </div>
         </div>
     </div>
-</md-card>
+</div>

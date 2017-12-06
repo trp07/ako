@@ -42,11 +42,11 @@ ALTER TABLE ako.user ADD UNIQUE KEY (first_name,middle_name,last_name,birth_date
 INSERT INTO ako.user (first_name,last_name,middle_name,birth_date,email,password,user_type_id,has_mfa_active,secret,user_name) 
 		VALUES ('Noel','Buruca','A','2017-09-01','nburuca@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','01','1','3E6ENQIGPIDDPFAI','nburuca@terpmail.umd.edu');
 INSERT INTO ako.user (first_name,last_name,middle_name,birth_date,email,password,user_type_id,has_mfa_active,secret,user_name) 
-		VALUES ('Renuka','Dalal','A','2017-09-01','rdalal@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','02','1','LGYN4HASTVHDC5YQ','rdalal@terpmail.umd.edu');
+		VALUES ('Renuka','Dalal','A','2017-09-01','rdalal@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','02','1','LGYN4HASTVHDC5YQ','rmdalal@terpmail.umd.edu');
 INSERT INTO ako.user (first_name,last_name,middle_name,birth_date,email,password,user_type_id,has_mfa_active,secret,user_name)  
 		VALUES ('Tim','Phillips','A','2017-09-01','tphillips@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','01','0','JC5XKGIUQVHX7SIJ','tphillips@terpmail.umd.edu');
 INSERT INTO ako.user (first_name,last_name,middle_name,birth_date,email,password,user_type_id,has_mfa_active,secret,user_name) 
-		VALUES ('Vishakha','Sadhwani','A','2017-09-01','vsadhwani@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','01','0','DSLWOBT56WMONKPT','vsadhwani@terpmail.umd.edu');
+		VALUES ('Vishakha','Sadhwani','A','2017-09-01','vsadhwani@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','01','0','DSLWOBT56WMONKPT','vishakha@terpmail.umd.edu');
 INSERT INTO ako.user (first_name,last_name,middle_name,birth_date,email,password,user_type_id,has_mfa_active,secret,user_name) 
 		VALUES ('Prashant','Rathod','A','2017-09-01','prathod@terpmail.umd.edu','$2a$10$qTS/we2W1687My6zAeuUd.yGDjEc8npQwbVtogFgzZV53DCveG6Ue','02','1','T37RBNPZMU3UCJSD','prathod@terpmail.umd.edu');
 
