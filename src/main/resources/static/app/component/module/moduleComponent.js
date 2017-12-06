@@ -57,10 +57,15 @@ akoApp.component('module', {
 				$scope.moduleAdd = function () {
 					if (!$scope.isPublished) {
 						$scope.isPublished = false;
+						moduleService.createModule(courseId, $scope.name , $scope.description, false).then(function (data) {
+							
+						});
+					} else {
+						$scope.isPublished = true;
+						moduleService.createModule(courseId, $scope.name , $scope.description, true).then(function (data) {
+							
+						});
 					}
-					moduleService.createModule(courseId, $scope.name , $scope.description , $scope.isPublshed).then(function (data) {
-						
-					});
 					$mdDialog.hide();
 				};
 				$scope.closeDialog = function() {
