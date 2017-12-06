@@ -1,32 +1,47 @@
 akoApp.component('layout', {
     templateUrl: "/app/component/layout/layoutTemplate.html",
     bindings: {},
-    controller: function ($state, authService) {
-        this.headers = [
-            {
-                name: "Profile",
-                action: "user_profile"
-                        },
-            {
-                name: "Logout",
-                action: "logout"
-                        }]
+    controller: function ($q, $rootScope, $scope, $state, authService, $transitions) {
+        this.currentUser = null;
+        this.subTitle = "Dashboard";
+        this.currentState = $state.$current.name;
 
-        this.setHeaders = function (headers) {
-            this.headers.unshift(headers);
-        }
-        this.headerAction = function (action) {
-            this.performHeaderAction(action);
-        }
-        this.performHeaderAction = function (action) {
-            switch (action) {
-                case "logout":
-                    authService.logout();
-                    break;
-                case "user_profile":
-                    $state.go("userProfile");
-                    break;
+        this.$onInit = function () {
+            var self = this;
+            authService.getUser().then(function (user) {
+                self.currentUser = user;
+            });
+        };
+
+        var self = this;
+        $scope.$watch(function () {
+            return $state.$current.name
+        }, function (newVal, oldVal) {
+            onStateChangeSuccess.bind(self).call();
+        })
+
+        this.getCurrentUser = function () {
+            var deferred = $q.defer();
+            if (this.currentUser) {
+                deferred.resolve(this.currentUser);
             }
+            var self = this;
+            authService.getUser().then(function (user) {
+                self.currentUser = user;
+                deferred.resolve(user);
+            }).catch(deferred.reject);
+
+            return deferred.promise;
+        }
+
+        $transitions.onSuccess({}, onStateChangeSuccess.bind(this));
+
+        function onStateChangeSuccess() {
+            this.currentNavItem = $state.$current.name;
+            this.currentState = $state.$current.name;
+        }
+        this.logout = function () {
+            authService.logout();
         }
     }
 });

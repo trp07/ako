@@ -82,37 +82,37 @@ akoApp.config(function ($stateProvider, $urlServiceProvider) {
     });
     $stateProvider.state('inbox', {
         parent: 'index',
-        url: '/messages',
+        url: '/inbox',
         params: {
             user: null
         },
         views: {
             'detail@index': {
-                component: 'messages',
+                component: 'inbox',
             },
         },
     });
     $stateProvider.state('sent', {
         parent: 'index',
-        url: '/messages',
+        url: '/sentMessage',
         params: {
             user: null
         },
         views: {
             'detail@index': {
-                component: 'messages',
+                component: 'sentMessage',
             },
         },
     });
     $stateProvider.state('compose', {
         parent: 'index',
-        url: '/messages',
+        url: '/composeMessage',
         params: {
             user: null
         },
         views: {
             'detail@index': {
-                component: 'messages',
+                component: 'composeMessage',
             },
         },
     });

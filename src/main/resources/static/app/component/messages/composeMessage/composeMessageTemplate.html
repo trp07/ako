@@ -1,0 +1,44 @@
+<md-content class="md-padding">
+    <div layout="row">
+        <div flex>
+            <md-content>
+                <md-card>
+                    <md-card-content>
+                        <div layout="column" class="compose-message">
+                            <form name="composeMessage" class="md-padding" layout="column">
+                                <md-autocomplete md-selected-item="$ctrl.selectedUser" md-search-text="$ctrl.searchText" md-items="user in $ctrl.getMatchingUsers($ctrl.searchText)" md-item-text="user.firstName" md-min-length="3" md-input-maxlength="10" md-no-float placeholder="Select users" required>
+                                    <md-item-template>
+                                        <span md-highlight-text="$ctrl.searchText">{{user.firstName}}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No matches found.
+                                    </md-not-found>
+                                </md-autocomplete>
+
+                                <md-input-container class="md-block">
+                                    <label>cc</label>
+                                    <input type="email" ng-model="$ctrl.user_id" ng-disabled="true" />
+                                </md-input-container>
+
+                                <md-input-container>
+                                    <label>Subject :</label>
+                                    <input type="text" ng-model="$ctrl.newMessage.subject" required/>
+                                </md-input-container>
+
+                                <md-input-container class="md-block">
+                                    <label>Body :</label>
+                                    <textarea name="body" ng-model="$ctrl.newMessage.body" placeholder="Enter message" rows="3" md-select-on-focus required></textarea>
+                                </md-input-container>
+
+                                <div layout="row" layout-align="center center" style="padding-top:20px">
+                                    <md-button type="submit" ng-click="$ctrl.sendMessage()" class="md-raised md-primary" ng-disabled="composeMessage.$invalid">Send</md-button>
+                                    <div flex="flex"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </md-content>
+        </div>
+    </div>
+</md-content>
