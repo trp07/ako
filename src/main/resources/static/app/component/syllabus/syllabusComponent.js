@@ -1,7 +1,7 @@
 akoApp.component('syllabus', {
     templateUrl: "/app/component/syllabus/syllabusTemplate.html",
     bindings: {},
-    controller: function ($scope, $http) {
+    controller: function (BASE_URL, $scope, $http) {
 
         this.name = "AKO Syllabus";
 
@@ -19,7 +19,7 @@ akoApp.component('syllabus', {
         $scope.getUserType = function () {
             $scope.resetError();
             console.log("====syllabusComponent.js==== getUserType() called");
-            $http.get('/users/whoami').success(function (response) {
+            $http.get(BASE_URL + '/users/whoami').success(function (response) {
                 if (response.userTypeId == 2) {
                     $scope.userAdmin = true;
                 }
@@ -33,7 +33,7 @@ akoApp.component('syllabus', {
         $scope.uploadSyllabus = function (syllabus_file) {
             $scope.resetError();
             console.log("====syllabusComponent.js==== uploadSyllabus() called");
-            $http.post('/syllabus/upload/' + syllabus_file).success(function (response) {
+            $http.post(BASE_URL + '/syllabus/upload/' + syllabus_file).success(function (response) {
                 $scope.syllabusLink = response;
             }).error(function () {
                 $scope.setError('Unable to upload file');
@@ -44,7 +44,7 @@ akoApp.component('syllabus', {
         $scope.getSyllabusLink = function () {
             $scope.resetError();
             console.log("====syllabusComponent.js==== getSyllabusLink() called");
-            $http.get('/syllabus/download').success(function (response) {
+            $http.get(BASE_URL + '/syllabus/download').success(function (response) {
                 $scope.syllabusLink = response;
             }).error(function () {
                 $scope.setError('Could not determine download path');
@@ -55,7 +55,7 @@ akoApp.component('syllabus', {
         $scope.getAllAssignments = function () {
             $scope.resetError();
             console.log("====syllabusComponent.js==== getAllAssignments() called");
-            $http.get('/syllabus/all.json').success(function (response) {
+            $http.get(BASE_URL + '/syllabus/all.json').success(function (response) {
                 $scope.syllabus = response;
             }).error(function () {
                 $scope.setError('Could not display all assignments');
@@ -67,7 +67,7 @@ akoApp.component('syllabus', {
             $scope.resetError();
             console.log("====syllabusComponent.js==== addAssignment() called with: " +
                 assignment + " " + $scope.resetDate.due_date.getTime());
-            $http.post('/syllabus/add/' + assignment).success(function (response) {
+            $http.post(BASE_URL + '/syllabus/add/' + assignment).success(function (response) {
                 $scope.getAllAssignments();
             }).error(function () {
                 $scope.setError('Could not add assignment');
@@ -79,7 +79,7 @@ akoApp.component('syllabus', {
         $scope.deleteAssignment = function (assignment) {
             $scope.resetError();
             console.log("====syllabusComponent.js==== deleteAssignment() called with: " + assignment.assignment);
-            $http.delete('/syllabus/delete/' + assignment.assignment).success(function (response) {
+            $http.delete(BASE_URL + '/syllabus/delete/' + assignment.assignment).success(function (response) {
                 $scope.getAllAssignments();
             }).error(function () {
                 $scope.setError('Could not delete assignment');
@@ -90,7 +90,7 @@ akoApp.component('syllabus', {
         $scope.deleteAll = function () {
             $scope.resetError();
             console.log("====syllabusComponent.js==== deleteAll() called");
-            $http.delete('/syllabus/deleteAll').success(function (response) {
+            $http.delete(BASE_URL + '/syllabus/deleteAll').success(function (response) {
                 $scope.getAllAssignments();
             }).error(function () {
                 $scope.setError('Could not delete all assignments');
@@ -111,7 +111,7 @@ akoApp.component('syllabus', {
             $scope.resetError();
             console.log("====syllabusComponent.js==== updateAssignment() called for: " +
                 $scope.assignment + " => " + assignment);
-            $http.put('/syllabus/update/' + $scope.id + '/' + assignment).success(function (response) {
+            $http.put(BASE_URL + '/syllabus/update/' + $scope.id + '/' + assignment).success(function (response) {
                 $scope.getAllAssignments();
                 $scope.id = '';
                 $scope.assignment = '';

@@ -8,14 +8,14 @@ app:
   qr_prefix: "https://chart.googleapis.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl="
 jwt:
   header: Authorization
-  expires_in: 300 # 5 minutes
-  mobile_expires_in: 600 # 10 minutes
+  expires_in: 86400 # 5 minutes
+  mobile_expires_in: 86400 # 10 minutes
   secret: "r;b'isQMdewoRWO:%3$" # some strong secret
 
 # set active profile here
 spring:
   profiles:
-    active: "dev"
+    active: "prod"
 
 ---
 
