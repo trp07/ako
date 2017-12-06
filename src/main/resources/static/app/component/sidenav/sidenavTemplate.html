@@ -6,66 +6,32 @@
                     <!--md-subheader class="md-no-sticky"-->
                     <md-toolbar scroll-shrink layout="row" layout-padding>
 
-
-
                         <div>
                             <h3>
                                 <span>AKO</span>
 
                             </h3>
                         </div>
-
                     </md-toolbar>
 
-                    <!--/md-subheader-->
-
                     <md-accordion-content ui-Sref="module" md-icon="dashboard" md-heading="Modules">
-                        <!--md-accordion-button href="#">Submenu 1</md-accordion-button>
-                        <md-accordion-button href="#">Submenu 2</md-accordion-button>
-                        <md-accordion-button href="#">Submenu 3</md-accordion-button-->
                     </md-accordion-content>
 
                     <md-accordion-content ui-Sref="syllabus" md-icon="sort" md-heading="Syllabus">
-                        <!--md-accordion-button href="#">
-                            <md-icon ng-bind="'menu'"></md-icon> Submenu 1</md-accordion-button>
-                        <md-accordion-button href="#">Submenu 2</md-accordion-button>
-                        <md-accordion-button href="#">Submenu 3</md-accordion-button-->
                     </md-accordion-content>
 
-                    <md-accordion-content md-icon="email" md-heading="Messages" md-arrow="true">
+                    <md-accordion-content md-icon="email" md-heading="Messages" md-arrow="true" ng-click="$ctrl.gotoState('inbox')">
                         <md-accordion-button ui-Sref="inbox"><i class="material-icons">drafts</i>Inbox</md-accordion-button>
                         <md-accordion-button ui-Sref="sent"> <i class="material-icons">send</i>Sent </md-accordion-button>
                         <md-accordion-button ui-Sref="compose"><i class="material-icons">create</i>Compose Message</md-accordion-button>
                     </md-accordion-content>
 
-                    <md-accordion-content md-icon="group" ui-Sref="userList" md-heading="People" -->
-                        <!--md-accordion-button ui-Sref="userList" md-icon="group">People</md-accordion-button>
-                    <md-accordion-button href="#"> Sent </md-accordion-button>
-                        <md-accordion-button href="#">Compose Message</md-accordion-button-->
+                    <md-accordion-content md-icon="group" ui-Sref="userList" md-heading="People">
                     </md-accordion-content>
 
-                    <md-accordion-content md-icon="settings" ui-Sref="#" md-heading="Settings" -->
-                        <!--md-accordion-button md-icon="settings">Settings</md-accordion-button>
-                    <!--md-accordion-button href="#"> Sent </md-accordion-button>
-                        <md-accordion-button href="#">Compose Message</md-accordion-button-->
+                    <md-divider></md-divider>
+                    <md-accordion-content md-icon="settings" ui-Sref="userProfile" md-heading="Settings">
                     </md-accordion-content>
-
-                </md-accordion-group>
-
-                <md-accordion-group>
-                    <md-divider></md-divider>
-
-                    <md-subheader class="md-no-sticky">Caption</md-subheader>
-
-                    <md-accordion-button href="#">Menu 4</md-accordion-button>
-                </md-accordion-group>
-
-                <md-accordion-group>
-                    <md-divider></md-divider>
-
-                    <md-subheader class="md-no-sticky">Caption</md-subheader>
-                    <md-accordion-button href="#">Menu 5</md-accordion-button>
-                    <md-accordion-button href="#">Menu 6</md-accordion-button>
                 </md-accordion-group>
             </md-accordion>
         </md-content>

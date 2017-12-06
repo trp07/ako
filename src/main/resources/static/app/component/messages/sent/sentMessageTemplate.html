@@ -1,0 +1,44 @@
+<md-content class="md-padding">
+    <div layout="row">
+        <div flex>
+            <md-content>
+                <md-list flex>
+                    <md-list-item class="md-3-line" ng-repeat="message in $ctrl.sentMessages|orderBy:'-createDate'" ng-click="$ctrl.onMessageSelect($index,message)">
+                        <div class="md-list-item-text" layout="column">
+                            <h3>To : {{message.toUsers[0].user.firstName}} {{message.toUsers[0].user.lastName}}
+                            </h3>
+                            <h3>{{message.toUsers[0].user.email}}</h3>
+                            <h4>Subject : {{ message.subject }}</h4>
+                            <p>{{message.body}}</p>
+                        </div>
+                        <md-divider ng-if="!$last"></md-divider>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </div>
+
+
+        <div class="md-sidenav-left" md-component-id="left" md-disable-backdrop flex ng-if="$ctrl.showMessage">
+
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        <div class="md-headline">
+                            <span> To : {{$ctrl.selectedMessage.toUsers[0].user.firstName}} {{$ctrl.selectedMessage.toUsers[0].user.lastName}}         <md-tooltip md-direction="right">{{$ctrl.selectedMessage.toUsers[0].user.email}}</md-tooltip></span>
+                        </div>
+                        <span class="md-subhead">Subject : {{$ctrl.selectedMessage.subject}}</span>
+
+                    </md-card-title-text>
+                </md-card-title>
+
+                <md-card-content>
+                    <div flex>
+                        <md-input-container class="md-block">
+                            {{$ctrl.selectedMessage.body}}
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+    </div>
+</md-content>

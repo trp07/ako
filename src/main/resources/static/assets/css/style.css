@@ -157,3 +157,6 @@ label {
     margin: unset !important;
 }
 
+.detail-container {
+    margin: 10px;
+}

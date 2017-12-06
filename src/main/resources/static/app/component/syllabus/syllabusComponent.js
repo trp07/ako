@@ -1,4 +1,4 @@
-akoApp.component('syllabus', ['ngMaterial', 'ngMessages'], {
+akoApp.component('syllabus', {
     templateUrl: "/app/component/syllabus/syllabusTemplate.html",
     bindings: {},
     controller: function ($scope, $http) {
@@ -16,10 +16,10 @@ akoApp.component('syllabus', ['ngMaterial', 'ngMessages'], {
         };
 
 
-        $scope.getUserType = function() {
+        $scope.getUserType = function () {
             $scope.resetError();
             console.log("====syllabusComponent.js==== getUserType() called");
-            $http.get('/users/whoami').success(function(response) {
+            $http.get('/users/whoami').success(function (response) {
                 if (response.userTypeId == 2) {
                     $scope.userAdmin = true;
                 }
