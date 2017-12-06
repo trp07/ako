@@ -1,14 +1,14 @@
 <div layout="row" ng-app="akoApp">
 
-    <md-toolbar class="md-primary" scroll-shrink layout="row" layout-padding md-whiteframe class="md-whiteframe-30dp">
-        <div flex="30">
+    <md-toolbar class="md-primary" scroll-shrink layout="row" layout-padding layout-align="space-between end  ">
+        <div>
             <h3>
                 <title state-title></title>
                 <span>{{$ctrl.subTitle}}</span>
             </h3>
         </div>
 
-        <div flex="70">
+        <div>
             <md-nav-bar md-selected-nav-item="$ctrl.currentNavItem" nav-bar-aria-label="navigation links">
 
                 <md-nav-item md-nav-sref="syllabus" name="syllabus" ng-if="$ctrl.currentState == 'syllabus'" class="md-whiteframe-30dp">
