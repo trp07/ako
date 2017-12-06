@@ -70,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and().authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css",
-						"/**/*.js")
+						"/**/*.js,","/resources/**")
 				.permitAll().antMatchers("/auth/**").permitAll().antMatchers("/auth/verify-code")
 				.hasRole("PRE_AUTH_USER").anyRequest().authenticated().and().addFilterBefore(
 						new TokenAuthenticationFilter(tokenHelper, userService), BasicAuthenticationFilter.class);
@@ -82,7 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// TokenAuthenticationFilter will ignore the below paths
 		web.ignoring().antMatchers(HttpMethod.POST, "/auth/login");
 		web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html",
-				"/**/*.css", "/**/*.js");
+				"/**/*.css", "/**/*.js", "/**/*.png", "/resources/**");
 		web.ignoring().antMatchers(HttpMethod.OPTIONS);
 	}
 }

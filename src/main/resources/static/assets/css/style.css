@@ -160,3 +160,7 @@ label {
 .detail-container {
     margin: 10px;
 }
+
+.sidebar-image {
+    width: 40px;
+}

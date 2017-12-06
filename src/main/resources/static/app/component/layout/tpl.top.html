@@ -29,7 +29,7 @@
                 <md-nav-item md-nav-sref="userList" ng-if="$ctrl.currentState == 'userList'" name="userList" class="md-whiteframe-30dp">
                     <span>People</span>
                 </md-nav-item>
-                <md-nav-item md-nav-sref="userProfile" name="userProfile" class="md-whiteframe-30dp">
+                <md-nav-item md-nav-sref="userProfile" ng-if="$ctrl.currentState == 'userProfile'" name="userProfile" class="md-whiteframe-30dp">
                     <span>Profile</span>
                 </md-nav-item>
                 <md-nav-item md-nav-click="$ctrl.logout()" name="logout" class="md-whiteframe-30dp">
