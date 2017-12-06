@@ -164,3 +164,7 @@ label {
 .sidebar-image {
     width: 40px;
 }
+
+button._md-nav-button.md-accent.md-button.md-ink-ripple.md-unselected {
+    color: white;
+}
