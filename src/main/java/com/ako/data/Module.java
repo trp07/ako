@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 @Entity
 @Table(name="Module")
-@JsonIgnoreProperties(value = {"id", "createDate"}, allowGetters = true)
 public class Module {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,9 +33,8 @@ public class Module {
     @CreatedDate
 	private Date createDate;
 	
-	@ManyToOne
-	@JoinColumn(name="course_id")
-	private Course course;
+	@Column(nullable = false)
+	private int courseId;
 	
 	@Column(nullable = false)
 	private String name;
@@ -54,15 +52,25 @@ public class Module {
 	public int getId(){
     	return id;
     }
+	@JsonSetter("id")
+	public void setId(int id){
+    	this.id = id;
+    }
 	@JsonGetter("createDate")
 	public Date getCreateDate(){
     	return createDate;
     }
-    public Course getCourse(){
-    	return course;
+	@JsonSetter("createDate")
+	public void setCreateDate(Date createDate){
+    	this.createDate = createDate;
     }
-    public void setCourse(Course courseId) {
-    	this.course = courseId;
+	@JsonGetter("courseId")
+    public int getCourseId(){
+    	return courseId;
+    }
+	@JsonSetter("courseId")
+    public void setCourseId(int courseId) {
+    	this.courseId = courseId;
     }
     @JsonGetter("name")
     public String getName(){

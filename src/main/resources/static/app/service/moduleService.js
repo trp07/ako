@@ -15,14 +15,29 @@ akoApp.factory('moduleService', function ($http, $q, BASE_URL, store, $state) {
         }
         return deferred.promise;
     }
+	// Get all published modules 
+	var viewPublishedModules = function(courseId) {
+		console.log('Getting all of the published modules in the service.');
+		var deferred = $q.defer();
+        if (!courseModules) {
+            $http.get(BASE_URL + '/module/published/' + courseId).then(function (moduleData) {
+            	courseModules = moduleData.data;
+                deferred.resolve(courseModules);
+            }).catch(deferred.reject);
+        } else {
+            deferred.resolve(courseModules);
+        }
+        return deferred.promise;
+    }
 	
 	// Create a module for this course
-	var createModule = function(courseId, name, description) {
+	var createModule = function(courseId, name, description,isPublished) {
 		var deferred = $q.defer();
 		var data = {
 				'courseId':courseId,
 				'name':name,
-				'description':description
+				'description':description,
+				'isPublished':isPublished
 			}
         $http.post(BASE_URL + '/module/', data).then(function (moduleData) {
         	deferred.resolve(moduleData);
@@ -31,15 +46,9 @@ akoApp.factory('moduleService', function ($http, $q, BASE_URL, store, $state) {
 	}
 	
 	// Update a module
-	var editModule = function(moduleId, courseId, name, description) {
+	var editModule = function(module) {
 		var deferred = $q.defer();
-		var data = {
-				'moduleId':moduleId,
-				'courseId':courseId,
-				'name':name,
-				'description':description
-			}
-        $http.put(BASE_URL + '/module/', data).then(function (moduleData) {
+        $http.put(BASE_URL + '/module/', module).then(function (moduleData) {
         	deferred.resolve(moduleData);
         }).catch(deferred.reject);
         return deferred.promise;
@@ -65,6 +74,7 @@ akoApp.factory('moduleService', function ($http, $q, BASE_URL, store, $state) {
 				'fileS3Url':fileS3Url
 			}
         $http.put(BASE_URL + '/module/file/' + moduleId, data).then(function (moduleData) {
+        	courseModules = moduleData.data;
         	deferred.resolve(moduleData);
         }).catch(deferred.reject);
         return deferred.promise;
@@ -78,13 +88,24 @@ akoApp.factory('moduleService', function ($http, $q, BASE_URL, store, $state) {
         }).catch(deferred.reject);
         return deferred.promise;
 	}
+	
+	// Get the current 
+	var getCurrentUser = function () {
+		var deferred = $q.defer();
+		$http.get('/users/whoami').success(function (userData) {
+        	deferred.resolve(userData);
+        }).catch(deferred.reject);
+		return deferred.promise;
+	}
     return {
     	viewModules: viewModules,
     	createModule: createModule,
     	editModule: editModule,
     	deleteModule: deleteModule,
     	addModuleFile: addModuleFile,
-    	deleteModuleFile: deleteModuleFile
+    	deleteModuleFile: deleteModuleFile,
+    	viewPublishedModules: viewPublishedModules,
+    	getCurrentUser: getCurrentUser
     };
 	
 });

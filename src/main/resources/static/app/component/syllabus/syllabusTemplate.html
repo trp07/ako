@@ -1,30 +1,22 @@
 <div class="alert alert-error" ng-show="error">{{errorMessage}}</div>
-
-<div class="row">
-    <form ng-submit="uploadSyllabus(syllabus_file)">
-        <div class="col-lg-8">
-            <input type="file" ng-model="syllabus_file"><br />
-            <input type="submit" value="Upload Syllabus">
-        </div>
-        <a ng-href="{{syllabusLink}}" target="_blank">Download Syllabus</a>
-    </form>
-</div>
 <hr />
 
 <div class="row">
+    <md-button ng-href="{{syllabusLink}}" target="_blank">Download Syllabus</md-button>
+</div>
+<hr />
+
+<div class="row" ng-show="userAdmin">
     <form ng-submit="addAssignment(assignment)">
         <div class="col-lg-8">
             <input class="form-control" placeholder="Enter Assignment" type="text" ng-model="assignment" required min="1" />
-            <input type="date" id="dueDateInput" name="input" ng-model="resetDate.due_date"
-       placeholder="yyyy-MM-dd" min="2017-08-31" max="2017-12-31" required />
-        </div>
+            <input type="date" id="dueDateInput" name="input" ng-model="resetDate.due_date" placeholder="yyyy-MM-dd" min="2017-08-31" max="2017-12-31" required />
+	</div>
     </form>
 
-    <button class="btn btn-primary" ng-disabled="!assignment" ng-hide="editMode" ng-click="addAssignment(assignment)">Add Assignment</button>
-    <button type="btn btn-primary" class="btn btn-primary"
-            ng-disabled="!assignment" ng-show="editMode"
-            ng-click="updateAssignment(assignment)">Save</button>
-    <button type="btn btn-primary" class="btn btn-primary" ng-click="resetAssignmentField()">Reset</button>
+    <md-button class="md-raised md-primary save" ng-disabled="!assignment" ng-hide="editMode" ng-click="addAssignment(assignment)">Add Assignment</md-button>
+    <md-button class="md-raised md-primary save" ng-disabled="!assignment" ng-show="editMode" ng-click="updateAssignment(assignment)">Save</md-button>
+    <md-button class="md-raised md-primary save" ng-click="resetAssignmentField()">Reset</md-button>
 </div>
 <hr />
 
@@ -45,19 +37,19 @@
 <table class="table table-bordered table-striped" ng-show="syllabus.length > 0">
     <thead>
     <tr>
-        <th style="text-align:center; width:25px;">Delete</th>
-        <th style="text-align:center; width:25px;">Update</th>
-        <th style="text-align:center; width:300px;">Assignment</th>
-        <th style="text-align:center;">Due Date</th>
+        <th style="text-align:left; width:350px;">Assignment</th>
+        <th style="text-align:center; width:75px;">Due Date</th>
+	<th style="text-align:center; width:25px;" ng-show="userAdmin">Delete</th>
+        <th style="text-align:center; width:25px;" ng-show="userAdmin">Update</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="assignment in syllabus | filter:searchAssignment">
-        <td  style="width:70px;text-align:center;"><button class="btn btn-mini btn-danger" ng-click="deleteAssignment(assignment)">Delete</button></td>
-        <td  style="width:70px;text-align:center;"><button class="btn btn-mini btn-danger" ng-click="editAssignment(assignment)">Update</button></td>
         <td>{{assignment.assignment}}</td>
-        <td>{{assignment.dueDate | date: "yyyy-MM-dd"}}</td>
+        <td>{{assignment.dueDate | date: "MM/dd/yyyy"}}</td>
+	<td  style="width:70px;text-align:center;"><md-button class="md-raised md-primary save" ng-show="userAdmin" ng-click="deleteAssignment(assignment)">Delete</md-button></td>
+        <td  style="width:70px;text-align:center;"><md-button class="md-raised md-primary save" ng-show="userAdmin" ng-click="editAssignment(assignment)">Update</md-button></td>
     </tr>
     </tbody>
 </table>
-<button class="btn btn-danger" style="width:140px;"  ng-show="syllabus.length >= 1" ng-click="deleteAll()">Delete All Assignments</button>
+<md-button class="md-raised md-warn save" style="text-align:center;"  ng-show="syllabus.length >= 1 && userAdmin" ng-click="deleteAll()">Delete All Assignments</md-button>

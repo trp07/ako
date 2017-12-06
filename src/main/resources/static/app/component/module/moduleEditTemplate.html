@@ -4,31 +4,26 @@
       <md-button class="md-icon-button" aria-label="Cancel" ng-click="closeDialog()">
         <md-icon class="fa fa-times fa-2x"></md-icon>
       </md-button>
-      <h2 flex="flex">Add Module</h2>
+      <h2 flex="flex">Edit Module</h2>
     </div>
   </md-toolbar>
   <md-dialog-content>
     <form name="addModule"></form>
     <div layout="layout" layout-sm="column">
-      <md-input-container  style="width:80%">
+      <md-input-container required style="width:80%">
         <label>Name</label>
-        <input required ng-model="name"/>
+        <input ng-model="name"/>
       </md-input-container>
     </div>
     <div layout="layout" layout-sm="column">
-	      <md-input-container  flex="flex">
+	      <md-input-container required flex="flex">
 	      	<label>Description</label>
-	      	<input required ng-model="description"/>
+	      	<input ng-model="description"/>
     	  </md-input-container>
-    </div>
-    <div layout="layout" layout-sm="column">
-		<md-checkbox ng-false-value="'false'" ng-model="isPublished" aria-label="Publish?">
-	  		Publish ?
-		</md-checkbox>
     </div>
   </md-dialog-content>
   <md-dialog-actions layout="row">
       <span flex></span>
-      <md-button class="md-raised md-primary" ng-click="moduleAdd()">Add Module</md-button> 
+      <md-button class="md-raised md-primary" ng-click="moduleEdit()">Edit Module</md-button> 
     </md-dialog-actions>
 </md-dialog>
