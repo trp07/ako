@@ -150,9 +150,10 @@ label {
 }
 
 .tabsdemoDynamicHeight md-content h1:first-child {
-    margin-top: 0;
+    1 margin-top: 0;
 }
 
 .compose-message md-input-container {
     margin: unset !important;
 }
+
