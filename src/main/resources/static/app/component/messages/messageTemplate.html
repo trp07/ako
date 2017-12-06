@@ -1,6 +1,6 @@
 <!-- HEADER TOOL BAR -->
-<header>
-    <md-toolbar scroll-shrink layout="row">
+<!--header>
+    <!--md-toolbar scroll-shrink layout="row">
         <div>
             <h3>
                 <span>Messages</span>
@@ -10,7 +10,7 @@
 </header>
 <!-- tabs -->
 <!--Inbox-->
-<md-tabs md-dynamic-height md-border-bottom>
+<md-tabs md-dynamic-height md-border-bottom md-selected="$ctrl.selectedIndex">
     <md-tab label="Inbox">
         <md-tab-body>
             <md-content class="md-padding">
@@ -46,9 +46,12 @@
                             <md-card-title>
                                 <md-card-title-text>
                                     <div class="md-headline">
-                                        <span>{{$ctrl.selectedMessage.fromUsers.user.firstName}}  {{$ctrl.selectedMessage.fromUsers.user.lastName}}</span>
+                                        <span>{{$ctrl.selectedMessage.fromUsers.user.firstName}}  {{$ctrl.selectedMessage.fromUsers.user.lastName}}
+                                        
+                                        <md-tooltip md-direction="right">{{$ctrl.selectedMessage.fromUsers.user.email}}</md-tooltip>
+                                        </span>
                                     </div>
-                                    <span class="md-subhead">{{$ctrl.selectedMessage.fromUsers.user.email}}</span>
+                                    <!--span class="md-subhead">{{$ctrl.selectedMessage.fromUsers.user.email}}</span-->
                                     <span class="md-subhead">Subject : {{$ctrl.selectedMessage.subject}}</span>
                                 </md-card-title-text>
                             </md-card-title>
@@ -140,6 +143,9 @@
             </md-content>
         </md-tab-body>
     </md-tab>
+
+
+
     <!--Compose Message -->
     <md-tab label="Compose Message">
         <md-tab-body>
@@ -189,5 +195,7 @@
                 </div>
             </md-content>
         </md-tab-body>
+
     </md-tab>
+
 </md-tabs>

@@ -1,7 +1,7 @@
 akoApp.component('sidenavComponent', {
     templateUrl: "/app/component/sidenav/sidenavTemplate.html",
     bindings: {},
-    controller: function () {
+    controller: function ($rootScope) {
 
         var sections = [{
             name: 'Getting Started',

@@ -1,7 +1,7 @@
 akoApp.component('messages', {
     templateUrl: "/app/component/messages/messageTemplate.html",
     bindings: {},
-    controller: function ($q, $rootScope, messageService, msgDialogService, authService) {
+    controller: function ($q, $rootScope, messageService, msgDialogService, authService, $state) {
         this.newMessage = {
             messageUsers: [],
             previousMessageId: null,
@@ -14,16 +14,28 @@ akoApp.component('messages', {
             this.messageUserTypeId = messageUserTypeId;
             this.userId = null;
         }
+
+        var st = $state.current.name;
         var ctrl = this;
         this.currentUser = null;
         this.$onInit = function () {
             //Do other stuff
             var self = this;
+            var st = $state.current.name;
+            console.log("aaaaaa");
+            if (st == "inbox")
+                this.selectedIndex = 0;
+            else if (st == "sent")
+                this.selectedIndex = 1;
+            else if (st == "compose")
+                this.selectedIndex = 2;
+
             authService.getUser().then(function (user) {
                 self.currentUser = user;
                 self.refreshMessages();
             });
         };
+
 
         this.selectedMessageIndex = null;
         this.selectedMessage = null;
