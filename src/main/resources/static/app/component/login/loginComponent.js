@@ -31,7 +31,7 @@ akoApp.component('login', {
             // Appending dialog to document.body to cover sidenav in docs app
             var confirm = $mdDialog.prompt()
                 .title('Enter the OTP')
-                .textContent('Bowser is a common name.')
+                .textContent('Use Google Autheticator!')
                 .placeholder('Code')
                 .ok('Okay!')
                 .cancel('Cancel!');

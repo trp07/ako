@@ -1,4 +1,4 @@
-akoApp.config(function ($stateProvider, $urlServiceProvider, $urlRouterProvider) {
+akoApp.config(function ($stateProvider, $urlServiceProvider) {
     $urlServiceProvider.rules.otherwise({
         state: 'login'
     });
@@ -80,15 +80,39 @@ akoApp.config(function ($stateProvider, $urlServiceProvider, $urlRouterProvider)
             },
         },
     });
-    $stateProvider.state('messages', {
+    $stateProvider.state('inbox', {
         parent: 'index',
-        url: '/messages',
+        url: '/inbox',
         params: {
             user: null
         },
         views: {
             'detail@index': {
-                component: 'messages',
+                component: 'inbox',
+            },
+        },
+    });
+    $stateProvider.state('sent', {
+        parent: 'index',
+        url: '/sentMessage',
+        params: {
+            user: null
+        },
+        views: {
+            'detail@index': {
+                component: 'sentMessage',
+            },
+        },
+    });
+    $stateProvider.state('compose', {
+        parent: 'index',
+        url: '/composeMessage',
+        params: {
+            user: null
+        },
+        views: {
+            'detail@index': {
+                component: 'composeMessage',
             },
         },
     });

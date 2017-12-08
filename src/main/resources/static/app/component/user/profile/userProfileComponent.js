@@ -1,20 +1,21 @@
 akoApp.component('userProfile', {
     templateUrl: "/app/component/user/profile/userProfileTemplate.html",
     bindings: {},
+    require: {
+        parent: '^^layout'
+    },
     controller: function (BASE_URL, authService, msgDialogService, userService, $http, $q) {
         var self = this;
         this.qrCodeURL = null;
+        this.user = null;
         this.$onInit = function () {
-            getCurrentUser();
-        }
-
-        function getCurrentUser() {
-            authService.getUser().then(function (user) {
+            var self = this;
+            this.parent.getCurrentUser().then(function (user) {
                 self.user = angular.copy(user);
-            }).catch(function (err) {
-                console.log(err);
+                self.setMfaActive(self.user.hasMfaActive);
             });
-        }
+        };
+
         this.setMfaActive = function (flag) {
             if (flag && !this.qrCodeURL) {
                 this.getQRCodeURL();
@@ -28,12 +29,16 @@ akoApp.component('userProfile', {
             });
         }
         this.saveChanges = function () {
-            updateUser(self.user, self.user.id);
+            updateUser(self.user, self.user.id).then(function (data) {
+                msgDialogService.showInfo("User details updated!");
+
+            }).catch(function (err) {
+                msgDialogService.showError("Error occured while updating user details.");
+            });;
         }
         this.reset = function () {
             getCurrentUser();
         }
-
 
         function updateUser(user, id) {
             var deferred = $q.defer();

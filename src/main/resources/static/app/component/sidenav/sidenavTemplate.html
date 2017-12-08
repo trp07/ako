@@ -1,44 +1,44 @@
 <div class="main-container" layout="row" flex>
-    <md-sidenav class="main-sidenav md-sidenav-left" md-component-id="navigation-drawer" md-is-locked-open="true" layout="column">
+    <md-sidenav class="main-sidenav md-sidenav-left" md-component-id="navigation-drawer" md-is-locked-open="true" layout="column" md-whiteframe class="md-whiteframe-24dp">
         <md-content md-scroll-y flex layout="column">
             <md-accordion locked="true">
                 <md-accordion-group>
-                    <md-subheader class="md-no-sticky">Caption</md-subheader>
+                    <!--md-subheader class="md-no-sticky"-->
+                    <md-toolbar scroll-shrink layout="row" layout-padding layout-align="space-between center">
 
-                    <md-accordion-content md-icon="home" md-heading="Courses" md-arrow="true">
-                        <md-accordion-button href="#">Submenu 1</md-accordion-button>
-                        <md-accordion-button href="#">Submenu 2</md-accordion-button>
-                        <md-accordion-button href="#">Submenu 3</md-accordion-button>
+                        <div>
+                            <h3>
+                                <span>AKO</span>
+
+                            </h3>
+                        </div>
+                        <div>
+                            <img class="sidebar-image" ng-src="{{$ctrl.getLogo()}}">
+                        </div>
+                    </md-toolbar>
+
+                    <md-accordion-content ui-Sref="module" md-icon="dashboard" md-heading="Modules">
                     </md-accordion-content>
 
-                    <md-accordion-content md-heading="Syllabus" md-arrow="true">
-                        <md-accordion-button href="#">
-                            <md-icon ng-bind="'menu'"></md-icon> Submenu 1</md-accordion-button>
-                        <md-accordion-button href="#">Submenu 2</md-accordion-button>
-                        <md-accordion-button href="#">Submenu 3</md-accordion-button>
+                    <md-accordion-content ui-Sref="syllabus" md-icon="sort" md-heading="Syllabus">
                     </md-accordion-content>
 
-                    <md-accordion-content md-heading="Messages" md-arrow="true">
-                        <md-accordion-button ui-Sref="messages">Messages</md-accordion-button>
-                        <md-accordion-button href="#">Submenu 2</md-accordion-button>
-                        <md-accordion-button href="#">Submenu 3</md-accordion-button>
+                    <md-accordion-content md-icon="email" md-heading="Messages" md-arrow="true" ng-click="$ctrl.gotoState('inbox')">
+                        <md-accordion-button ui-Sref="inbox"><i class="material-icons">drafts</i>Inbox</md-accordion-button>
+                        <md-accordion-button ui-Sref="sent"> <i class="material-icons">send</i>Sent </md-accordion-button>
+                        <md-accordion-button ui-Sref="compose"><i class="material-icons">create</i>Compose Message</md-accordion-button>
                     </md-accordion-content>
-                </md-accordion-group>
 
-                <md-accordion-group>
+                    <md-accordion-content md-icon="group" ui-Sref="userList" md-heading="People">
+                    </md-accordion-content>
+
                     <md-divider></md-divider>
-
-                    <md-subheader class="md-no-sticky">Caption</md-subheader>
-
-                    <md-accordion-button href="#">Menu 4</md-accordion-button>
-                </md-accordion-group>
-
-                <md-accordion-group>
+                    <md-accordion-content md-icon="settings" ui-Sref="userProfile" md-heading="Settings">
+                    </md-accordion-content>
                     <md-divider></md-divider>
-
-                    <md-subheader class="md-no-sticky">Caption</md-subheader>
-                    <md-accordion-button href="#">Menu 5</md-accordion-button>
-                    <md-accordion-button href="#">Menu 6</md-accordion-button>
+                    <md-accordion-content md-heading="Magnifier">
+                        <text-size-slider min="12" max="24" unit="px" value="18"></text-size-slider>
+                    </md-accordion-content>
                 </md-accordion-group>
             </md-accordion>
         </md-content>

@@ -38,6 +38,9 @@ public class MessageService {
 	@Autowired
 	private IMessageUserRepository  messageUserRepository;
 
+	@Autowired
+	private UserService userService;
+
 	private static final Logger logger = LoggerFactory.getLogger(MessageService.class);
 
 	/**
@@ -87,17 +90,28 @@ public class MessageService {
 	/**
 	 * simple send text message
 	 * 
-	 * @param Message
+	 * @param message
 	 */
 	@Async
-	private void sendMessage(Message Message) {
+	private void sendMessage(Message message) {
 
 		try {
 			SimpleMailMessage mail = new SimpleMailMessage();
-			mail.setTo("vishakha@umd.edu");
-			mail.setFrom("prashant@gmail.com");
-			mail.setSubject(Message.getSubject());
-			mail.setText(Message.getBody());
+			
+			List<String> userEmails = new ArrayList<String>();
+			for (MessageUser messageUser : message.getToUsers()) {
+				userEmails.add(userService.getUser(messageUser.getUserId()).getEmail());
+			}
+			
+			String[] toUsers = new String[userEmails.size()];
+			userEmails.toArray(toUsers);
+			
+			String from = userService.getUser(message.getFromUsers().getUserId()).getEmail();
+			
+			mail.setTo(toUsers);
+			mail.setFrom(from);
+			mail.setSubject(message.getSubject());
+			mail.setText(message.getBody());
 
 			this.javaMailSender.send(mail);
 		} catch (MailException e) {
@@ -126,6 +140,7 @@ public class MessageService {
 			messageUser.setMessageId(createdMessage.getId());
 		}
 		this.messageUserRepository.save(messageUsers);
+		this.sendMessage(message);
 	}
 	
 	public void sendMessageWithAttachment(String to, String subject, String text, String pathToAttachment) {

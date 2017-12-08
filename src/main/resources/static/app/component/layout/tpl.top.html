@@ -1,9 +1,42 @@
-<div>
-    <md-nav-bar md-no-ink-bar="disableInkBar" md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
-        <md-nav-item md-nav-click="$ctrl.headerAction(header.action)" ng-repeat="header in $ctrl.headers">
-            {{header.name}}
-        </md-nav-item>
-        <!-- these require actual routing with ui-router or ng-route, so they won't work in the demo
+<div layout="row" ng-app="akoApp">
+
+    <md-toolbar class="md-primary" scroll-shrink layout="row" layout-padding layout-align="space-between end  ">
+        <div>
+            <h3>
+                <title state-title></title>
+                <span>{{$ctrl.subTitle}}</span>
+            </h3>
+        </div>
+
+        <div>
+            <md-nav-bar md-selected-nav-item="$ctrl.currentNavItem" nav-bar-aria-label="navigation links">
+
+                <md-nav-item md-nav-sref="syllabus" name="syllabus" ng-if="$ctrl.currentState == 'syllabus'" class="md-whiteframe-30dp">
+                    <span>Syllabus</span>
+                </md-nav-item>
+                <md-nav-item md-nav-sref="module" name="module" ng-if="$ctrl.currentState == 'module'" class="md-whiteframe-30dp">
+                    <span>Modules</span>
+                </md-nav-item>
+                <md-nav-item md-nav-sref="inbox" name="inbox" ng-if="$ctrl.currentState == 'compose' || $ctrl.currentState == 'sent' || $ctrl.currentState == 'inbox'" class="md-whiteframe-30dp">
+                    <span>Inbox</span>
+                </md-nav-item>
+                <md-nav-item md-nav-sref="sent" name="sent" ng-if="$ctrl.currentState == 'compose' || $ctrl.currentState == 'sent' || $ctrl.currentState == 'inbox'" class="md-whiteframe-30dp">
+                    <span>Sent</span>
+                </md-nav-item>
+                <md-nav-item md-nav-sref="compose" ng-if="$ctrl.currentState == 'compose' || $ctrl.currentState == 'sent' || $ctrl.currentState == 'inbox'" name="compose" class="md-whiteframe-30dp">
+                    <span>Compose</span>
+                </md-nav-item>
+                <md-nav-item md-nav-sref="userList" ng-if="$ctrl.currentState == 'userList'" name="userList" class="md-whiteframe-30dp">
+                    <span>People</span>
+                </md-nav-item>
+                <md-nav-item md-nav-sref="userProfile" ng-if="$ctrl.currentState == 'userProfile'" name="userProfile" class="md-whiteframe-30dp">
+                    <span>Profile</span>
+                </md-nav-item>
+                <md-nav-item md-nav-click="$ctrl.logout()" name="logout" class="md-whiteframe-30dp">
+                    <span>Logout</span>
+                </md-nav-item>
+
+                <!-- these require actual routing with ui-router or ng-route, so they won't work in the demo
 <md-nav-item md-nav-href="#page4" name="page5">Page Four</md-nav-item>
 <md-nav-item md-nav-sref="app.page5" name="page4">Page Five</md-nav-item>
 You can also add options for the <code>ui-sref-opts</code> attribute.
@@ -11,5 +44,10 @@ You can also add options for the <code>ui-sref-opts</code> attribute.
         Page Six
       </md-nav-item>
       -->
-    </md-nav-bar>
+            </md-nav-bar>
+
+        </div>
+    </md-toolbar>
 </div>
+
+<md-divider ng-if="!$last"></md-divider>

@@ -8,14 +8,14 @@ app:
   qr_prefix: "https://chart.googleapis.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl="
 jwt:
   header: Authorization
-  expires_in: 300 # 5 minutes
-  mobile_expires_in: 600 # 10 minutes
+  expires_in: 86400 # 5 minutes
+  mobile_expires_in: 86400 # 10 minutes
   secret: "r;b'isQMdewoRWO:%3$" # some strong secret
 
 # set active profile here
 spring:
   profiles:
-    active: "dev"
+    active: "prod"
 
 ---
 
@@ -27,10 +27,21 @@ spring:
     username: root
     password: root
   mail:
-    host: localhost 
-    port: 2525
+    username: akoatumd@gmail.com
+    password: akoatumd123
+    host: smtp.gmail.com 
+    port: 587
     properties:
       mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            enabled: true
+    #protocol: smtp
+    test-connection: true
 
 ---
 
@@ -42,8 +53,8 @@ spring:
     username: ako
     password: "Enpm61320!7"
   mail:
-    username: 
-    password: 
+    username: akoatumd@gmail.com
+    password: "[Q+7ca&h"
     host: smtp.gmail.com 
     port: 587
     properties:
@@ -52,5 +63,8 @@ spring:
           auth: true
           starttls:
             enable: true
-    protocol: smtp
-    test-connection: false
+            required: true
+          ssl:
+            enabled: true
+    #protocol: smtp
+    test-connection: true

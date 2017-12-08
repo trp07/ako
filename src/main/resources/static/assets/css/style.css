@@ -150,9 +150,21 @@ label {
 }
 
 .tabsdemoDynamicHeight md-content h1:first-child {
-    margin-top: 0;
+    1 margin-top: 0;
 }
 
 .compose-message md-input-container {
     margin: unset !important;
+}
+
+.detail-container {
+    margin: 10px;
+}
+
+.sidebar-image {
+    width: 40px;
+}
+
+button._md-nav-button.md-accent.md-button.md-ink-ripple.md-unselected {
+    color: white;
 }

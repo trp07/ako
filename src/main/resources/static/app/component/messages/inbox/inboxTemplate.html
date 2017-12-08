@@ -1,0 +1,78 @@
+<md-content class="md-padding">
+    <div layout="row">
+        <div flex>
+            <md-content>
+                <md-list flex>
+                    <md-list-item class="md-3-line" ng-repeat="message in $ctrl.receivedMessages|orderBy:'-createDate'" ng-click="$ctrl.onMessageSelect($index,message)">
+                        <div class="md-list-item-text" layout="column">
+                            <div layout="row">
+                                <div flex="40">
+                                    <h3>From : {{ message.fromUsers.user.firstName }} {{ message.fromUsers.user.lastName }}</h3>
+                                </div>
+                                <div flex="30"> </div>
+                                <div flex="20">
+                                    <h3>{{message.createDate | date:'medium'}}</h3>
+                                </div>
+                            </div>
+                            <h3>{{ message.fromUsers.user.email }}</h3>
+                            <h4>Subject : {{ message.subject }}</h4>
+                            <p>{{message.body}}</p>
+
+                            <md-divider ng-if="!$last"></md-divider>
+                        </div>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </div>
+        <!--SELECTED MESSAGE-->
+        <div class="md-sidenav-left" md-component-id="left" md-disable-backdrop flex ng-if="$ctrl.showMessage">
+
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        <div class="md-headline">
+                            <span>{{$ctrl.selectedMessage.fromUsers.user.firstName}}  {{$ctrl.selectedMessage.fromUsers.user.lastName}}
+                                        
+                                        <md-tooltip md-direction="right">{{$ctrl.selectedMessage.fromUsers.user.email}}</md-tooltip>
+                                        </span>
+                        </div>
+                        <!--span class="md-subhead">{{$ctrl.selectedMessage.fromUsers.user.email}}</span-->
+                        <span class="md-subhead">Subject : {{$ctrl.selectedMessage.subject}}</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-divider ng-if="!$last"></md-divider>
+                <md-card-content>
+                    <div flex>
+                        <md-input-container class="md-block">
+                            {{$ctrl.selectedMessage.body}}
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+
+                <div>
+                    <md-fab-toolbar md-open="$ctrl.isFabBarOpen" md-direction="left">
+                        <md-fab-trigger>
+                            <md-button aria-label="menu" class="md-fab md-primary">
+                                <i class="material-icons">reorder</i>
+                            </md-button>
+                        </md-fab-trigger>
+                        <md-divider ng-if="!$last"></md-divider>
+                        <md-toolbar>
+                            <md-fab-actions class="md-toolbar-tools">
+                                <md-button aria-label="comment" class="md-icon-button">
+                                    <i class="material-icons">reply</i>
+                                </md-button>
+                                <md-button aria-label="comment" class="md-icon-button">
+                                    <i class="material-icons">reply_all</i>
+                                </md-button>
+                                <md-button aria-label="comment" class="md-icon-button">
+                                    <i class="material-icons">drafts</i>
+                                </md-button>
+                            </md-fab-actions>
+                        </md-toolbar>
+                    </md-fab-toolbar>
+                </div>
+            </md-card>
+        </div>
+    </div>
+</md-content>
